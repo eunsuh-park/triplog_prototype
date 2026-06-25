@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Triplog — 인터랙티브 프로토타입</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/screens.css">
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="app-topbar" data-screen-label>홈 · 전국 지도 · EXPLORE-01</div>
+
+  <div class="phone phone--interactive" id="interactiveApp">
+    <div class="screen-body">
+
+      <!-- 홈 = 전국 지도 (EXPLORE-01) -->
+      <div class="screen-panel active" data-screen="map">
+        <div class="explore-national" style="flex:1;display:flex;flex-direction:column">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <div class="explore-national__head">
+            <h2 class="explore-national__title">어디로 떠나볼까요</h2>
+            <div class="explore-national__stats"><span>전국 <strong>8%</strong></span><span>방문 <strong>143</strong>곳</span></div>
+          </div>
+          <div class="korea-map" data-korea-map aria-label="전국 지도"></div>
+          <button class="fab" aria-label="내 위치"><iconify-icon icon="mingcute:compass-line" width="22"></iconify-icon></button>
+        </div>
+      </div>
+
+      <!-- 도감 (HOME-01) -->
+      <div class="screen-panel" data-screen="dex">
+        <div class="home-hero tab-header">
+          <div class="status-bar status-bar--dark">
+            <span>9:41</span>
+            <span class="status-icons">
+              <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
+              <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
+            </span>
+          </div>
+          <div class="home-hero__content">
+            <h2 class="home-hero__title">전국 랜드마크 인증</h2>
+            <p class="home-hero__sub">GPS로 방문 인증하고 전국 카드를 모아보세요</p>
+          </div>
+          <div class="home-overall">
+            <span class="home-overall__label">7월 미션</span>
+            <div class="progress-bar progress-bar--thick"><div class="progress-bar__fill" data-animate-progress="40%" style="width:40%"></div></div>
+            <div class="home-overall__bottom">
+              <p class="home-overall__count">2/5</p>
+              <span class="home-overall__pct">성공까지 3개 남음</span>
+            </div>
+          </div>
+        </div>
+        <div class="screen-scroll" style="background:var(--surface)">
+          <section class="home-section">
+            <div class="home-section__head">
+              <h3 class="home-section__title">최근 방문</h3>
+              <button class="home-section__more is-pressable" type="button" data-more>더보기</button>
+            </div>
+            <div class="recent-scroll">
+              <button class="recent-card is-pressable" data-go="detail" type="button" style="cursor:pointer;width:100%">
+                <img class="recent-card__img" src="https://images.unsplash.com/photo-1538485049741-fc4ae4a8b63e?w=150&h=150&fit=crop" alt="">
+                <div class="recent-card__body">
+                  <p class="recent-card__name">서울</p>
+                  <p class="recent-card__addr">경복궁 외 2개 랜드마크 방문</p>
+                </div>
+                <span class="recent-card__time">2일전</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="home-section">
+            <div class="region-chips">
+              <button class="chip active" data-region="all" type="button">모두</button>
+              <button class="chip" data-region="metro" type="button">수도권</button>
+              <button class="chip" data-region="metro-city" type="button">광역시</button>
+              <button class="chip" data-region="other" type="button">기타</button>
+            </div>
+            <div class="region-list" data-region-list="interactive"></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- RECORD-01 -->
+      <div class="screen-panel" data-screen="detail">
+        <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+        <header class="detail-header">
+          <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="20"></iconify-icon></button>
+          <h1>서울특별시</h1>
+        </header>
+        <div class="landmark-carousel">
+          <div class="landmark-carousel__card" data-carousel-card>
+            <img data-carousel-img src="" alt="">
+            <div class="landmark-carousel__overlay">
+              <div class="landmark-carousel__name" data-carousel-name></div>
+              <div class="landmark-carousel__addr" data-carousel-addr></div>
+            </div>
+          </div>
+          <p class="landmark-carousel__pager" data-carousel-pager>1 / 3</p>
+          <div style="display:flex;justify-content:center;gap:12px;margin-bottom:8px">
+            <button data-carousel-prev style="padding:6px 14px;background:var(--surface);border-radius:var(--radius-full);font-size:11px;font-weight:600">이전</button>
+            <button data-carousel-next style="padding:6px 14px;background:var(--primary);color:white;border-radius:var(--radius-full);font-size:11px;font-weight:600">다음</button>
+          </div>
+        </div>
+        <div class="detail-stats">
+          <p class="detail-date">2026년 3월 24일</p>
+          <div class="stat-grid">
+            <div class="stat-box"><span class="stat-box__value">8%</span><span class="stat-box__label">총 방문횟수</span></div>
+            <div class="stat-box"><span class="stat-box__value">32%</span><span class="stat-box__label">지역 달성률</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPLORE-02 · 지역 상세 -->
+      <div class="screen-panel" data-screen="exploreProvince">
+        <div class="region-detail" data-region-detail>
+          <div class="status-bar">
+            <span>9:41</span>
+            <span class="status-icons">
+              <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
+              <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
+            </span>
+          </div>
+          <header class="region-detail__header">
+            <div class="region-detail__header-top">
+              <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+              <div class="region-view-toggle" role="tablist" aria-label="보기 전환">
+                <button class="region-view-toggle__btn active" type="button" data-region-view="grid" aria-label="그리드 보기"><iconify-icon icon="mingcute:grid-line" width="18"></iconify-icon></button>
+                <button class="region-view-toggle__btn" type="button" data-region-view="carousel" aria-label="카드 보기"><iconify-icon icon="mingcute:carousel-horizontal-line" width="18"></iconify-icon></button>
+              </div>
+            </div>
+            <div class="region-detail__intro">
+              <div class="region-detail__title-row">
+                <h1 class="region-detail__title" data-region-title>부산광역시</h1>
+                <a class="region-detail__home-btn is-pressable" data-region-homepage href="#" target="_blank" rel="noopener noreferrer" aria-label="공식 홈페이지">
+                  <iconify-icon icon="mingcute:earth-line" width="20"></iconify-icon>
+                </a>
+              </div>
+              <div class="region-detail__facts" data-region-facts></div>
+              <p class="region-detail__summary" data-region-summary></p>
+            </div>
+          </header>
+
+          <div class="region-detail__body region-detail__body--grid active" data-region-view-panel="grid">
+            <div class="region-detail__stats">
+              <div class="region-stat-card">
+                <span class="region-stat-card__icon"><iconify-icon icon="mingcute:aiming-line" width="18"></iconify-icon></span>
+                <div class="region-stat-card__text">
+                  <span class="region-stat-card__value" data-region-stat-value>50%</span>
+                  <span class="region-stat-card__label">총 방문횟수</span>
+                </div>
+              </div>
+              <div class="region-stat-card">
+                <span class="region-stat-card__icon"><iconify-icon icon="mingcute:aiming-line" width="18"></iconify-icon></span>
+                <div class="region-stat-card__text">
+                  <span class="region-stat-card__value" data-region-stat-value>50%</span>
+                  <span class="region-stat-card__label">지역 달성률</span>
+                </div>
+              </div>
+            </div>
+            <div class="region-detail__cards-head">
+              <h2 class="region-detail__cards-title">카드</h2>
+            </div>
+            <div class="region-card-grid" data-region-card-grid></div>
+          </div>
+
+          <div class="region-detail__body region-detail__body--carousel" data-region-view-panel="carousel">
+            <div class="region-stack">
+              <div class="region-stack__layer region-stack__layer--back"></div>
+              <div class="region-stack__layer region-stack__layer--mid"></div>
+              <article class="region-stack__card">
+                <div class="region-stack__img-wrap">
+                  <img data-region-stack-img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=500&fit=crop" alt="">
+                  <span class="region-stack__chip">모두</span>
+                </div>
+                <div class="region-stack__info">
+                  <p class="region-stack__name" data-region-stack-name>해운대</p>
+                  <p class="region-stack__addr" data-region-stack-addr>부산광역시 해운대구 우동</p>
+                </div>
+              </article>
+            </div>
+            <p class="region-stack__pager" data-region-pager>2 / 4</p>
+            <div class="region-info-box">
+              <p class="region-info-box__date" data-region-date>2026년 3월 24일</p>
+              <p class="region-info-box__meta" data-region-meta>769.94km² | 약 334만 명 | 15개 구</p>
+            </div>
+            <div class="region-detail__stats region-detail__stats--carousel">
+              <div class="region-stat-card">
+                <span class="region-stat-card__icon"><iconify-icon icon="mingcute:aiming-line" width="18"></iconify-icon></span>
+                <div class="region-stat-card__text">
+                  <span class="region-stat-card__value" data-region-stat-value>50%</span>
+                  <span class="region-stat-card__label">총 방문횟수</span>
+                </div>
+              </div>
+              <div class="region-stat-card">
+                <span class="region-stat-card__icon"><iconify-icon icon="mingcute:aiming-line" width="18"></iconify-icon></span>
+                <div class="region-stat-card__text">
+                  <span class="region-stat-card__value" data-region-stat-value>50%</span>
+                  <span class="region-stat-card__label">지역 달성률</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPLORE-03 -->
+      <div class="screen-panel" data-screen="exploreCity">
+        <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+        <header class="city-3d-header">
+          <button data-back style="font-size:11px;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:2px"><iconify-icon icon="mingcute:left-line" width="14"></iconify-icon> 경기도</button>
+          <div class="segment-control">
+            <button>랜드마크 카드</button>
+            <button class="active">방문 별 지도</button>
+          </div>
+        </header>
+        <div class="city-3d-map">
+          <div class="city-3d-block"><span class="city-3d-block__label">하남시</span></div>
+          <button class="fab"><iconify-icon icon="mingcute:aiming-line" width="22"></iconify-icon></button>
+        </div>
+        <div class="city-sheet">
+          <div class="city-sheet__handle"></div>
+          <h2 class="city-sheet__title">하남시</h2>
+          <p class="city-sheet__sub">방문 3회 · 랜드마크 2/18</p>
+          <p class="city-sheet__desc">스타필드 하남, 하남풍물시장 등 방문 인증 가능 랜드마크가 있습니다.</p>
+        </div>
+      </div>
+
+      <!-- RANK-01 -->
+      <div class="screen-panel" data-screen="rank">
+        <div class="rank-screen">
+          <div class="rank-hero tab-header">
+            <div class="status-bar status-bar--dark">
+              <span>9:41</span>
+              <span class="status-icons">
+                <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
+                <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
+              </span>
+            </div>
+            <div class="rank-podium">
+            <div class="podium-item podium-item--2">
+              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop" alt="">
+              <span class="podium-item__rank">2위</span>
+              <span class="podium-item__name">탐험가민지</span>
+              <span class="podium-item__count">312장</span>
+              <div class="podium-item__bar"></div>
+            </div>
+            <div class="podium-item podium-item--1">
+              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop" alt="">
+              <span class="podium-item__rank">1위</span>
+              <span class="podium-item__name">전국일등</span>
+              <span class="podium-item__count">428장</span>
+              <div class="podium-item__bar"></div>
+            </div>
+            <div class="podium-item podium-item--3">
+              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop" alt="">
+              <span class="podium-item__rank">3위</span>
+              <span class="podium-item__name">카드수집가</span>
+              <span class="podium-item__count">287장</span>
+              <div class="podium-item__bar"></div>
+            </div>
+            </div>
+          </div>
+          <div class="rank-list" data-rank-list></div>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 1 · 검색 (CERT-01) -->
+      <div class="screen-panel" data-screen="certifySearch">
+        <div class="cert-flow">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <span class="cert-flow__top-title">인증</span>
+          </header>
+          <div class="cert-flow__body cert-flow__body--center">
+            <p class="cert-flow__lead">현재 위치에서 인증할 수 있는<br>랜드마크를 찾고 있어요</p>
+            <div class="cert-flow__hero" aria-hidden="true">
+              <span class="cert-flow__hero-icon cert-flow__hero-icon--search">
+                <iconify-icon icon="mingcute:map-2-line" width="48"></iconify-icon>
+                <iconify-icon class="cert-flow__hero-mag" icon="mingcute:search-line" width="28"></iconify-icon>
+              </span>
+            </div>
+          </div>
+          <footer class="cert-flow__footer">
+            <button class="cert-flow__btn cert-flow__btn--ghost is-pressable" type="button" data-back>돌아가기</button>
+          </footer>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 2 · 랜드마크 선택 -->
+      <div class="screen-panel" data-screen="certify">
+        <div class="certify-screen" data-certify-root>
+          <div class="status-bar">
+            <span>9:41</span>
+            <span class="status-icons">
+              <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
+              <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
+            </span>
+          </div>
+          <header class="certify-header">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <p class="certify-header__gps"><span class="certify-header__dot" aria-hidden="true"></span>위치 감지 중</p>
+            <h1 class="certify-header__title">인증</h1>
+            <p class="certify-header__sub">인증하려는 랜드마크를 선택하세요.</p>
+          </header>
+          <div class="certify-radar" aria-hidden="true">
+            <div class="certify-radar__pin certify-radar__pin--center">
+              <span class="certify-radar__bubble"><iconify-icon icon="mingcute:location-fill" width="22"></iconify-icon></span>
+              <span class="certify-radar__label">현재 위치</span>
+            </div>
+            <div class="certify-radar__pin certify-radar__pin--1"><span class="certify-radar__dot certify-radar__dot--orange"></span></div>
+            <div class="certify-radar__pin certify-radar__pin--2"><span class="certify-radar__dot certify-radar__dot--green"></span></div>
+            <div class="certify-radar__pin certify-radar__pin--3"><span class="certify-radar__dot certify-radar__dot--green"></span></div>
+          </div>
+          <div class="certify-list screen-scroll" data-certify-list></div>
+          <footer class="cert-flow__footer certify-flow__footer--inline">
+            <button class="cert-flow__btn cert-flow__btn--ghost is-pressable" type="button" data-go="certifySearch">다시 시도하기</button>
+          </footer>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 3 · 방문 인증 완료 -->
+      <div class="screen-panel" data-screen="certifyVisit">
+        <div class="cert-flow">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top cert-flow__top--solo">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+          </header>
+          <div class="cert-flow__body cert-flow__body--center">
+            <p class="cert-flow__lead cert-flow__lead--success"><strong>국립중앙과학관</strong> 방문이<br>인증되었습니다!!</p>
+            <article class="cert-flow__landmark-card">
+              <img src="https://images.unsplash.com/photo-1538485049741-fc4ae4a8b63e?w=400&h=280&fit=crop" alt="">
+              <div class="cert-flow__landmark-card-body">
+                <h2>국립중앙과학관</h2>
+                <p>대전광역시 유성구 대덕대로 481</p>
+              </div>
+            </article>
+            <div class="cert-flow__points cert-flow__points--3">
+              <div class="cert-flow__point"><span>방문</span><strong>+50p</strong></div>
+              <div class="cert-flow__point"><span>인증</span><strong>+15p</strong></div>
+              <div class="cert-flow__point"><span>미션 완료</span><strong>25%</strong></div>
+            </div>
+          </div>
+          <footer class="cert-flow__footer">
+            <button class="cert-flow__btn cert-flow__btn--primary is-pressable" type="button" data-go="certifyPhoto">확인</button>
+          </footer>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 4 · 사진 인증 -->
+      <div class="screen-panel" data-screen="certifyPhoto">
+        <div class="cert-flow">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top cert-flow__top--solo">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+          </header>
+          <div class="cert-flow__body cert-flow__body--center">
+            <p class="cert-flow__lead">국립중앙과학관의 사진을 남기고<br>추가 포인트를 획득하세요.</p>
+            <span class="cert-flow__hero-icon cert-flow__hero-icon--photo">
+              <iconify-icon icon="mingcute:pic-2-line" width="52"></iconify-icon>
+            </span>
+            <div class="cert-flow__reward-pill">사진 인증 <strong>+20p</strong></div>
+          </div>
+          <footer class="cert-flow__footer cert-flow__footer--stack">
+            <button class="cert-flow__btn cert-flow__btn--primary is-pressable" type="button" data-go="certifyPhotoSource" data-cert-reset-photos>사진 인증하기</button>
+            <button class="cert-flow__btn cert-flow__btn--text is-pressable" type="button" data-go="certifyReview" data-cert-skip-photos>넘어가기</button>
+          </footer>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 4-1 · 사진 소스 선택 -->
+      <div class="screen-panel" data-screen="certifyPhotoSource">
+        <div class="cert-flow">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top cert-flow__top--solo">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+          </header>
+          <div class="cert-flow__body cert-flow__body--center">
+            <p class="cert-flow__lead">사진을 어떻게 추가할까요?</p>
+            <div class="cert-photo-source">
+              <button class="cert-photo-source__btn is-pressable" type="button" data-go="certifyPhotoAlbum">
+                <span class="cert-photo-source__icon cert-photo-source__icon--album">
+                  <iconify-icon icon="mingcute:album-2-line" width="28"></iconify-icon>
+                </span>
+                <span class="cert-photo-source__label">앨범에서 선택</span>
+                <span class="cert-photo-source__sub">최대 5장</span>
+              </button>
+              <button class="cert-photo-source__btn is-pressable" type="button" data-go="certifyPhotoCamera">
+                <span class="cert-photo-source__icon cert-photo-source__icon--camera">
+                  <iconify-icon icon="mingcute:camera-2-line" width="28"></iconify-icon>
+                </span>
+                <span class="cert-photo-source__label">카메라로 촬영</span>
+                <span class="cert-photo-source__sub">바로 촬영</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 4-2 · 앨범 선택 -->
+      <div class="screen-panel" data-screen="certifyPhotoAlbum">
+        <div class="cert-flow" data-cert-album-root>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top cert-flow__top--picker">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <span class="cert-flow__pick-title">앨범</span>
+            <button class="cert-flow__next is-pressable" type="button" data-cert-photos-next disabled>다음</button>
+          </header>
+          <p class="cert-flow__pick-meta"><span data-cert-photos-count>0/5</span> 선택 · 최소 1장</p>
+          <div class="cert-flow__body cert-flow__body--album">
+            <div class="cert-photo-grid" data-cert-album-grid></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 4-3 · 카메라 촬영 -->
+      <div class="screen-panel" data-screen="certifyPhotoCamera">
+        <div class="cert-flow cert-flow--camera" data-cert-camera-root>
+          <div class="status-bar status-bar--dark"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top cert-flow__top--picker cert-flow__top--dark">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <span class="cert-flow__pick-title">카메라</span>
+            <button class="cert-flow__next is-pressable" type="button" data-cert-photos-next disabled>다음</button>
+          </header>
+          <p class="cert-flow__pick-meta cert-flow__pick-meta--dark"><span data-cert-photos-count>0/5</span> 촬영 · 최소 1장</p>
+          <div class="cert-flow__body cert-flow__body--camera">
+            <div class="cert-camera__viewfinder" data-cert-camera-preview>
+              <span class="cert-camera__placeholder">촬영 대기</span>
+            </div>
+            <div class="cert-camera__strip" data-cert-camera-strip></div>
+            <button class="cert-camera__shutter is-pressable" type="button" data-cert-camera-capture aria-label="촬영">
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 5 · 후기 작성 (빈 상태) -->
+      <div class="screen-panel" data-screen="certifyReview">
+        <div class="cert-flow">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top cert-flow__top--solo">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+          </header>
+          <div class="cert-flow__body">
+            <p class="cert-flow__lead cert-flow__lead--left">국립중앙과학관의 방문 후기를 작성하고<br>추가 포인트를 획득하세요.</p>
+            <div class="cert-review-photos" data-cert-review-photos data-cert-review-editable="true" hidden></div>
+            <div class="cert-flow__stars" aria-hidden="true">
+              <iconify-icon icon="mingcute:star-line" width="28"></iconify-icon>
+              <iconify-icon icon="mingcute:star-line" width="28"></iconify-icon>
+              <iconify-icon icon="mingcute:star-line" width="28"></iconify-icon>
+              <iconify-icon icon="mingcute:star-line" width="28"></iconify-icon>
+              <iconify-icon icon="mingcute:star-line" width="28"></iconify-icon>
+            </div>
+            <div class="cert-flow__review-box">
+              <p class="cert-flow__review-placeholder">후기를 작성해 주세요</p>
+            </div>
+            <label class="cert-flow__toggle">
+              <span>공개</span>
+              <span class="cert-flow__switch" aria-hidden="true"></span>
+            </label>
+            <div class="cert-flow__points cert-flow__points--2">
+              <div class="cert-flow__point"><span>방문</span><strong>+50p</strong></div>
+              <div class="cert-flow__point"><span>후기 작성</span><strong>+15p</strong></div>
+            </div>
+          </div>
+          <footer class="cert-flow__footer cert-flow__footer--stack">
+            <button class="cert-flow__btn cert-flow__btn--ghost is-pressable" type="button" data-go="certifyReviewDone">후기 작성하기</button>
+            <button class="cert-flow__btn cert-flow__btn--text is-pressable" type="button" data-go="certifyComplete">넘어가기</button>
+          </footer>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 6 · 후기 작성 (완료) -->
+      <div class="screen-panel" data-screen="certifyReviewDone">
+        <div class="cert-flow">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top cert-flow__top--solo">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+          </header>
+          <div class="cert-flow__body">
+            <p class="cert-flow__lead cert-flow__lead--left">국립중앙과학관의 방문 후기를 작성하고<br>추가 포인트를 획득하세요.</p>
+            <div class="cert-review-photos" data-cert-review-photos data-cert-review-editable="true" hidden></div>
+            <div class="cert-flow__stars cert-flow__stars--filled" aria-hidden="true">
+              <iconify-icon icon="mingcute:star-fill" width="28"></iconify-icon>
+              <iconify-icon icon="mingcute:star-fill" width="28"></iconify-icon>
+              <iconify-icon icon="mingcute:star-fill" width="28"></iconify-icon>
+              <iconify-icon icon="mingcute:star-line" width="28"></iconify-icon>
+              <iconify-icon icon="mingcute:star-line" width="28"></iconify-icon>
+            </div>
+            <div class="cert-flow__review-box cert-flow__review-box--filled">
+              <p>또 오고 싶다 ~ 넘 추억</p>
+            </div>
+            <label class="cert-flow__toggle cert-flow__toggle--on">
+              <span>공개</span>
+              <span class="cert-flow__switch" aria-hidden="true"></span>
+            </label>
+            <div class="cert-flow__points cert-flow__points--2">
+              <div class="cert-flow__point"><span>방문</span><strong>+50p</strong></div>
+              <div class="cert-flow__point"><span>후기 작성</span><strong>+15p</strong></div>
+            </div>
+          </div>
+          <footer class="cert-flow__footer cert-flow__footer--stack">
+            <button class="cert-flow__btn cert-flow__btn--primary is-pressable" type="button" data-go="certifyComplete">인증 완료</button>
+            <button class="cert-flow__btn cert-flow__btn--text is-pressable" type="button" data-go="certifyComplete">넘어가기</button>
+          </footer>
+        </div>
+      </div>
+
+      <!-- 인증 플로우 7 · 완료 요약 -->
+      <div class="screen-panel" data-screen="certifyComplete">
+        <div class="cert-flow">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="cert-flow__top cert-flow__top--solo">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+          </header>
+          <div class="cert-flow__body cert-flow__body--center">
+            <p class="cert-flow__lead cert-flow__lead--success">인증을 완료했습니다.</p>
+            <ul class="cert-flow__summary">
+              <li><span>방문</span><strong>+50p</strong></li>
+              <li><span>인증</span><strong>+15p</strong></li>
+              <li><span>미션</span><strong>+50p</strong></li>
+              <li><span>후기 작성</span><strong>+15p</strong></li>
+              <li><span>사진 인증</span><strong>+20p</strong></li>
+            </ul>
+            <p class="cert-flow__total">총 <strong>+150p</strong></p>
+          </div>
+          <footer class="cert-flow__footer">
+            <button class="cert-flow__btn cert-flow__btn--primary is-pressable" type="button" data-action="certify-finish">확인</button>
+          </footer>
+        </div>
+      </div>
+
+      <!-- 인증 내역 (HISTORY-01) -->
+      <div class="screen-panel" data-screen="certHistory">
+        <div class="cert-history" data-cert-history-root>
+          <div class="status-bar">
+            <span>9:41</span>
+            <span class="status-icons">
+              <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
+              <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
+            </span>
+          </div>
+          <header class="cert-history__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+          </header>
+          <div class="screen-scroll cert-history__scroll">
+            <div class="cert-history__card">
+              <div class="cert-history__head">
+                <iconify-icon class="cert-history__icon" icon="mingcute:location-fill" width="22"></iconify-icon>
+                <h1 class="cert-history__title">나의 여행 기록</h1>
+              </div>
+              <div class="cert-timeline" data-cert-timeline></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY-01 -->
+      <div class="screen-panel" data-screen="settings">
+        <div class="my-screen">
+          <div class="my-profile tab-header">
+            <div class="status-bar status-bar--dark">
+              <span>9:41</span>
+              <span class="status-icons">
+                <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
+                <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
+              </span>
+            </div>
+            <button class="my-profile__edit is-pressable" type="button" data-nickname-edit aria-label="닉네임 변경">
+              <iconify-icon icon="mingcute:edit-line" width="20"></iconify-icon>
+            </button>
+            <div class="my-profile__row">
+              <img class="my-profile__avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=144&h=144&fit=crop" alt="">
+              <div>
+                <p class="my-profile__name">탐험러</p>
+                <span class="my-profile__level"><iconify-icon icon="mingcute:star-fill"></iconify-icon> Lv.3 수집가</span>
+              </div>
+            </div>
+          </div>
+          <div class="my-stats">
+            <div class="my-stat-card">
+              <p class="my-stat-card__value">7</p>
+              <p class="my-stat-card__label">수집 카드</p>
+            </div>
+            <div class="my-stat-card">
+              <p class="my-stat-card__value">47</p>
+              <p class="my-stat-card__label">전국 순위</p>
+            </div>
+            <div class="my-stat-card">
+              <p class="my-stat-card__value">3</p>
+              <p class="my-stat-card__label">방문 지역</p>
+            </div>
+          </div>
+          <div class="my-menu screen-scroll">
+            <p class="my-menu__title">계정</p>
+            <div class="my-menu__list">
+              <button class="my-menu__item is-pressable" type="button" data-go="certHistory"><iconify-icon icon="mingcute:history-line"></iconify-icon><span>인증 내역</span><iconify-icon class="chevron" icon="mingcute:right-line"></iconify-icon></button>
+            </div>
+            <p class="my-menu__title">앱 설정</p>
+            <div class="my-menu__list">
+              <button class="my-menu__item is-pressable" type="button"><iconify-icon icon="mingcute:notification-line"></iconify-icon><span>알림 설정</span><iconify-icon class="chevron" icon="mingcute:right-line"></iconify-icon></button>
+              <button class="my-menu__item is-pressable" type="button"><iconify-icon icon="mingcute:announcement-line"></iconify-icon><span>앱 공지</span><iconify-icon class="chevron" icon="mingcute:right-line"></iconify-icon></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-nav="map"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon><span class="nav-label">홈</span></span></button>
+      <button class="nav-item" data-nav="dex"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon><span class="nav-label">도감</span></span></button>
+      <button class="nav-item nav-item--certify is-pressable" type="button" data-action="certify" aria-label="인증">
+        <span class="nav-certify-btn">
+          <iconify-icon icon="mingcute:location-fill" width="22"></iconify-icon>
+          <span class="nav-certify-label">인증</span>
+        </span>
+      </button>
+      <button class="nav-item" data-nav="rank"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon><span class="nav-label">랭킹</span></span></button>
+      <button class="nav-item" data-nav="settings"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon><span class="nav-label">마이</span></span></button>
+    </nav>
+  </div>
+</div>
+
+<script src="js/regions.js"></script>
+<script src="js/ranks.js"></script>
+<script src="js/region-detail.js"></script>
+<script src="js/korea-map.js"></script>
+<script src="js/cert-history.js"></script>
+<script src="js/certify.js"></script>
+<script src="js/certify-photos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

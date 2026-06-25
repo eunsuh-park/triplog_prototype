@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triplog — 디자인 프로토타입 쇼케이스</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/screens.css">
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
+</head>
+<body>
+
+<div class="showcase">
+  <header class="showcase-header">
+    <h1>Triplog UI 프로토타입</h1>
+    <p>홈 · 도감 · 랭킹 · 마이 — 캡처 기준 디자인 시스템 적용</p>
+    <div class="mode-links">
+      <a href="app.html" class="active">인터랙티브 앱</a>
+    </div>
+  </header>
+
+  <div class="showcase-row">
+
+    <!-- 1. 홈 = 전국 지도 (EXPLORE-01) -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="screen-body explore-national">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <div class="explore-national__head">
+            <h2 class="explore-national__title">어디로 떠나볼까용</h2>
+            <div class="explore-national__stats">
+              <span>전국 <strong>8%</strong></span>
+              <span>방문 <strong>143</strong>곳</span>
+            </div>
+          </div>
+          <div class="korea-map">
+            <svg viewBox="0 0 200 360" fill="none" aria-hidden="true">
+              <path d="M95 20 L130 35 L145 70 L155 110 L140 150 L130 190 L120 230 L100 280 L80 320 L70 280 L60 230 L50 180 L45 130 L55 80 L75 40 Z" fill="var(--map-land)" stroke="#B8CCC6" stroke-width="1.5"/>
+              <path d="M130 200 L160 210 L175 250 L165 290 L140 300 L125 260 Z" fill="var(--map-land)" stroke="#B8CCC6" stroke-width="1.5"/>
+              <path d="M55 250 L75 260 L80 300 L60 320 L45 290 Z" fill="var(--map-land)" stroke="#B8CCC6" stroke-width="1.5"/>
+            </svg>
+            <div class="map-callout map-callout--orange map-callout--seoul">서울특별시<small>25개 구</small></div>
+            <div class="map-callout map-callout--blue map-callout--gyeonggi">경기도<small>31개 시군</small></div>
+            <div class="map-callout map-callout--orange map-callout--gwangju">광주<small>5개 구</small></div>
+            <div class="map-callout map-callout--brown map-callout--ulsan">울산<small>5개 구</small></div>
+          </div>
+          <button class="fab" aria-label="내 위치"><iconify-icon icon="mingcute:compass-line" width="22"></iconify-icon></button>
+        </div>
+        <nav class="bottom-nav">
+          <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:map-2-line"></iconify-icon>홈</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+        </nav>
+      </div>
+      <p class="screen-label">EXPLORE-01 · 홈 (전국 지도)</p>
+    </div>
+
+    <!-- 2. 도감 (HOME-01) -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="screen-body">
+          <div class="home-hero tab-header">
+            <div class="status-bar status-bar--dark">
+              <span>9:41</span>
+              <span class="status-icons">
+                <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
+                <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
+              </span>
+            </div>
+            <div class="home-hero__content">
+              <h2 class="home-hero__title">전국 랜드마크 인증</h2>
+              <p class="home-hero__sub">GPS로 방문 인증하고 전국 카드를 모아보세요</p>
+            </div>
+            <div class="home-overall">
+              <span class="home-overall__label">7월 미션</span>
+              <div class="progress-bar progress-bar--thick"><div class="progress-bar__fill" style="width:40%"></div></div>
+              <div class="home-overall__bottom">
+                <p class="home-overall__count">2/5</p>
+                <span class="home-overall__pct">성공까지 3개 남음</span>
+              </div>
+            </div>
+          </div>
+          <div class="screen-scroll" style="background:var(--surface)">
+            <section class="home-section">
+              <div class="home-section__head">
+                <h3 class="home-section__title">최근 방문</h3>
+                <span class="home-section__more">더보기</span>
+              </div>
+              <div class="recent-scroll">
+                <div class="recent-card">
+                  <img class="recent-card__img" src="https://images.unsplash.com/photo-1538485049741-fc4ae4a8b63e?w=150&h=150&fit=crop" alt="">
+                  <div class="recent-card__body">
+                    <p class="recent-card__name">서울</p>
+                    <p class="recent-card__addr">경복궁 외 2개 랜드마크 방문</p>
+                  </div>
+                  <span class="recent-card__time">2일전</span>
+                </div>
+              </div>
+            </section>
+            <section class="home-section">
+              <div class="region-chips">
+                <button class="chip active" data-region="all" type="button">모두</button>
+                <button class="chip" data-region="metro" type="button">수도권</button>
+                <button class="chip" data-region="metro-city" type="button">광역시</button>
+                <button class="chip" data-region="other" type="button">기타</button>
+              </div>
+              <div class="region-list" data-region-list></div>
+            </section>
+          </div>
+        </div>
+        <nav class="bottom-nav">
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon>홈</span></button>
+          <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+        </nav>
+      </div>
+      <p class="screen-label">HOME-01 · 도감</p>
+    </div>
+
+    <!-- 3. RANK-01 랭킹 -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="screen-body rank-screen">
+          <div class="rank-hero tab-header">
+            <div class="status-bar status-bar--dark">
+              <span>9:41</span>
+              <span class="status-icons">
+                <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
+                <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
+              </span>
+            </div>
+            <div class="rank-podium">
+            <div class="podium-item podium-item--2">
+              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="">
+              <span class="podium-item__name">민지</span>
+              <div class="podium-item__bar"></div>
+            </div>
+            <div class="podium-item podium-item--1">
+              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="">
+              <span class="podium-item__name">1등</span>
+              <div class="podium-item__bar"></div>
+            </div>
+            <div class="podium-item podium-item--3">
+              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop" alt="">
+              <span class="podium-item__name">수집가</span>
+              <div class="podium-item__bar"></div>
+            </div>
+            </div>
+          </div>
+          <div class="rank-list" style="padding:8px 12px" data-rank-list></div>
+        </div>
+        <nav class="bottom-nav">
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:map-2-line"></iconify-icon>홈</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+          <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+        </nav>
+      </div>
+      <p class="screen-label">RANK-01 · 랭킹</p>
+    </div>
+
+    <!-- 4. MY-01 마이페이지 -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="screen-body my-screen">
+          <div class="my-profile tab-header">
+            <div class="status-bar status-bar--dark"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+            <button class="my-profile__edit" type="button" aria-label="닉네임 변경"><iconify-icon icon="mingcute:edit-line" width="20"></iconify-icon></button>
+            <div class="my-profile__row">
+              <img class="my-profile__avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="">
+              <div>
+                <p class="my-profile__name">탐험러</p>
+                <span class="my-profile__level"><iconify-icon icon="mingcute:star-fill"></iconify-icon> Lv.3</span>
+              </div>
+            </div>
+          </div>
+          <div class="my-stats" style="margin-top:-12px;gap:6px;padding:0 12px">
+            <div class="my-stat-card" style="padding:10px 6px"><p class="my-stat-card__value" style="font-size:16px">7</p><p class="my-stat-card__label">수집</p></div>
+            <div class="my-stat-card" style="padding:10px 6px"><p class="my-stat-card__value" style="font-size:16px">47</p><p class="my-stat-card__label">순위</p></div>
+            <div class="my-stat-card" style="padding:10px 6px"><p class="my-stat-card__value" style="font-size:16px">3</p><p class="my-stat-card__label">지역</p></div>
+          </div>
+          <div class="my-menu" style="padding:16px 12px 80px">
+            <p class="my-menu__title">계정</p>
+            <div class="my-menu__list">
+              <div class="my-menu__item" style="padding:12px 14px;font-size:13px"><iconify-icon icon="mingcute:history-line"></iconify-icon><span>인증 내역</span></div>
+            </div>
+            <p class="my-menu__title">앱 설정</p>
+            <div class="my-menu__list">
+              <div class="my-menu__item" style="padding:12px 14px;font-size:13px"><iconify-icon icon="mingcute:notification-line"></iconify-icon><span>알림 설정</span></div>
+              <div class="my-menu__item" style="padding:12px 14px;font-size:13px"><iconify-icon icon="mingcute:announcement-line"></iconify-icon><span>앱 공지</span></div>
+            </div>
+          </div>
+        </div>
+        <nav class="bottom-nav">
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:map-2-line"></iconify-icon>홈</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+          <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+        </nav>
+      </div>
+      <p class="screen-label">MY-01 · 마이페이지</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="js/regions.js"></script>
+<script src="js/ranks.js"></script>
+</body>
+</html>
