@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Triplog — 디자인 프로토타입 쇼케이스</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <title>Triplog — 전체 화면 프로토타입</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/screens.css">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
@@ -14,200 +13,277 @@
 <div class="showcase">
   <header class="showcase-header">
     <h1>Triplog UI 프로토타입</h1>
-    <p>홈 · 도감 · 랭킹 · 마이 — 캡처 기준 디자인 시스템 적용</p>
+    <p>서비스 정책 기반 · DESIGN.md (Triple) 디자인 시스템 · 총 30+ 화면</p>
     <div class="mode-links">
-      <a href="app.html" class="active">인터랙티브 앱</a>
+      <a href="app.html" class="active">인터랙티브 앱 열기</a>
     </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--text-secondary);max-width:520px;margin-left:auto;margin-right:auto;line-height:1.6">
+      AUTH · EXPLORE · CERT · RANK · MY · RECORD · MISSION · FEED · DEX<br>
+      <code>app.html</code>에서 탭·인증·뒤로가기로 전체 플로우를 탐색할 수 있어요.
+    </p>
   </header>
 
-  <div class="showcase-row">
-
-    <!-- 1. 홈 = 전국 지도 (EXPLORE-01) -->
-    <div class="screen-wrap">
-      <div class="phone">
-        <div class="screen-body explore-national">
-          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
-          <div class="explore-national__head">
-            <h2 class="explore-national__title">어디로 떠나볼까용</h2>
-            <div class="explore-national__stats">
-              <span>전국 <strong>8%</strong></span>
-              <span>방문 <strong>143</strong>곳</span>
+  <!-- 온보딩 -->
+  <section class="showcase-section">
+    <h2>온보딩 · AUTH</h2>
+    <div class="showcase-row showcase-row--wrap">
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body auth-screen">
+            <div class="status-bar"><span>9:41</span></div>
+            <div class="auth-screen__body">
+              <div class="auth-screen__brand">
+                <span class="auth-screen__logo"><iconify-icon icon="mingcute:map-2-fill" width="40"></iconify-icon></span>
+                <h1>트립로그</h1>
+                <p>여행 지도를 채우고, 랜드마크를 수집하세요</p>
+              </div>
+              <div class="auth-screen__actions">
+                <button class="btn-primary" type="button">카카오로 시작하기</button>
+                <button class="btn-outline" type="button">Apple로 시작하기</button>
+              </div>
             </div>
           </div>
-          <div class="korea-map">
-            <svg viewBox="0 0 200 360" fill="none" aria-hidden="true">
-              <path d="M95 20 L130 35 L145 70 L155 110 L140 150 L130 190 L120 230 L100 280 L80 320 L70 280 L60 230 L50 180 L45 130 L55 80 L75 40 Z" fill="var(--map-land)" stroke="#B8CCC6" stroke-width="1.5"/>
-              <path d="M130 200 L160 210 L175 250 L165 290 L140 300 L125 260 Z" fill="var(--map-land)" stroke="#B8CCC6" stroke-width="1.5"/>
-              <path d="M55 250 L75 260 L80 300 L60 320 L45 290 Z" fill="var(--map-land)" stroke="#B8CCC6" stroke-width="1.5"/>
-            </svg>
-            <div class="map-callout map-callout--orange map-callout--seoul">서울특별시<small>25개 구</small></div>
-            <div class="map-callout map-callout--blue map-callout--gyeonggi">경기도<small>31개 시군</small></div>
-            <div class="map-callout map-callout--orange map-callout--gwangju">광주<small>5개 구</small></div>
-            <div class="map-callout map-callout--brown map-callout--ulsan">울산<small>5개 구</small></div>
-          </div>
-          <button class="fab" aria-label="내 위치"><iconify-icon icon="mingcute:compass-line" width="22"></iconify-icon></button>
         </div>
-        <nav class="bottom-nav">
-          <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:map-2-line"></iconify-icon>홈</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
-        </nav>
+        <p class="screen-label">AUTH-01 · 로그인</p>
       </div>
-      <p class="screen-label">EXPLORE-01 · 홈 (전국 지도)</p>
-    </div>
-
-    <!-- 2. 도감 (HOME-01) -->
-    <div class="screen-wrap">
-      <div class="phone">
-        <div class="screen-body">
-          <div class="home-hero tab-header">
-            <div class="status-bar status-bar--dark">
-              <span>9:41</span>
-              <span class="status-icons">
-                <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
-                <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
-              </span>
-            </div>
-            <div class="home-hero__content">
-              <h2 class="home-hero__title">전국 랜드마크 인증</h2>
-              <p class="home-hero__sub">GPS로 방문 인증하고 전국 카드를 모아보세요</p>
-            </div>
-            <div class="home-overall">
-              <span class="home-overall__label">7월 미션</span>
-              <div class="progress-bar progress-bar--thick"><div class="progress-bar__fill" style="width:40%"></div></div>
-              <div class="home-overall__bottom">
-                <p class="home-overall__count">2/5</p>
-                <span class="home-overall__pct">성공까지 3개 남음</span>
-              </div>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body subpage">
+            <div class="status-bar"><span>9:41</span></div>
+            <header class="subpage__top"><h2 class="subpage__title">닉네임 설정</h2></header>
+            <div class="screen-scroll subpage__scroll" style="padding:16px">
+              <p class="subpage__lead">2~12자, 한글·영문·숫자만</p>
+              <div class="input-field"><input type="text" value="여행하는성훈"></div>
+              <div class="info-card"><p>회원가입 보상 <strong>+30 XP</strong></p></div>
+              <button class="btn-primary" type="button">시작하기</button>
             </div>
           </div>
-          <div class="screen-scroll" style="background:var(--surface)">
-            <section class="home-section">
-              <div class="home-section__head">
-                <h3 class="home-section__title">최근 방문</h3>
-                <span class="home-section__more">더보기</span>
+        </div>
+        <p class="screen-label">AUTH-03 · 닉네임</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 메인 탭 -->
+  <section class="showcase-section">
+    <h2>메인 탭</h2>
+    <div class="showcase-row showcase-row--wrap">
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body explore-national">
+            <div class="status-bar"><span>9:41</span></div>
+            <div class="explore-national__head">
+              <h2 class="explore-national__title">어디로 떠나볼까요</h2>
+              <div class="explore-national__stats"><span>전국 <strong>8%</strong></span><span>방문 <strong>143</strong>곳</span></div>
+            </div>
+            <div class="korea-map" style="flex:1;display:flex;align-items:center;justify-content:center;background:var(--primary-soft);border-radius:20px;margin:0 16px">
+              <span style="color:var(--primary);font-weight:700">전국 지도</span>
+            </div>
+          </div>
+          <nav class="bottom-nav">
+            <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon>홈</span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+            <button class="nav-item nav-item--certify"><span class="nav-certify-btn"><iconify-icon icon="mingcute:location-fill" width="22"></iconify-icon></span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+          </nav>
+        </div>
+        <p class="screen-label">EXPLORE-01 · 홈</p>
+      </div>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body">
+            <div class="home-hero tab-header">
+              <div class="status-bar status-bar--dark"><span>9:41</span></div>
+              <div class="home-hero__content">
+                <h2 class="home-hero__title">전국 랜드마크 인증</h2>
+                <p class="home-hero__sub">GPS로 방문 인증하고 전국 카드를 모아보세요</p>
               </div>
-              <div class="recent-scroll">
-                <div class="recent-card">
-                  <img class="recent-card__img" src="https://images.unsplash.com/photo-1538485049741-fc4ae4a8b63e?w=150&h=150&fit=crop" alt="">
-                  <div class="recent-card__body">
-                    <p class="recent-card__name">서울</p>
-                    <p class="recent-card__addr">경복궁 외 2개 랜드마크 방문</p>
-                  </div>
-                  <span class="recent-card__time">2일전</span>
-                </div>
+              <div class="home-overall">
+                <span class="home-overall__label">주간 미션</span>
+                <div class="progress-bar progress-bar--thick"><div class="progress-bar__fill" style="width:50%"></div></div>
+                <div class="home-overall__bottom"><p class="home-overall__count">2/4</p><span class="home-overall__pct">완료까지 2개</span></div>
               </div>
-            </section>
-            <section class="home-section">
-              <div class="region-chips">
-                <button class="chip active" data-region="all" type="button">모두</button>
-                <button class="chip" data-region="metro" type="button">수도권</button>
-                <button class="chip" data-region="metro-city" type="button">광역시</button>
-                <button class="chip" data-region="other" type="button">기타</button>
-              </div>
+            </div>
+            <div class="screen-scroll" style="background:var(--surface);padding:12px">
               <div class="region-list" data-region-list></div>
-            </section>
-          </div>
-        </div>
-        <nav class="bottom-nav">
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon>홈</span></button>
-          <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
-        </nav>
-      </div>
-      <p class="screen-label">HOME-01 · 도감</p>
-    </div>
-
-    <!-- 3. RANK-01 랭킹 -->
-    <div class="screen-wrap">
-      <div class="phone">
-        <div class="screen-body rank-screen">
-          <div class="rank-hero tab-header">
-            <div class="status-bar status-bar--dark">
-              <span>9:41</span>
-              <span class="status-icons">
-                <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
-                <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
-              </span>
-            </div>
-            <div class="rank-podium">
-            <div class="podium-item podium-item--2">
-              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="">
-              <span class="podium-item__name">민지</span>
-              <div class="podium-item__bar"></div>
-            </div>
-            <div class="podium-item podium-item--1">
-              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="">
-              <span class="podium-item__name">1등</span>
-              <div class="podium-item__bar"></div>
-            </div>
-            <div class="podium-item podium-item--3">
-              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop" alt="">
-              <span class="podium-item__name">수집가</span>
-              <div class="podium-item__bar"></div>
-            </div>
             </div>
           </div>
-          <div class="rank-list" style="padding:8px 12px" data-rank-list></div>
+          <nav class="bottom-nav">
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon>홈</span></button>
+            <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+            <button class="nav-item nav-item--certify"><span class="nav-certify-btn"><iconify-icon icon="mingcute:location-fill" width="22"></iconify-icon></span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+          </nav>
         </div>
-        <nav class="bottom-nav">
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:map-2-line"></iconify-icon>홈</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
-          <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
-        </nav>
+        <p class="screen-label">HOME-01 · 도감</p>
       </div>
-      <p class="screen-label">RANK-01 · 랭킹</p>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body rank-screen">
+            <div class="rank-scroll">
+              <div class="rank-tabs"><button class="active">전체 랭킹</button><button>월간 랭킹</button></div>
+              <div class="rank-podium-card"><div class="rank-podium" data-rank-podium></div></div>
+              <div class="rank-list" data-rank-list></div>
+            </div>
+            <div class="rank-me" data-rank-me></div>
+          </div>
+          <nav class="bottom-nav">
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon>홈</span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+            <button class="nav-item nav-item--certify"><span class="nav-certify-btn"><iconify-icon icon="mingcute:location-fill" width="22"></iconify-icon></span></button>
+            <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+          </nav>
+        </div>
+        <p class="screen-label">RANK-01 · 랭킹</p>
+      </div>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body my-screen">
+            <div class="screen-scroll my-scroll" data-mypage-showcase></div>
+          </div>
+          <nav class="bottom-nav">
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon>홈</span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+            <button class="nav-item nav-item--certify"><span class="nav-certify-btn"><iconify-icon icon="mingcute:location-fill" width="22"></iconify-icon></span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+            <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+          </nav>
+        </div>
+        <p class="screen-label">MY-01 · 마이페이지</p>
+      </div>
     </div>
+  </section>
 
-    <!-- 4. MY-01 마이페이지 -->
-    <div class="screen-wrap">
-      <div class="phone">
-        <div class="screen-body my-screen">
-          <div class="my-profile tab-header">
-            <div class="status-bar status-bar--dark"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
-            <button class="my-profile__edit" type="button" aria-label="닉네임 변경"><iconify-icon icon="mingcute:edit-line" width="20"></iconify-icon></button>
-            <div class="my-profile__row">
-              <img class="my-profile__avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="">
-              <div>
-                <p class="my-profile__name">탐험러</p>
-                <span class="my-profile__level"><iconify-icon icon="mingcute:star-fill"></iconify-icon> Lv.3</span>
+  <!-- 인증 플로우 -->
+  <section class="showcase-section">
+    <h2>방문 인증 · CERT</h2>
+    <div class="showcase-row showcase-row--wrap">
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body cert-flow">
+            <div class="status-bar"><span>9:41</span></div>
+            <header class="cert-flow__top"><span class="cert-flow__top-title">인증</span></header>
+            <div class="cert-flow__body cert-flow__body--center">
+              <p class="cert-flow__lead">현재 위치에서 인증할 수 있는<br>랜드마크를 찾고 있어요</p>
+            </div>
+          </div>
+        </div>
+        <p class="screen-label">CERT-01 · 검색</p>
+      </div>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body cert-flow">
+            <div class="status-bar"><span>9:41</span></div>
+            <div class="cert-flow__body cert-flow__body--center">
+              <p class="cert-flow__lead cert-flow__lead--success"><strong>국립중앙과학관</strong> 방문이<br>인증되었어요</p>
+              <div class="cert-flow__points cert-flow__points--3">
+                <div class="cert-flow__point"><span>방문</span><strong>+50 XP</strong></div>
+                <div class="cert-flow__point"><span>Score</span><strong>+50</strong></div>
+                <div class="cert-flow__point"><span>카드</span><strong>+20 XP</strong></div>
               </div>
             </div>
-          </div>
-          <div class="my-stats" style="margin-top:-12px;gap:6px;padding:0 12px">
-            <div class="my-stat-card" style="padding:10px 6px"><p class="my-stat-card__value" style="font-size:16px">7</p><p class="my-stat-card__label">수집</p></div>
-            <div class="my-stat-card" style="padding:10px 6px"><p class="my-stat-card__value" style="font-size:16px">47</p><p class="my-stat-card__label">순위</p></div>
-            <div class="my-stat-card" style="padding:10px 6px"><p class="my-stat-card__value" style="font-size:16px">3</p><p class="my-stat-card__label">지역</p></div>
-          </div>
-          <div class="my-menu" style="padding:16px 12px 80px">
-            <p class="my-menu__title">계정</p>
-            <div class="my-menu__list">
-              <div class="my-menu__item" style="padding:12px 14px;font-size:13px"><iconify-icon icon="mingcute:history-line"></iconify-icon><span>인증 내역</span></div>
-            </div>
-            <p class="my-menu__title">앱 설정</p>
-            <div class="my-menu__list">
-              <div class="my-menu__item" style="padding:12px 14px;font-size:13px"><iconify-icon icon="mingcute:notification-line"></iconify-icon><span>알림 설정</span></div>
-              <div class="my-menu__item" style="padding:12px 14px;font-size:13px"><iconify-icon icon="mingcute:announcement-line"></iconify-icon><span>앱 공지</span></div>
-            </div>
+            <footer class="cert-flow__footer"><button class="cert-flow__btn cert-flow__btn--primary">확인</button></footer>
           </div>
         </div>
-        <nav class="bottom-nav">
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:map-2-line"></iconify-icon>홈</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
-          <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
-          <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
-        </nav>
+        <p class="screen-label">CERT-03 · 인증 완료</p>
       </div>
-      <p class="screen-label">MY-01 · 마이페이지</p>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body subpage" data-activity-history-root>
+            <div class="status-bar"><span>9:41</span></div>
+            <header class="subpage__top"><h2 class="subpage__title">활동 히스토리</h2></header>
+            <div class="filter-chips">
+              <button class="chip active" data-activity-filter="all">전체</button>
+              <button class="chip" data-activity-filter="visit">방문</button>
+              <button class="chip" data-activity-filter="badge">뱃지</button>
+              <button class="chip" data-activity-filter="level">레벨</button>
+            </div>
+            <div class="screen-scroll subpage__scroll" data-activity-list></div>
+          </div>
+        </div>
+        <p class="screen-label">ACTIVITY-01 · 활동 히스토리</p>
+      </div>
     </div>
+  </section>
 
-  </div>
+  <!-- 서브 화면 -->
+  <section class="showcase-section">
+    <h2>마이 · 미션 · 피드 · 도감</h2>
+    <div class="showcase-row showcase-row--wrap">
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body subpage" data-mission-root>
+            <div class="home-hero tab-header" style="min-height:200px">
+              <div class="status-bar status-bar--dark"><span>9:41</span></div>
+              <h2 class="subpage__title" style="color:#fff;padding:16px">주간 미션</h2>
+              <div class="home-overall" style="margin:0 12px 12px">
+                <span class="home-overall__label">이번 주</span>
+                <div class="progress-bar progress-bar--thick"><div class="progress-bar__fill" data-mission-progress style="width:50%"></div></div>
+                <p class="home-overall__count" data-mission-count>2/4</p>
+              </div>
+            </div>
+            <div class="screen-scroll subpage__scroll" data-mission-list style="padding:12px"></div>
+          </div>
+        </div>
+        <p class="screen-label">MISSION-01 · 주간 미션</p>
+      </div>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body subpage" data-dex-district-root>
+            <div class="home-hero tab-header" style="min-height:180px">
+              <div class="status-bar status-bar--dark"><span>9:41</span></div>
+              <h2 class="subpage__title" style="color:#fff;padding:16px">대전광역시 도감</h2>
+            </div>
+            <div class="screen-scroll subpage__scroll" data-dex-district-list style="padding:12px"></div>
+          </div>
+        </div>
+        <p class="screen-label">DEX-02 · 지역 도감</p>
+      </div>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body subpage" data-feed-root>
+            <header class="subpage__top"><h2 class="subpage__title">피드</h2></header>
+            <div class="screen-scroll subpage__scroll" data-feed-list style="padding:12px"></div>
+          </div>
+        </div>
+        <p class="screen-label">FEED-01 · 피드</p>
+      </div>
+    </div>
+  </section>
 </div>
 
 <script src="js/regions.js"></script>
 <script src="js/ranks.js"></script>
+<script src="js/mypage.js"></script>
+<script src="js/activity-history.js"></script>
+<script src="js/extra-screens.js"></script>
+<script>
+(function () {
+  if (window.renderRegionList) renderRegionList(document.querySelector('[data-region-list]'));
+  const showcaseMy = document.querySelector('[data-mypage-showcase]');
+  if (showcaseMy && window.TRIPLOG_MYPAGE) {
+    const p = window.TRIPLOG_MYPAGE.PROFILE;
+    showcaseMy.innerHTML = `
+      <div class="my-profile-card" style="margin:12px">
+        <p class="my-profile-card__name">${p.name}</p>
+        <p class="my-profile-card__title">${p.title}</p>
+        <div class="my-profile-card__pills">
+          <span class="my-pill my-pill--soft">Lv.${p.level}</span>
+          <span class="my-pill my-pill--gold">${p.rank} Rank</span>
+        </div>
+      </div>
+      <div class="my-stats" style="padding:0 12px">
+        <div class="my-stat-card"><span class="my-stat-card__body"><span class="my-stat-card__value">7<em>곳</em></span><span class="my-stat-card__label">방문 지역</span></span></div>
+        <div class="my-stat-card"><span class="my-stat-card__body"><span class="my-stat-card__value">24<em>개</em></span><span class="my-stat-card__label">인증</span></span></div>
+      </div>`;
+  }
+  const actRoot = document.querySelector('[data-activity-history-root]');
+  if (actRoot && window.renderActivityHistory) renderActivityHistory(actRoot);
+  if (window.renderExtraScreens) renderExtraScreens();
+})();
+</script>
 </body>
 </html>

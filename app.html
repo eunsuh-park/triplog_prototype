@@ -19,7 +19,7 @@
 
       <!-- 홈 = 전국 지도 (EXPLORE-01) -->
       <div class="screen-panel active" data-screen="map">
-        <div class="explore-national" style="flex:1;display:flex;flex-direction:column">
+        <div class="explore-national">
           <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
           <div class="explore-national__head">
             <h2 class="explore-national__title">어디로 떠나볼까요</h2>
@@ -44,33 +44,8 @@
             <h2 class="home-hero__title">전국 랜드마크 인증</h2>
             <p class="home-hero__sub">GPS로 방문 인증하고 전국 카드를 모아보세요</p>
           </div>
-          <div class="home-overall">
-            <span class="home-overall__label">7월 미션</span>
-            <div class="progress-bar progress-bar--thick"><div class="progress-bar__fill" data-animate-progress="40%" style="width:40%"></div></div>
-            <div class="home-overall__bottom">
-              <p class="home-overall__count">2/5</p>
-              <span class="home-overall__pct">성공까지 3개 남음</span>
-            </div>
-          </div>
         </div>
-        <div class="screen-scroll" style="background:var(--surface)">
-          <section class="home-section">
-            <div class="home-section__head">
-              <h3 class="home-section__title">최근 방문</h3>
-              <button class="home-section__more is-pressable" type="button" data-more>더보기</button>
-            </div>
-            <div class="recent-scroll">
-              <button class="recent-card is-pressable" data-go="detail" type="button" style="cursor:pointer;width:100%">
-                <img class="recent-card__img" src="https://images.unsplash.com/photo-1538485049741-fc4ae4a8b63e?w=150&h=150&fit=crop" alt="">
-                <div class="recent-card__body">
-                  <p class="recent-card__name">서울</p>
-                  <p class="recent-card__addr">경복궁 외 2개 랜드마크 방문</p>
-                </div>
-                <span class="recent-card__time">2일전</span>
-              </button>
-            </div>
-          </section>
-
+        <div class="screen-scroll screen-scroll--surface">
           <section class="home-section">
             <div class="region-chips">
               <button class="chip active" data-region="all" type="button">모두</button>
@@ -94,21 +69,48 @@
           <div class="landmark-carousel__card" data-carousel-card>
             <img data-carousel-img src="" alt="">
             <div class="landmark-carousel__overlay">
+              <span class="grade-tag grade-tag--solid" data-carousel-grade-pill></span>
               <div class="landmark-carousel__name" data-carousel-name></div>
               <div class="landmark-carousel__addr" data-carousel-addr></div>
             </div>
           </div>
           <p class="landmark-carousel__pager" data-carousel-pager>1 / 3</p>
-          <div style="display:flex;justify-content:center;gap:12px;margin-bottom:8px">
-            <button data-carousel-prev style="padding:6px 14px;background:var(--surface);border-radius:var(--radius-full);font-size:11px;font-weight:600">이전</button>
-            <button data-carousel-next style="padding:6px 14px;background:var(--primary);color:white;border-radius:var(--radius-full);font-size:11px;font-weight:600">다음</button>
+          <div class="carousel-actions">
+            <button class="carousel-action carousel-action--prev" data-carousel-prev>이전</button>
+            <button class="carousel-action carousel-action--next" data-carousel-next>다음</button>
           </div>
         </div>
-        <div class="detail-stats">
-          <p class="detail-date">2026년 3월 24일</p>
-          <div class="stat-grid">
-            <div class="stat-box"><span class="stat-box__value">8%</span><span class="stat-box__label">총 방문횟수</span></div>
-            <div class="stat-box"><span class="stat-box__value">32%</span><span class="stat-box__label">지역 달성률</span></div>
+        <div class="detail-stats card-detail">
+          <div class="card-detail__head">
+            <div class="card-detail__rating" data-detail-stars aria-label="별점"></div>
+            <span class="grade-tag" data-detail-grade></span>
+            <span class="card-detail__collected"><iconify-icon icon="mingcute:check-circle-fill" width="16"></iconify-icon> 수집 완료</span>
+          </div>
+          <div class="card-detail__meta">
+            <span class="card-detail__meta-item"><iconify-icon icon="mingcute:location-line" width="15"></iconify-icon> <span data-detail-district></span></span>
+            <span class="card-detail__meta-item"><iconify-icon icon="mingcute:check-circle-line" width="15"></iconify-icon> <span data-detail-date></span> 획득</span>
+          </div>
+          <div class="card-detail__desc">
+            <iconify-icon icon="mingcute:sparkles-line" width="16"></iconify-icon>
+            <span data-detail-desc></span>
+          </div>
+          <p class="card-detail__tagline" data-detail-tagline></p>
+          <div class="card-detail__boxes">
+            <div class="card-detail__box">
+              <iconify-icon class="card-detail__box-icon" icon="mingcute:trophy-line" width="20"></iconify-icon>
+              <span class="card-detail__box-label">희귀도</span>
+              <span class="card-detail__box-value" data-detail-rarity></span>
+            </div>
+            <div class="card-detail__box">
+              <iconify-icon class="card-detail__box-icon" icon="mingcute:location-line" width="20"></iconify-icon>
+              <span class="card-detail__box-label">위치</span>
+              <span class="card-detail__box-value" data-detail-loc></span>
+            </div>
+            <div class="card-detail__box">
+              <iconify-icon class="card-detail__box-icon" icon="mingcute:star-line" width="20"></iconify-icon>
+              <span class="card-detail__box-label">등급</span>
+              <span class="card-detail__box-value" data-detail-grade-en></span>
+            </div>
           </div>
         </div>
       </div>
@@ -210,7 +212,7 @@
       <div class="screen-panel" data-screen="exploreCity">
         <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
         <header class="city-3d-header">
-          <button data-back style="font-size:11px;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:2px"><iconify-icon icon="mingcute:left-line" width="14"></iconify-icon> 경기도</button>
+          <button class="explore-city__backlink" data-back><iconify-icon icon="mingcute:left-line" width="14"></iconify-icon> 경기도</button>
           <div class="segment-control">
             <button>랜드마크 카드</button>
             <button class="active">방문 별 지도</button>
@@ -231,39 +233,17 @@
       <!-- RANK-01 -->
       <div class="screen-panel" data-screen="rank">
         <div class="rank-screen">
-          <div class="rank-hero tab-header">
-            <div class="status-bar status-bar--dark">
-              <span>9:41</span>
-              <span class="status-icons">
-                <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
-                <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
-              </span>
+          <div class="rank-scroll">
+            <div class="rank-tabs" data-rank-tabs>
+              <button class="active" type="button" data-rank-tab="all">전체 랭킹</button>
+              <button type="button" data-rank-tab="monthly">월간 랭킹</button>
             </div>
-            <div class="rank-podium">
-            <div class="podium-item podium-item--2">
-              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop" alt="">
-              <span class="podium-item__rank">2위</span>
-              <span class="podium-item__name">탐험가민지</span>
-              <span class="podium-item__count">312장</span>
-              <div class="podium-item__bar"></div>
+            <div class="rank-podium-card">
+              <div class="rank-podium" data-rank-podium></div>
             </div>
-            <div class="podium-item podium-item--1">
-              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop" alt="">
-              <span class="podium-item__rank">1위</span>
-              <span class="podium-item__name">전국일등</span>
-              <span class="podium-item__count">428장</span>
-              <div class="podium-item__bar"></div>
-            </div>
-            <div class="podium-item podium-item--3">
-              <img class="podium-item__avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop" alt="">
-              <span class="podium-item__rank">3위</span>
-              <span class="podium-item__name">카드수집가</span>
-              <span class="podium-item__count">287장</span>
-              <div class="podium-item__bar"></div>
-            </div>
-            </div>
+            <div class="rank-list" data-rank-list></div>
           </div>
-          <div class="rank-list" data-rank-list></div>
+          <div class="rank-me" data-rank-me></div>
         </div>
       </div>
 
@@ -339,9 +319,9 @@
               </div>
             </article>
             <div class="cert-flow__points cert-flow__points--3">
-              <div class="cert-flow__point"><span>방문</span><strong>+50p</strong></div>
-              <div class="cert-flow__point"><span>인증</span><strong>+15p</strong></div>
-              <div class="cert-flow__point"><span>미션 완료</span><strong>25%</strong></div>
+              <div class="cert-flow__point"><span>방문 인증</span><strong>+50 XP</strong></div>
+              <div class="cert-flow__point"><span>Score</span><strong>+50</strong></div>
+              <div class="cert-flow__point"><span>카드 획득</span><strong>+20 XP</strong></div>
             </div>
           </div>
           <footer class="cert-flow__footer">
@@ -362,7 +342,7 @@
             <span class="cert-flow__hero-icon cert-flow__hero-icon--photo">
               <iconify-icon icon="mingcute:pic-2-line" width="52"></iconify-icon>
             </span>
-            <div class="cert-flow__reward-pill">사진 인증 <strong>+20p</strong></div>
+            <div class="cert-flow__reward-pill">사진 인증 <strong>+10 XP</strong></div>
           </div>
           <footer class="cert-flow__footer cert-flow__footer--stack">
             <button class="cert-flow__btn cert-flow__btn--primary is-pressable" type="button" data-go="certifyPhotoSource" data-cert-reset-photos>사진 인증하기</button>
@@ -463,8 +443,8 @@
               <span class="cert-flow__switch" aria-hidden="true"></span>
             </label>
             <div class="cert-flow__points cert-flow__points--2">
-              <div class="cert-flow__point"><span>방문</span><strong>+50p</strong></div>
-              <div class="cert-flow__point"><span>후기 작성</span><strong>+15p</strong></div>
+              <div class="cert-flow__point"><span>여행 기록</span><strong>+20 XP</strong></div>
+              <div class="cert-flow__point"><span>Score</span><strong>+5</strong></div>
             </div>
           </div>
           <footer class="cert-flow__footer cert-flow__footer--stack">
@@ -499,8 +479,8 @@
               <span class="cert-flow__switch" aria-hidden="true"></span>
             </label>
             <div class="cert-flow__points cert-flow__points--2">
-              <div class="cert-flow__point"><span>방문</span><strong>+50p</strong></div>
-              <div class="cert-flow__point"><span>후기 작성</span><strong>+15p</strong></div>
+              <div class="cert-flow__point"><span>여행 기록</span><strong>+20 XP</strong></div>
+              <div class="cert-flow__point"><span>Score</span><strong>+5</strong></div>
             </div>
           </div>
           <footer class="cert-flow__footer cert-flow__footer--stack">
@@ -520,13 +500,12 @@
           <div class="cert-flow__body cert-flow__body--center">
             <p class="cert-flow__lead cert-flow__lead--success">인증을 완료했습니다.</p>
             <ul class="cert-flow__summary">
-              <li><span>방문</span><strong>+50p</strong></li>
-              <li><span>인증</span><strong>+15p</strong></li>
-              <li><span>미션</span><strong>+50p</strong></li>
-              <li><span>후기 작성</span><strong>+15p</strong></li>
-              <li><span>사진 인증</span><strong>+20p</strong></li>
+              <li><span>랜드마크 방문</span><strong>+50 XP · +50 Score</strong></li>
+              <li><span>카드 획득</span><strong>+20 XP · +20 Score</strong></li>
+              <li><span>여행 기록</span><strong>+20 XP · +5 Score</strong></li>
+              <li><span>이미지 포함</span><strong>+10 XP · +5 Score</strong></li>
             </ul>
-            <p class="cert-flow__total">총 <strong>+150p</strong></p>
+            <p class="cert-flow__total">총 <strong>+100 XP · +80 Score</strong></p>
           </div>
           <footer class="cert-flow__footer">
             <button class="cert-flow__btn cert-flow__btn--primary is-pressable" type="button" data-action="certify-finish">확인</button>
@@ -551,7 +530,7 @@
             <div class="cert-history__card">
               <div class="cert-history__head">
                 <iconify-icon class="cert-history__icon" icon="mingcute:location-fill" width="22"></iconify-icon>
-                <h1 class="cert-history__title">나의 여행 기록</h1>
+                <h1 class="cert-history__title">인증 내역</h1>
               </div>
               <div class="cert-timeline" data-cert-timeline></div>
             </div>
@@ -559,53 +538,427 @@
         </div>
       </div>
 
-      <!-- MY-01 -->
+      <!-- MY-01 · 마이페이지 -->
       <div class="screen-panel" data-screen="settings">
         <div class="my-screen">
-          <div class="my-profile tab-header">
-            <div class="status-bar status-bar--dark">
-              <span>9:41</span>
-              <span class="status-icons">
-                <iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon>
-                <iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon>
-              </span>
+          <div class="screen-scroll my-scroll" data-mypage-root></div>
+        </div>
+      </div>
+
+      <!-- MY-RECORDS · 나의 여행 기록 전체 -->
+      <div class="screen-panel" data-screen="myRecords">
+        <div class="subpage subpage--sticky-footer" data-my-records-root>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">나의 여행 기록</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll subpage__scroll--footer-pad">
+            <div class="my-travel-card my-travel-card--full">
+              <div class="my-travel-card__inner-head">
+                <iconify-icon class="my-travel-card__icon" icon="mingcute:location-fill" width="22"></iconify-icon>
+                <h3>나의 여행 기록</h3>
+              </div>
+              <div class="cert-timeline cert-timeline--my" data-my-records-timeline></div>
             </div>
-            <button class="my-profile__edit is-pressable" type="button" data-nickname-edit aria-label="닉네임 변경">
-              <iconify-icon icon="mingcute:edit-line" width="20"></iconify-icon>
-            </button>
-            <div class="my-profile__row">
-              <img class="my-profile__avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=144&h=144&fit=crop" alt="">
-              <div>
-                <p class="my-profile__name">탐험러</p>
-                <span class="my-profile__level"><iconify-icon icon="mingcute:star-fill"></iconify-icon> Lv.3 수집가</span>
+          </div>
+          <footer class="subpage__footer">
+            <button class="btn-primary is-pressable" type="button" data-go="recordWrite">작성하기</button>
+          </footer>
+        </div>
+      </div>
+
+      <!-- MY-PROFILE-EDIT · 프로필 편집 -->
+      <div class="screen-panel" data-screen="profileEdit">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">프로필 편집</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <div class="profile-edit">
+              <div class="profile-edit__avatar-wrap">
+                <span class="profile-edit__avatar" data-profile-avatar>성</span>
+                <button class="profile-edit__avatar-btn is-pressable" type="button" data-action="change-avatar">
+                  <iconify-icon icon="mingcute:camera-2-line" width="18"></iconify-icon>
+                  사진 변경
+                </button>
+              </div>
+              <div class="input-field">
+                <label>닉네임</label>
+                <input type="text" data-profile-nickname value="여행하는성훈" maxlength="12">
+                <span class="input-field__hint">2~12자 · 한글·영문·숫자</span>
+              </div>
+              <button class="btn-primary is-pressable" type="button" data-action="save-profile">저장하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY-02 · 지역 정복 현황 -->
+      <div class="screen-panel" data-screen="myRegions">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">지역 정복 현황</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <p class="subpage__lead">방문 인증으로 지역별 랜드마크를 정복해보세요.</p>
+            <div class="conquer-list" data-my-regions></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY-03 · 카드 도감 -->
+      <div class="screen-panel" data-screen="myCards">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">카드 도감</h2>
+            <span class="subpage__meta" data-my-cards-count></span>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <div class="card-accordion-list" data-my-cards></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY-04 · 배지 컬렉션 -->
+      <div class="screen-panel" data-screen="myBadges">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">배지 컬렉션</h2>
+            <span class="subpage__meta" data-my-badges-count></span>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <div class="badge-grid" data-my-badges></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY-05 · 알림 설정 -->
+      <div class="screen-panel" data-screen="settingsNotify">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">알림 설정</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <div class="toggle-list" data-settings-notify></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY-06 · 도움말 / 문의 -->
+      <div class="screen-panel" data-screen="settingsHelp">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">도움말 / 문의</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <p class="subpage__lead">자주 묻는 질문</p>
+            <div class="faq-list" data-settings-help></div>
+            <button class="cert-flow__btn cert-flow__btn--primary is-pressable subpage__cta" type="button" data-action="contact">1:1 문의하기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY-07 · 앱 설정 -->
+      <div class="screen-panel" data-screen="settingsApp">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">앱 설정</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <div class="setting-list" data-settings-app></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUTH-01 · 로그인 -->
+      <div class="screen-panel" data-screen="authLogin">
+        <div class="auth-screen">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <div class="auth-screen__body">
+            <div class="auth-screen__brand">
+              <span class="auth-screen__logo"><iconify-icon icon="mingcute:map-2-fill" width="40"></iconify-icon></span>
+              <h1>트립로그</h1>
+              <p>여행 지도를 채우고, 랜드마크를 수집하세요</p>
+            </div>
+            <div class="auth-screen__actions">
+              <button class="btn-primary is-pressable" type="button" data-go="authTerms">카카오로 시작하기</button>
+              <button class="btn-outline is-pressable" type="button" data-go="authTerms">Apple로 시작하기</button>
+              <button class="btn-soft is-pressable" type="button" data-go="map">둘러보기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUTH-02 · 약관 동의 -->
+      <div class="screen-panel" data-screen="authTerms">
+        <div class="auth-screen">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">서비스 이용 동의</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <label class="auth-check auth-check--all">
+              <input type="checkbox" checked>
+              <span>전체 동의</span>
+            </label>
+            <div class="auth-check-list">
+              <label class="auth-check"><input type="checkbox" checked><span>서비스 이용약관 (필수)</span><iconify-icon icon="mingcute:right-line" width="16"></iconify-icon></label>
+              <label class="auth-check"><input type="checkbox" checked><span>개인정보 수집·이용 (필수)</span><iconify-icon icon="mingcute:right-line" width="16"></iconify-icon></label>
+              <label class="auth-check"><input type="checkbox"><span>위치기반 서비스 (선택)</span><iconify-icon icon="mingcute:right-line" width="16"></iconify-icon></label>
+              <label class="auth-check"><input type="checkbox"><span>마케팅 정보 수신 (선택)</span><iconify-icon icon="mingcute:right-line" width="16"></iconify-icon></label>
+            </div>
+            <button class="btn-primary is-pressable auth-screen__cta" type="button" data-go="authNickname">동의하고 계속</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUTH-03 · 닉네임 설정 -->
+      <div class="screen-panel" data-screen="authNickname">
+        <div class="auth-screen">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">닉네임 설정</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <p class="subpage__lead">2~12자, 한글·영문·숫자만 사용할 수 있어요.</p>
+            <div class="input-field">
+              <input type="text" value="여행하는성훈" maxlength="12" placeholder="닉네임 입력">
+              <span class="input-field__hint">6/12 · 사용 가능한 닉네임이에요</span>
+            </div>
+            <div class="info-card">
+              <p>회원가입 보상 <strong>+30 XP</strong>를 받았어요.</p>
+            </div>
+            <button class="btn-primary is-pressable auth-screen__cta" type="button" data-action="auth-complete">시작하기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY-01 · 활동 히스토리 -->
+      <div class="screen-panel" data-screen="activityHistory">
+        <div class="subpage" data-activity-history-root>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">활동 히스토리</h2>
+          </header>
+          <div class="filter-chips">
+            <button class="chip active" type="button" data-activity-filter="all">전체</button>
+            <button class="chip" type="button" data-activity-filter="visit">방문</button>
+            <button class="chip" type="button" data-activity-filter="badge">뱃지</button>
+            <button class="chip" type="button" data-activity-filter="level">레벨</button>
+          </div>
+          <div class="screen-scroll subpage__scroll">
+            <div data-activity-list></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECORD-WRITE · 여행 기록 작성 -->
+      <div class="screen-panel" data-screen="recordWrite">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">여행 기록 작성</h2>
+            <button class="subpage__action is-pressable" type="button" data-go="recordDetail">저장</button>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <div class="input-field"><label>제목</label><input type="text" placeholder="제목을 입력하세요" value="국립중앙과학관 방문"></div>
+            <div class="input-field"><label>방문 장소</label><input type="text" value="국립중앙과학관" readonly></div>
+            <div class="input-field"><label>방문 지역</label><input type="text" value="대전 유성구" readonly></div>
+            <div class="input-field"><label>방문 날짜</label><input type="text" value="2026.06.22"></div>
+            <div class="input-field input-field--area"><label>내용</label><textarea rows="4" placeholder="여행 후기를 작성해 주세요">과학관 체험이 정말 재미있었어요.</textarea></div>
+            <div class="photo-upload-grid">
+              <button class="photo-upload-slot is-pressable" type="button"><iconify-icon icon="mingcute:add-line" width="24"></iconify-icon></button>
+            </div>
+            <label class="cert-flow__toggle cert-flow__toggle--on"><span>공개</span><span class="cert-flow__switch"></span></label>
+            <p class="input-field__hint">공개 시 피드에 노출되며 +20 XP · +5 Score를 받아요.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECORD-DETAIL · 여행 기록 상세 -->
+      <div class="screen-panel" data-screen="recordDetail">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">여행 기록</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll record-detail__body">
+            <h2 class="record-detail__title">국립중앙과학관 방문</h2>
+            <p class="record-detail__meta">대전 유성구 · 2026.06.22 · 공개</p>
+            <div class="record-detail__photos">
+              <img class="record-detail__photo" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=240&h=240&fit=crop" alt="방문 사진 1">
+              <img class="record-detail__photo" src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=240&h=240&fit=crop" alt="방문 사진 2">
+              <img class="record-detail__photo" src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=240&h=240&fit=crop" alt="방문 사진 3">
+            </div>
+            <p class="record-detail__text">과학관 체험이 정말 재미있었어요. 아이들과 함께 가기 좋고, 전시가 다양해요.</p>
+            <div class="record-detail__tags"><span class="chip chip--soft">#대전</span><span class="chip chip--soft">#과학관</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RANK-GUIDE · 랭크 구간 안내 -->
+      <div class="screen-panel" data-screen="rankGuide">
+        <div class="subpage" data-rank-guide-root>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">랭크 안내</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <div class="rank-guide-summary">
+              <span class="rank-guide-summary__label">내 누적 Score</span>
+              <strong class="rank-guide-summary__score" data-rank-guide-score>1,840</strong>
+              <p class="rank-guide-summary__hint" data-rank-guide-hint></p>
+            </div>
+            <p class="subpage__lead">랭크는 누적 Score로 결정되며, 하락하지 않아요.</p>
+            <div class="rank-guide-list" data-rank-guide-list></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MISSION-01 · 주간 미션 -->
+      <div class="screen-panel" data-screen="weeklyMission">
+        <div class="subpage" data-mission-root>
+          <div class="home-hero tab-header">
+            <div class="status-bar status-bar--dark"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+            <header class="subpage__top subpage__top--hero">
+              <button class="btn-back btn-back--light" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+              <h2 class="subpage__title">주간 미션</h2>
+            </header>
+            <div class="home-overall">
+              <span class="home-overall__label">이번 주 진행률</span>
+              <div class="progress-bar progress-bar--thick"><div class="progress-bar__fill" data-mission-progress style="width:50%"></div></div>
+              <div class="home-overall__bottom">
+                <p class="home-overall__count" data-mission-count>2/4</p>
+                <span class="home-overall__pct">완료 시 +80 XP · +50 Score</span>
               </div>
             </div>
           </div>
-          <div class="my-stats">
-            <div class="my-stat-card">
-              <p class="my-stat-card__value">7</p>
-              <p class="my-stat-card__label">수집 카드</p>
-            </div>
-            <div class="my-stat-card">
-              <p class="my-stat-card__value">47</p>
-              <p class="my-stat-card__label">전국 순위</p>
-            </div>
-            <div class="my-stat-card">
-              <p class="my-stat-card__value">3</p>
-              <p class="my-stat-card__label">방문 지역</p>
+          <div class="screen-scroll subpage__scroll" data-mission-list></div>
+        </div>
+      </div>
+
+      <!-- TITLE-01 · 대표 칭호 -->
+      <div class="screen-panel" data-screen="titleSelect">
+        <div class="subpage" data-title-select-root>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">대표 칭호 설정</h2>
+          </header>
+          <p class="subpage__lead">획득한 칭호 중 하나를 프로필에 표시해요. (Lv.20 해금)</p>
+          <div class="screen-scroll subpage__scroll" data-title-list></div>
+        </div>
+      </div>
+
+      <!-- REP-BADGE · 대표 뱃지 -->
+      <div class="screen-panel" data-screen="repBadge">
+        <div class="subpage" data-rep-badge-root>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">대표 뱃지 설정</h2>
+          </header>
+          <p class="subpage__lead">최대 5개까지 대표 뱃지로 설정할 수 있어요. (Lv.5 해금)</p>
+          <div class="screen-scroll subpage__scroll" data-rep-badge-list></div>
+        </div>
+      </div>
+
+      <!-- REP-CARD · 대표 카드 -->
+      <div class="screen-panel" data-screen="repCard">
+        <div class="subpage" data-rep-card-root>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">대표 랜드마크 카드</h2>
+          </header>
+          <p class="subpage__lead">프로필에 표시할 대표 카드를 선택하세요. (Lv.10 해금)</p>
+          <div class="screen-scroll subpage__scroll rep-card-grid" data-rep-card-list></div>
+        </div>
+      </div>
+
+      <!-- FEED-01 · 피드 -->
+      <div class="screen-panel" data-screen="feed">
+        <div class="subpage" data-feed-root>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top subpage__top--plain">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">피드</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll" data-feed-list></div>
+        </div>
+      </div>
+
+      <!-- FEED-DETAIL · 피드 상세 -->
+      <div class="screen-panel" data-screen="feedDetail">
+        <div class="subpage">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+          <header class="subpage__top">
+            <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+            <h2 class="subpage__title">여행 기록</h2>
+          </header>
+          <div class="screen-scroll subpage__scroll">
+            <article class="feed-detail">
+              <header class="feed-card__head">
+                <span class="feed-card__avatar">대</span>
+                <div><strong>대전여행자</strong><em>2시간 전</em></div>
+              </header>
+              <img class="feed-card__img" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=280&fit=crop" alt="">
+              <p class="feed-detail__place">한밭수목원 · 대전 서구</p>
+              <p class="feed-detail__text">봄꽃이 만개한 수목원 산책이었어요. 사진 찍기 좋았어요.</p>
+              <div class="feed-detail__actions">
+                <button class="btn-soft is-pressable" type="button"><iconify-icon icon="mingcute:thumb-up-2-line" width="18"></iconify-icon> 좋아요 12</button>
+                <button class="btn-ghost is-pressable" type="button"><iconify-icon icon="mingcute:comment-line" width="18"></iconify-icon> 댓글 3</button>
+              </div>
+              <div class="comment-list">
+                <div class="comment-item"><strong>triplog123</strong><span>너무 예뻐요!</span></div>
+                <div class="comment-item"><strong>여행하는민서</strong><span>다음에 같이 가요</span></div>
+              </div>
+              <div class="comment-input"><input type="text" placeholder="댓글을 입력하세요 (+5 XP)"></div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEX-02 · 지역 도감 상세 (대전) -->
+      <div class="screen-panel" data-screen="dexDistrict">
+        <div class="subpage" data-dex-district-root>
+          <div class="home-hero tab-header">
+            <div class="status-bar status-bar--dark"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+            <header class="subpage__top subpage__top--hero">
+              <button class="btn-back btn-back--light" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
+              <h2 class="subpage__title">대전광역시 도감</h2>
+            </header>
+            <div class="home-overall">
+              <span class="home-overall__label">도감 진행률</span>
+              <div class="progress-bar progress-bar--thick"><div class="progress-bar__fill" style="width:52%"></div></div>
+              <div class="home-overall__bottom">
+                <p class="home-overall__count">18/32</p>
+                <span class="home-overall__pct">카드 · 뱃지 3개</span>
+              </div>
             </div>
           </div>
-          <div class="my-menu screen-scroll">
-            <p class="my-menu__title">계정</p>
-            <div class="my-menu__list">
-              <button class="my-menu__item is-pressable" type="button" data-go="certHistory"><iconify-icon icon="mingcute:history-line"></iconify-icon><span>인증 내역</span><iconify-icon class="chevron" icon="mingcute:right-line"></iconify-icon></button>
-            </div>
-            <p class="my-menu__title">앱 설정</p>
-            <div class="my-menu__list">
-              <button class="my-menu__item is-pressable" type="button"><iconify-icon icon="mingcute:notification-line"></iconify-icon><span>알림 설정</span><iconify-icon class="chevron" icon="mingcute:right-line"></iconify-icon></button>
-              <button class="my-menu__item is-pressable" type="button"><iconify-icon icon="mingcute:announcement-line"></iconify-icon><span>앱 공지</span><iconify-icon class="chevron" icon="mingcute:right-line"></iconify-icon></button>
-            </div>
-          </div>
+          <div class="screen-scroll subpage__scroll" data-dex-district-list></div>
         </div>
       </div>
 
@@ -633,6 +986,9 @@
 <script src="js/cert-history.js"></script>
 <script src="js/certify.js"></script>
 <script src="js/certify-photos.js"></script>
+<script src="js/mypage.js"></script>
+<script src="js/activity-history.js"></script>
+<script src="js/extra-screens.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

@@ -101,7 +101,7 @@
     const inner = `${img}<p class="region-collect-card__name">${lm.name}</p><p class="region-collect-card__addr">${lm.addr}</p>`;
 
     if (interactive && lm.visited) {
-      return `<button class="${cls} is-pressable" data-go="detail" type="button" style="border:none;padding:0;cursor:pointer;text-align:left">${inner}</button>`;
+      return `<button class="${cls} region-collect-card--button is-pressable" data-go="detail" type="button">${inner}</button>`;
     }
     return `<div class="${cls}">${inner}</div>`;
   }

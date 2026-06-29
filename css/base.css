@@ -358,3 +358,69 @@ img {
 .my-menu__item.is-pressable:active {
   background: var(--surface);
 }
+
+/* ── DESIGN.md / Triple global overrides ── */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "system-ui", "Segoe UI", "Pretendard", Helvetica, Arial, sans-serif;
+  background: #DDE4EC;
+}
+
+.phone {
+  background: var(--white);
+  border-color: var(--border-strong);
+}
+
+.screen-body {
+  background: var(--white);
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--primary-soft);
+}
+
+.progress-bar__fill {
+  background: var(--primary);
+}
+
+.fab {
+  border: 2px solid var(--white);
+  border-radius: var(--radius-full);
+  background: var(--primary);
+}
+
+.fab::after {
+  content: none;
+}
+
+.bottom-nav {
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  background: var(--white);
+  border-color: var(--border);
+}
+
+.nav-bubble {
+  padding: 8px 12px;
+}
+
+.nav-item.active .nav-bubble {
+  background: var(--primary-soft);
+  border-color: transparent;
+}
+
+.nav-item.active .nav-label {
+  visibility: visible;
+}
+
+.nav-certify-btn {
+  border-color: var(--white);
+  background: var(--primary);
+}
+
+.toast {
+  background: var(--text);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}

@@ -46,7 +46,7 @@
       : '';
     const tag = interactive ? 'button' : 'div';
     const attrs = interactive
-      ? `class="region-row is-pressable"${explore} type="button" style="width:100%;text-align:left;cursor:pointer"`
+      ? `class="region-row region-row--button is-pressable"${explore} type="button"`
       : 'class="region-row"';
 
     const thumbCount = region.collected > 0 ? Math.min(2, region.collected) : 0;

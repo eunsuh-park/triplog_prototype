@@ -1,25 +1,26 @@
 :root {
-  --primary: #3A8D84;
-  --primary-dark: #2E7269;
-  --primary-light: #4BA399;
-  --primary-soft: #E8F4F2;
-  --accent-mint: #A5D6A7;
-  --accent-mint-soft: #E8F5E9;
+  --primary: #368FFF;
+  --primary-dark: #1A85E8;
+  --primary-light: #1AADF6;
+  --primary-soft: #F1F7FF;
+  --accent-mint: #0ECEDB;
+  --accent-mint-soft: rgba(54, 143, 255, 0.07);
   --accent-gold: #E8B84A;
+  --highlight-teal: #0ECEDB;
   --accent-orange: #FF9600;
-  --accent-blue: #4A90D9;
+  --accent-blue: #368FFF;
   --accent-brown: #8B6914;
-  --surface: #F5F7F6;
-  --surface-dim: #ECEEED;
+  --surface: #F5F6F7;
+  --surface-dim: #EEF0F2;
   --white: #ffffff;
-  --text: #1F2937;
-  --text-secondary: #6B7280;
-  --text-muted: #9CA3AF;
-  --border: #E8ECEB;
-  --border-strong: #D1D5DB;
-  --map-gray: #E0E4E3;
-  --map-land: #C5DDD6;
-  --map-land-active: #3A8D84;
+  --text: #1B1D1F;
+  --text-secondary: #7E848A;
+  --text-muted: #ADB1B5;
+  --border: #E8EAEC;
+  --border-strong: #D5D8DB;
+  --map-gray: #E8EAEC;
+  --map-land: #F1F7FF;
+  --map-land-active: #368FFF;
 
   /* Typography */
   --text-xs: 12px;
@@ -57,9 +58,9 @@
   --radius-5xl: 36px;
   --radius-full: 999px;
 
-  --nav-pill-bg: #EEF0EF;
-  --nav-active: #3A8D84;
-  --nav-inactive: #A8B0AD;
+  --nav-pill-bg: #ffffff;
+  --nav-active: #368FFF;
+  --nav-inactive: #7E848A;
   --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --dur-fast: 0.15s;
