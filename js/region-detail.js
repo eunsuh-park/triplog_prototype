@@ -78,7 +78,7 @@
         (item) =>
           `<span class="region-detail__fact"><iconify-icon icon="${item.icon}" width="14"></iconify-icon>${item.label}</span>`
       )
-      .join('');
+      .join('<span class="region-detail__fact-sep" aria-hidden="true">|</span>');
   }
 
   function getDetail(region) {
