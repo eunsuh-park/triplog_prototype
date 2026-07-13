@@ -3257,8 +3257,8 @@
   border-radius: 50%;
 }
 
-.region-collect-card {
-  border-color: var(--border);
+.region-collect-card--button {
+  border: none;
 }
 
 .conquer-row--done {
@@ -3311,7 +3311,7 @@
 }
 
 .region-collect-card--button {
-  border: 1px solid var(--border);
+  border: none;
   padding: 0;
 }
 
