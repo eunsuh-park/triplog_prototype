@@ -4482,10 +4482,6 @@
 /* ── 정책 기반 추가 화면 ── */
 
 .my-profile-card__scores {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
   margin-top: var(--space-md);
   padding: 10px 14px;
   border-radius: var(--radius-md);
@@ -4502,6 +4498,13 @@
   justify-content: space-between;
   gap: var(--space-md);
   width: 100%;
+}
+
+.my-profile-card__scores-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .my-profile-card__scores-label {
