@@ -58,7 +58,6 @@
 
     return `
       <${tag} ${attrs}>
-        <iconify-icon class="region-row__star" icon="mingcute:star-fill"></iconify-icon>
         <div class="region-row__info">
           <div class="region-row__name">${region.name}</div>
           <div class="region-row__bar progress-bar"><div class="progress-bar__fill" style="width:${pct}%"></div></div>

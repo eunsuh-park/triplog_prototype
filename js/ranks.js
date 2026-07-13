@@ -12,6 +12,17 @@
     silver: { label: 'Silver', icon: 'mingcute:trophy-line' },
   };
 
+  const TIER_ORDER = ['grandmaster', 'master', 'diamond', 'platinum', 'gold', 'silver'];
+
+  const TIER_RANGES = {
+    grandmaster: '12,000점 이상',
+    master: '8,000점 이상',
+    diamond: '5,000점 이상',
+    platinum: '3,000점 이상',
+    gold: '1,500점 이상',
+    silver: '500점 이상',
+  };
+
   // 전체 랭킹 / 월간 랭킹 데이터셋 (프로토타입용)
   const DATASETS = {
     all: {
@@ -26,9 +37,23 @@
         { rank: 6, name: '걷는여행자', initial: '걷', level: 6, title: '로컬 여행자', tier: 'gold', points: 10200 },
         { rank: 7, name: '맛집헌터', initial: '맛', level: 6, title: '로컬 여행자', tier: 'silver', points: 9600 },
         { rank: 8, name: '기록하는하루', initial: '기', level: 5, title: '주말 여행자', tier: 'silver', points: 9100 },
+        { rank: 9, name: '산책하는민수', initial: '산', level: 5, title: '주말 여행자', tier: 'silver', points: 8950 },
+        { rank: 10, name: '카페투어러', initial: '카', level: 5, title: '로컬 여행자', tier: 'silver', points: 8780 },
+        { rank: 11, name: '역사탐방가', initial: '역', level: 4, title: '주말 여행자', tier: 'silver', points: 8620 },
+        { rank: 12, name: '캠핑좋아', initial: '캠', level: 6, title: '로컬 여행자', tier: 'gold', points: 9480 },
+        { rank: 13, name: '드라이브러버', initial: '드', level: 5, title: '주말 여행자', tier: 'gold', points: 9320 },
+        { rank: 14, name: '해변러너', initial: '해', level: 4, title: '주말 여행자', tier: 'gold', points: 9150 },
+        { rank: 15, name: '골목탐험가', initial: '골', level: 4, title: '로컬 여행자', tier: 'gold', points: 8990 },
+        { rank: 16, name: '맵제작자', initial: '맵', level: 3, title: '주말 여행자', tier: 'silver', points: 8520 },
+        { rank: 17, name: '버스여행자', initial: '버', level: 3, title: '주말 여행자', tier: 'silver', points: 8380 },
+        { rank: 18, name: '전철타는이', initial: '전', level: 3, title: '주말 여행자', tier: 'silver', points: 8240 },
+        { rank: 19, name: '유적지덕후', initial: '유', level: 5, title: '로컬 여행자', tier: 'platinum', points: 13800 },
+        { rank: 20, name: '야경수집가', initial: '야', level: 4, title: '도시 탐험가', tier: 'platinum', points: 13100 },
+        { rank: 21, name: '로컬맛집러', initial: '로', level: 4, title: '로컬 여행자', tier: 'gold', points: 8720 },
+        { rank: 22, name: '주말등산러', initial: '주', level: 3, title: '주말 여행자', tier: 'silver', points: 8480 },
         { ellipsis: true },
       ],
-      me: { rank: 23, name: '여행하는 성훈', initial: '성', title: '대전 탐험가', tier: 'gold', points: 8450 },
+      me: { rank: 23, name: '여행하는 성훈', initial: '성', level: 24, title: '대전 탐험가', tier: 'gold', points: 8450 },
     },
     monthly: {
       podium: [
@@ -43,9 +68,37 @@
         { rank: 7, name: '기록하는하루', initial: '기', level: 5, title: '주말 여행자', tier: 'silver', points: 2950 },
         { ellipsis: true },
       ],
-      me: { rank: 11, name: '여행하는 성훈', initial: '성', title: '대전 탐험가', tier: 'gold', points: 2480 },
+      me: { rank: 11, name: '여행하는 성훈', initial: '성', level: 24, title: '대전 탐험가', tier: 'gold', points: 2480 },
     },
   };
+
+  const AVATAR_PALETTE = [
+    { bg: '#FF6B6B', fg: '#FFFFFF' },
+    { bg: '#4ECDC4', fg: '#083A36' },
+    { bg: '#5B8DEF', fg: '#FFFFFF' },
+    { bg: '#A66CFF', fg: '#FFFFFF' },
+    { bg: '#F7B731', fg: '#4A3200' },
+    { bg: '#26DE81', fg: '#064D2E' },
+    { bg: '#FD79A8', fg: '#FFFFFF' },
+    { bg: '#00CEC9', fg: '#004A48' },
+    { bg: '#E17055', fg: '#FFFFFF' },
+    { bg: '#6C5CE7', fg: '#FFFFFF' },
+    { bg: '#FDCB6E', fg: '#5C4200' },
+    { bg: '#74B9FF', fg: '#0A2E57' },
+  ];
+
+  function pickAvatarColor(seed) {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i += 1) {
+      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return AVATAR_PALETTE[Math.abs(hash) % AVATAR_PALETTE.length];
+  }
+
+  function renderAvatar(initial, name, className) {
+    const { bg, fg } = pickAvatarColor(name);
+    return `<span class="${className}" style="background:${bg};color:${fg}">${initial}</span>`;
+  }
 
   function fmtPoints(value) {
     return `${value.toLocaleString('ko-KR')}점`;
@@ -69,7 +122,7 @@
     return `
       <div class="podium-item podium-item--${item.rank}">
         ${crown}
-        <span class="podium-item__avatar tier-tint--${item.tier}">${item.initial}</span>
+        ${renderAvatar(item.initial, item.name, 'podium-item__avatar')}
         ${tierPill(item.tier)}
         <span class="podium-item__name">${item.name}</span>
         <span class="podium-item__points">${fmtPoints(item.points)}</span>
@@ -78,57 +131,95 @@
     `;
   }
 
-  function renderRow(row) {
+  function renderRow(row, options) {
+    const opts = options || {};
     if (row.ellipsis) {
       return '<div class="rank-row rank-row--ellipsis" aria-hidden="true">···</div>';
     }
     const sub = (row.level != null)
       ? `<p class="rank-row__sub">Lv.${row.level} ${row.title}</p>`
       : (row.title ? `<p class="rank-row__sub">${row.title}</p>` : '');
+    const tierHtml = opts.hideTier ? '' : tierPill(row.tier);
     return `
       <div class="rank-row">
         <span class="rank-row__num">${row.rank}</span>
-        <span class="rank-row__avatar tier-tint--${row.tier}">${row.initial}</span>
+        ${renderAvatar(row.initial, row.name, 'rank-row__avatar')}
         <div class="rank-row__info">
           <p class="rank-row__name">${row.name}</p>
           ${sub}
         </div>
         <div class="rank-row__meta">
-          ${tierPill(row.tier)}
+          ${tierHtml}
           <span class="rank-row__points">${fmtPoints(row.points)}</span>
         </div>
       </div>
     `;
   }
 
-  function renderMe(me) {
-    const sub = me.title ? `<p class="rank-row__sub">${me.title}</p>` : '';
+  function renderMe(me, options) {
+    const opts = options || {};
+    const sub = me.level != null
+      ? `<p class="rank-row__sub">Lv.${me.level}</p>`
+      : (me.title ? `<p class="rank-row__sub">${me.title}</p>` : '');
+    const tierHtml = opts.hideTier ? '' : tierPill(me.tier);
     return `
-      <div class="rank-row rank-row--me is-pressable">
+      <div class="rank-row rank-row--me is-pressable" role="button" tabindex="0" aria-label="내 순위 ${me.rank}위">
         <span class="rank-row__num rank-row__num--me">${me.rank}</span>
-        <span class="rank-row__avatar tier-tint--${me.tier}">${me.initial}</span>
+        ${renderAvatar(me.initial, me.name, 'rank-row__avatar')}
         <div class="rank-row__info">
           <p class="rank-row__name">${me.name}</p>
           ${sub}
         </div>
         <div class="rank-row__meta">
-          ${tierPill(me.tier)}
+          ${tierHtml}
           <span class="rank-row__points">${fmtPoints(me.points)}</span>
         </div>
       </div>
     `;
   }
 
+  function renderAllTierGroups(data) {
+    const grouped = {};
+    data.rows.filter((row) => !row.ellipsis).forEach((player) => {
+      if (!grouped[player.tier]) grouped[player.tier] = [];
+      grouped[player.tier].push(player);
+    });
+
+    return TIER_ORDER.filter((tier) => grouped[tier]?.length)
+      .map((tier) => {
+        const members = grouped[tier].sort((a, b) => b.points - a.points);
+        return `
+          <section class="rank-tier-group rank-tier-group--${tier}" aria-label="${TIERS[tier].label} 구간">
+            <header class="rank-tier-group__head">
+              ${tierPill(tier)}
+              <span class="rank-tier-group__range">${TIER_RANGES[tier] || ''}</span>
+            </header>
+            <div class="rank-tier-group__list">
+              ${members.map((row) => renderRow(row, { hideTier: true })).join('')}
+            </div>
+          </section>
+        `;
+      })
+      .join('');
+  }
+
   function renderRankView(scope) {
     const data = DATASETS[scope] || DATASETS.all;
+    const isAllTime = scope === 'all';
+
     document.querySelectorAll('[data-rank-podium]').forEach((el) => {
+      const card = el.closest('.rank-podium-card');
+      if (card) card.hidden = false;
       el.innerHTML = data.podium.map(renderPodiumItem).join('');
     });
+
     document.querySelectorAll('[data-rank-list]').forEach((el) => {
-      el.innerHTML = data.rows.map(renderRow).join('');
+      el.classList.toggle('rank-list--tiered', isAllTime);
+      el.innerHTML = isAllTime ? renderAllTierGroups(data) : data.rows.map((row) => renderRow(row)).join('');
     });
+
     document.querySelectorAll('[data-rank-me]').forEach((el) => {
-      el.innerHTML = renderMe(data.me);
+      el.innerHTML = renderMe(data.me, { hideTier: isAllTime });
     });
   }
 

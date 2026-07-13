@@ -156,7 +156,8 @@ img {
   transition: transform var(--dur-normal) var(--ease-out), opacity var(--dur-normal) ease;
 }
 
-.bottom-nav.hidden {
+.bottom-nav.hidden,
+.bottom-nav.is-scroll-hidden {
   transform: translateY(calc(100% + 24px));
   opacity: 0;
   pointer-events: none;

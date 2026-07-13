@@ -63,54 +63,45 @@
         <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
         <header class="detail-header">
           <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="20"></iconify-icon></button>
-          <h1>서울특별시</h1>
+          <h1>카드 상세</h1>
         </header>
-        <div class="landmark-carousel">
-          <div class="landmark-carousel__card" data-carousel-card>
-            <img data-carousel-img src="" alt="">
-            <div class="landmark-carousel__overlay">
-              <span class="grade-tag grade-tag--solid" data-carousel-grade-pill></span>
-              <div class="landmark-carousel__name" data-carousel-name></div>
-              <div class="landmark-carousel__addr" data-carousel-addr></div>
+        <div class="detail-scroll">
+          <div class="landmark-carousel">
+            <div class="landmark-carousel__track" data-carousel-track></div>
+            <p class="landmark-carousel__pager" data-carousel-pager>1 / 3</p>
+          </div>
+          <div class="detail-stats card-detail">
+            <div class="card-detail__head">
+              <div class="card-detail__rating" data-detail-stars aria-label="별점"></div>
+              <span class="grade-tag" data-detail-grade></span>
+              <span class="card-detail__collected"><iconify-icon icon="mingcute:check-circle-fill" width="16"></iconify-icon> 수집 완료</span>
             </div>
-          </div>
-          <p class="landmark-carousel__pager" data-carousel-pager>1 / 3</p>
-          <div class="carousel-actions">
-            <button class="carousel-action carousel-action--prev" data-carousel-prev>이전</button>
-            <button class="carousel-action carousel-action--next" data-carousel-next>다음</button>
-          </div>
-        </div>
-        <div class="detail-stats card-detail">
-          <div class="card-detail__head">
-            <div class="card-detail__rating" data-detail-stars aria-label="별점"></div>
-            <span class="grade-tag" data-detail-grade></span>
-            <span class="card-detail__collected"><iconify-icon icon="mingcute:check-circle-fill" width="16"></iconify-icon> 수집 완료</span>
-          </div>
-          <div class="card-detail__meta">
-            <span class="card-detail__meta-item"><iconify-icon icon="mingcute:location-line" width="15"></iconify-icon> <span data-detail-district></span></span>
-            <span class="card-detail__meta-item"><iconify-icon icon="mingcute:check-circle-line" width="15"></iconify-icon> <span data-detail-date></span> 획득</span>
-          </div>
-          <div class="card-detail__desc">
-            <iconify-icon icon="mingcute:sparkles-line" width="16"></iconify-icon>
-            <span data-detail-desc></span>
-          </div>
-          <p class="card-detail__tagline" data-detail-tagline></p>
-          <div class="card-detail__boxes">
-            <div class="card-detail__box">
-              <iconify-icon class="card-detail__box-icon" icon="mingcute:trophy-line" width="20"></iconify-icon>
-              <span class="card-detail__box-label">희귀도</span>
-              <span class="card-detail__box-value" data-detail-rarity></span>
+            <div class="card-detail__meta">
+              <span class="card-detail__meta-item"><iconify-icon icon="mingcute:location-line" width="15"></iconify-icon> <span data-detail-district></span></span>
+              <span class="card-detail__meta-item"><iconify-icon icon="mingcute:check-circle-line" width="15"></iconify-icon> <span data-detail-date></span> 획득</span>
             </div>
-            <div class="card-detail__box">
-              <iconify-icon class="card-detail__box-icon" icon="mingcute:location-line" width="20"></iconify-icon>
-              <span class="card-detail__box-label">위치</span>
-              <span class="card-detail__box-value" data-detail-loc></span>
+            <div class="card-detail__desc">
+              <iconify-icon icon="mingcute:sparkles-line" width="16"></iconify-icon>
+              <span data-detail-desc></span>
             </div>
-            <div class="card-detail__box">
-              <iconify-icon class="card-detail__box-icon" icon="mingcute:star-line" width="20"></iconify-icon>
-              <span class="card-detail__box-label">등급</span>
-              <span class="card-detail__box-value" data-detail-grade-en></span>
+            <div class="card-detail__boxes">
+              <div class="card-detail__box">
+                <iconify-icon class="card-detail__box-icon" icon="mingcute:trophy-line" width="20"></iconify-icon>
+                <span class="card-detail__box-label">희귀도</span>
+                <span class="card-detail__box-value" data-detail-rarity></span>
+              </div>
+              <div class="card-detail__box">
+                <iconify-icon class="card-detail__box-icon" icon="mingcute:location-line" width="20"></iconify-icon>
+                <span class="card-detail__box-label">위치</span>
+                <span class="card-detail__box-value" data-detail-loc></span>
+              </div>
+              <div class="card-detail__box">
+                <iconify-icon class="card-detail__box-icon" icon="mingcute:star-line" width="20"></iconify-icon>
+                <span class="card-detail__box-label">등급</span>
+                <span class="card-detail__box-value" data-detail-grade-en></span>
+              </div>
             </div>
+            <p class="card-detail__tagline" data-detail-tagline></p>
           </div>
         </div>
       </div>
@@ -169,25 +160,8 @@
           </div>
 
           <div class="region-detail__body region-detail__body--carousel" data-region-view-panel="carousel">
-            <div class="region-stack">
-              <div class="region-stack__layer region-stack__layer--back"></div>
-              <div class="region-stack__layer region-stack__layer--mid"></div>
-              <article class="region-stack__card">
-                <div class="region-stack__img-wrap">
-                  <img data-region-stack-img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=500&fit=crop" alt="">
-                  <span class="region-stack__chip">모두</span>
-                </div>
-                <div class="region-stack__info">
-                  <p class="region-stack__name" data-region-stack-name>해운대</p>
-                  <p class="region-stack__addr" data-region-stack-addr>부산광역시 해운대구 우동</p>
-                </div>
-              </article>
-            </div>
-            <p class="region-stack__pager" data-region-pager>2 / 4</p>
-            <div class="region-info-box">
-              <p class="region-info-box__date" data-region-date>2026년 3월 24일</p>
-              <p class="region-info-box__meta" data-region-meta>769.94km² | 약 334만 명 | 15개 구</p>
-            </div>
+            <div class="region-card-carousel" data-region-carousel></div>
+            <p class="region-card-carousel__pager" data-region-pager>1 / 4</p>
             <div class="region-detail__stats region-detail__stats--carousel">
               <div class="region-stat-card">
                 <span class="region-stat-card__icon"><iconify-icon icon="mingcute:aiming-line" width="18"></iconify-icon></span>
@@ -243,7 +217,7 @@
             </div>
             <div class="rank-list" data-rank-list></div>
           </div>
-          <div class="rank-me" data-rank-me></div>
+          <div class="rank-me" data-rank-me aria-label="내 순위"></div>
         </div>
       </div>
 

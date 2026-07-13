@@ -10,14 +10,8 @@
   const bottomNav = app.querySelector('.bottom-nav');
   const backButtons = app.querySelectorAll('[data-back]');
   const segments = app.querySelectorAll('.segment-control button');
-  const carouselPrev = app.querySelector('[data-carousel-prev]');
-  const carouselNext = app.querySelector('[data-carousel-next]');
   const carouselPager = app.querySelector('[data-carousel-pager]');
-  const carouselImg = app.querySelector('[data-carousel-img]');
-  const carouselName = app.querySelector('[data-carousel-name]');
-  const carouselAddr = app.querySelector('[data-carousel-addr]');
-  const carouselCard = app.querySelector('[data-carousel-card]');
-  const carouselGradePill = app.querySelector('[data-carousel-grade-pill]');
+  const carouselTrack = app.querySelector('[data-carousel-track]');
   const detailStars = app.querySelector('[data-detail-stars]');
   const detailGrade = app.querySelector('[data-detail-grade]');
   const detailDistrict = app.querySelector('[data-detail-district]');
@@ -119,6 +113,9 @@
   const screenStack = ['map'];
 
   const CERTIFY_SEARCH_DELAY_MS = 1400;
+  const HOME_SCREEN = 'map';
+  const SCROLL_NAV_HIDE_THRESHOLD = 10;
+  const scrollNavPositions = new WeakMap();
 
   const screenLabels = {
     map: '홈 · 전국 지도 · EXPLORE-01',
@@ -177,6 +174,53 @@
 
   window.showToast = showToast;
 
+  function setBottomNavScrollHidden(hidden) {
+    if (!bottomNav || bottomNav.classList.contains('hidden')) return;
+    bottomNav.classList.toggle('is-scroll-hidden', hidden);
+  }
+
+  function resetBottomNavScrollHide() {
+    setBottomNavScrollHidden(false);
+    const active = app.querySelector('.screen-panel.active');
+    if (!active) return;
+    active.querySelectorAll('.screen-scroll, .rank-scroll, .region-detail__body, .subpage__scroll, .certify-list').forEach((el) => {
+      scrollNavPositions.set(el, el.scrollTop);
+    });
+  }
+
+  function handleBottomNavScroll(e) {
+    const container = e.currentTarget;
+    const panel = container.closest('.screen-panel');
+    if (!panel?.classList.contains('active')) return;
+    if (panel.dataset.screen === HOME_SCREEN) return;
+    if (!bottomNav || bottomNav.classList.contains('hidden')) return;
+
+    const current = container.scrollTop;
+    const previous = scrollNavPositions.get(container) ?? current;
+    scrollNavPositions.set(container, current);
+
+    if (current <= 0) {
+      setBottomNavScrollHidden(false);
+      return;
+    }
+
+    const delta = current - previous;
+    if (delta > SCROLL_NAV_HIDE_THRESHOLD) {
+      setBottomNavScrollHidden(true);
+    } else if (delta < -SCROLL_NAV_HIDE_THRESHOLD) {
+      setBottomNavScrollHidden(false);
+    }
+  }
+
+  function initBottomNavScrollHide() {
+    const scrollSelector = '.screen-scroll, .rank-scroll, .region-detail__body, .subpage__scroll, .certify-list';
+    app.querySelectorAll(scrollSelector).forEach((el) => {
+      if (el.dataset.scrollNavBound) return;
+      el.dataset.scrollNavBound = '1';
+      el.addEventListener('scroll', handleBottomNavScroll, { passive: true });
+    });
+  }
+
   function animateProgressBars() {
     progressFills.forEach((bar) => {
       const target = bar.dataset.animateProgress;
@@ -220,7 +264,13 @@
     const isSubScreen = SUB_SCREENS.includes(id);
     const isTabScreen = TAB_SCREENS.includes(id);
 
-    if (bottomNav) bottomNav.classList.toggle('hidden', isSubScreen);
+    if (bottomNav) {
+      bottomNav.classList.toggle('hidden', isSubScreen);
+      if (id === HOME_SCREEN || isSubScreen) {
+        bottomNav.classList.remove('is-scroll-hidden');
+      }
+    }
+    resetBottomNavScrollHide();
 
     navItems.forEach((n) => {
       n.classList.toggle('active', isTabScreen && n.dataset.nav === id);
@@ -270,6 +320,10 @@
     if (push) screenStack.push(id);
 
     if (id === 'dex') animateProgressBars();
+    if (id === 'detail') {
+      updateCarousel();
+      requestAnimationFrame(() => scrollDetailCarouselTo(carouselIndex, 'auto'));
+    }
   }
 
   window.showScreen = showScreen;
@@ -308,8 +362,14 @@
 
   if (regionDetailRoot) {
     regionDetailRoot.addEventListener('click', (e) => {
-      if (e.target.closest('[data-go="detail"]')) {
+      const detailBtn = e.target.closest('[data-go="detail"]');
+      if (detailBtn) {
+        const idx = detailBtn.dataset.landmarkIndex;
+        if (idx !== undefined && idx !== '') {
+          carouselIndex = parseInt(idx, 10);
+        }
         showScreen('detail');
+        updateCarousel(carouselIndex);
         return;
       }
       const home = e.target.closest('[data-region-homepage]');
@@ -332,26 +392,90 @@
     showScreen('certifyReview');
   };
 
+  function buildDetailCarouselTrack() {
+    if (!carouselTrack) return;
+    carouselTrack.innerHTML = landmarks
+      .map((item, index) => {
+        const grade = GRADE_META[item.grade] || GRADE_META.C;
+        const gradeCls = `grade-tag--${item.grade || 'C'}`;
+        return `
+          <div class="landmark-carousel__slide" data-carousel-slide="${index}">
+            <div class="landmark-carousel__slide-inner">
+              <img src="${item.img}" alt="${item.name}">
+              <div class="landmark-carousel__overlay">
+                <span class="grade-tag grade-tag--solid ${gradeCls}">${grade.en}</span>
+                <div class="landmark-carousel__name">${item.name}</div>
+                <div class="landmark-carousel__addr">${item.addr}</div>
+              </div>
+            </div>
+          </div>`;
+      })
+      .join('');
+  }
+
+  function getDetailCarouselIndex() {
+    if (!carouselTrack) return 0;
+    const slides = carouselTrack.querySelectorAll('[data-carousel-slide]');
+    if (!slides.length) return 0;
+    const center = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+    let best = 0;
+    let bestDist = Infinity;
+    slides.forEach((slide, i) => {
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      const dist = Math.abs(center - slideCenter);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = i;
+      }
+    });
+    return best;
+  }
+
+  function scrollDetailCarouselTo(index, behavior = 'smooth') {
+    if (!carouselTrack) return;
+    const slide = carouselTrack.querySelector(`[data-carousel-slide="${index}"]`);
+    if (!slide) return;
+    const offset = slide.offsetLeft - (carouselTrack.clientWidth - slide.offsetWidth) / 2;
+    carouselTrack.scrollTo({ left: offset, behavior });
+  }
+
+  function initDetailCarousel() {
+    if (!carouselTrack || carouselTrack.dataset.carouselInit) return;
+    carouselTrack.dataset.carouselInit = '1';
+    let scrollTimer;
+    carouselTrack.addEventListener(
+      'scroll',
+      () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          const index = getDetailCarouselIndex();
+          if (index !== carouselIndex) {
+            carouselIndex = index;
+            updateCarousel();
+          }
+        }, 80);
+      },
+      { passive: true }
+    );
+  }
+
   function updateCarousel(direction) {
     const item = landmarks[carouselIndex];
-    if (carouselImg) {
-      carouselImg.style.opacity = '0';
-      carouselImg.style.transform = direction === 'next' ? 'translateX(12px)' : direction === 'prev' ? 'translateX(-12px)' : 'none';
-      setTimeout(() => {
-        carouselImg.src = item.img;
-        carouselImg.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-        carouselImg.style.opacity = '1';
-        carouselImg.style.transform = 'translateX(0)';
-      }, 120);
+    if (!item) return;
+
+    if (direction && carouselTrack) {
+      scrollDetailCarouselTo(carouselIndex, 'smooth');
     }
-    if (carouselName) carouselName.textContent = item.name;
-    if (carouselAddr) carouselAddr.textContent = item.addr;
+
     if (carouselPager) carouselPager.textContent = `${carouselIndex + 1} / ${landmarks.length}`;
-    if (carouselCard) {
-      carouselCard.classList.remove('shake');
-      void carouselCard.offsetWidth;
-      carouselCard.classList.add('shake');
+
+    const activeSlide = carouselTrack?.querySelector(`[data-carousel-slide="${carouselIndex}"]`);
+    if (activeSlide && direction) {
+      activeSlide.classList.remove('shake');
+      void activeSlide.offsetWidth;
+      activeSlide.classList.add('shake');
     }
+
     updateDetailStats(item);
   }
 
@@ -371,10 +495,6 @@
     if (detailGrade) {
       detailGrade.textContent = grade.ko;
       detailGrade.className = `grade-tag ${gradeCls}`;
-    }
-    if (carouselGradePill) {
-      carouselGradePill.textContent = grade.en;
-      carouselGradePill.className = `grade-tag grade-tag--solid ${gradeCls}`;
     }
     if (detailDistrict) detailDistrict.textContent = item.district || '';
     if (detailDate) detailDate.textContent = item.date || '';
@@ -516,38 +636,10 @@
     moreBtn.addEventListener('click', () => showToast('최근 방문 더보기'));
   }
 
-  if (carouselPrev) {
-    carouselPrev.addEventListener('click', () => {
-      carouselIndex = (carouselIndex - 1 + landmarks.length) % landmarks.length;
-      updateCarousel('prev');
-    });
-  }
-
-  if (carouselNext) {
-    carouselNext.addEventListener('click', () => {
-      carouselIndex = (carouselIndex + 1) % landmarks.length;
-      updateCarousel('next');
-    });
-  }
-
-  let touchStartX = 0;
-  const carouselWrap = app.querySelector('[data-carousel-card]');
-  if (carouselWrap) {
-    carouselWrap.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-    carouselWrap.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(dx) < 40) return;
-      if (dx < 0) {
-        carouselIndex = (carouselIndex + 1) % landmarks.length;
-        updateCarousel('next');
-      } else {
-        carouselIndex = (carouselIndex - 1 + landmarks.length) % landmarks.length;
-        updateCarousel('prev');
-      }
-    }, { passive: true });
-  }
+  buildDetailCarouselTrack();
+  initDetailCarousel();
+  updateCarousel();
+  requestAnimationFrame(() => scrollDetailCarouselTo(carouselIndex, 'auto'));
 
   const koreaMapEl = app.querySelector('[data-korea-map]');
   if (koreaMapEl && window.KoreaMapModule) {
@@ -565,6 +657,6 @@
     renderCertifyList(app.querySelector('[data-certify-root]'));
   }
 
-  updateCarousel();
+  initBottomNavScrollHide();
   showScreen('map', false);
 })();
