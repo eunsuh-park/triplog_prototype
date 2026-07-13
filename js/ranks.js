@@ -12,6 +12,17 @@
     silver: { label: 'Silver', icon: 'mingcute:trophy-line' },
   };
 
+  const TIER_ORDER = ['grandmaster', 'master', 'diamond', 'platinum', 'gold', 'silver'];
+
+  const TIER_RANGES = {
+    grandmaster: '12,000점 이상',
+    master: '8,000점 이상',
+    diamond: '5,000점 이상',
+    platinum: '3,000점 이상',
+    gold: '1,500점 이상',
+    silver: '500점 이상',
+  };
+
   // 전체 랭킹 / 월간 랭킹 데이터셋 (프로토타입용)
   const DATASETS = {
     all: {
@@ -106,13 +117,15 @@
     `;
   }
 
-  function renderRow(row) {
+  function renderRow(row, options) {
+    const opts = options || {};
     if (row.ellipsis) {
       return '<div class="rank-row rank-row--ellipsis" aria-hidden="true">···</div>';
     }
     const sub = (row.level != null)
       ? `<p class="rank-row__sub">Lv.${row.level} ${row.title}</p>`
       : (row.title ? `<p class="rank-row__sub">${row.title}</p>` : '');
+    const tierHtml = opts.hideTier ? '' : tierPill(row.tier);
     return `
       <div class="rank-row">
         <span class="rank-row__num">${row.rank}</span>
@@ -122,15 +135,17 @@
           ${sub}
         </div>
         <div class="rank-row__meta">
-          ${tierPill(row.tier)}
+          ${tierHtml}
           <span class="rank-row__points">${fmtPoints(row.points)}</span>
         </div>
       </div>
     `;
   }
 
-  function renderMe(me) {
+  function renderMe(me, options) {
+    const opts = options || {};
     const sub = me.title ? `<p class="rank-row__sub">${me.title}</p>` : '';
+    const tierHtml = opts.hideTier ? '' : tierPill(me.tier);
     return `
       <p class="rank-me__label">내 순위</p>
       <div class="rank-row rank-row--me is-pressable" role="button" tabindex="0" aria-label="내 순위 ${me.rank}위">
@@ -141,23 +156,59 @@
           ${sub}
         </div>
         <div class="rank-row__meta">
-          ${tierPill(me.tier)}
+          ${tierHtml}
           <span class="rank-row__points">${fmtPoints(me.points)}</span>
         </div>
       </div>
     `;
   }
 
+  function collectPlayers(data) {
+    return [...data.podium, ...data.rows.filter((row) => !row.ellipsis)];
+  }
+
+  function renderAllTierGroups(data) {
+    const grouped = {};
+    collectPlayers(data).forEach((player) => {
+      if (!grouped[player.tier]) grouped[player.tier] = [];
+      grouped[player.tier].push(player);
+    });
+
+    return TIER_ORDER.filter((tier) => grouped[tier]?.length)
+      .map((tier) => {
+        const members = grouped[tier].sort((a, b) => b.points - a.points);
+        return `
+          <section class="rank-tier-group rank-tier-group--${tier}" aria-label="${TIERS[tier].label} 구간">
+            <header class="rank-tier-group__head">
+              ${tierPill(tier)}
+              <span class="rank-tier-group__range">${TIER_RANGES[tier] || ''}</span>
+            </header>
+            <div class="rank-tier-group__list">
+              ${members.map((row) => renderRow(row, { hideTier: true })).join('')}
+            </div>
+          </section>
+        `;
+      })
+      .join('');
+  }
+
   function renderRankView(scope) {
     const data = DATASETS[scope] || DATASETS.all;
+    const isAllTime = scope === 'all';
+
     document.querySelectorAll('[data-rank-podium]').forEach((el) => {
-      el.innerHTML = data.podium.map(renderPodiumItem).join('');
+      const card = el.closest('.rank-podium-card');
+      if (card) card.hidden = isAllTime;
+      el.innerHTML = isAllTime ? '' : data.podium.map(renderPodiumItem).join('');
     });
+
     document.querySelectorAll('[data-rank-list]').forEach((el) => {
-      el.innerHTML = data.rows.map(renderRow).join('');
+      el.classList.toggle('rank-list--tiered', isAllTime);
+      el.innerHTML = isAllTime ? renderAllTierGroups(data) : data.rows.map((row) => renderRow(row)).join('');
     });
+
     document.querySelectorAll('[data-rank-me]').forEach((el) => {
-      el.innerHTML = renderMe(data.me);
+      el.innerHTML = renderMe(data.me, { hideTier: isAllTime });
     });
   }
 

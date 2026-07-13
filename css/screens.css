@@ -1631,6 +1631,42 @@
   gap: 10px;
 }
 
+.rank-list--tiered {
+  gap: 20px;
+}
+
+.rank-tier-group__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+
+.rank-tier-group__range {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.rank-tier-group__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rank-tier-group--grandmaster .rank-tier-group__head .tier-pill { background: #FBEFCF; color: #B8860B; }
+.rank-tier-group--master .rank-tier-group__head .tier-pill { background: #FFE8CC; color: #C05F00; }
+.rank-tier-group--diamond .rank-tier-group__head .tier-pill { background: #DCEBFB; color: var(--accent-blue); }
+.rank-tier-group--platinum .rank-tier-group__head .tier-pill { background: var(--primary-soft); color: var(--primary-dark); }
+.rank-tier-group--gold .rank-tier-group__head .tier-pill { background: #FBEFCF; color: #B8860B; }
+.rank-tier-group--silver .rank-tier-group__head .tier-pill { background: #EDF0F2; color: #6B7785; }
+
+.rank-podium-card[hidden] {
+  display: none;
+}
+
 .rank-row {
   display: flex;
   align-items: center;
