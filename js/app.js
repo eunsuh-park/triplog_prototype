@@ -417,26 +417,15 @@
     if (!carouselTrack) return 0;
     const slides = carouselTrack.querySelectorAll('[data-carousel-slide]');
     if (!slides.length) return 0;
-    const center = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
-    let best = 0;
-    let bestDist = Infinity;
-    slides.forEach((slide, i) => {
-      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-      const dist = Math.abs(center - slideCenter);
-      if (dist < bestDist) {
-        bestDist = dist;
-        best = i;
-      }
-    });
-    return best;
+    const index = Math.round(carouselTrack.scrollLeft / carouselTrack.clientWidth);
+    return Math.max(0, Math.min(index, slides.length - 1));
   }
 
   function scrollDetailCarouselTo(index, behavior = 'smooth') {
     if (!carouselTrack) return;
     const slide = carouselTrack.querySelector(`[data-carousel-slide="${index}"]`);
     if (!slide) return;
-    const offset = slide.offsetLeft - (carouselTrack.clientWidth - slide.offsetWidth) / 2;
-    carouselTrack.scrollTo({ left: offset, behavior });
+    carouselTrack.scrollTo({ left: slide.offsetLeft, behavior });
   }
 
   function initDetailCarousel() {
