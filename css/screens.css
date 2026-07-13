@@ -2148,26 +2148,6 @@
   color: var(--text-secondary);
 }
 
-/* 내 활동 / 설정 섹션 — 카드 스타일 없이 플랫 리스트 */
-.my-section--menu {
-  padding: 0;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-}
-
-.my-section--menu .my-section__title--plain {
-  padding: 0 2px;
-}
-
-.my-section--menu .my-menu__list {
-  margin-bottom: 0;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  overflow: visible;
-}
-
 /* ── 가로 스크롤 (뱃지 / 카드) ── */
 .badge-scroll,
 .card-scroll {
@@ -2756,12 +2736,22 @@
   background: var(--white);
 }
 
-/* 내 활동 / 설정 — 위 공통 카드 스타일보다 뒤에 두어 border·배경 제거 */
+/* 내 활동 / 설정 — 섹션만 플랫, 리스트는 공통 카드 스타일 유지 */
 .my-section.my-section--menu {
+  padding: 0;
   background: transparent;
   border: none;
   border-radius: 0;
   box-shadow: none;
+}
+
+.my-section.my-section--menu .my-section__title--plain {
+  padding: 0 2px;
+  margin-bottom: var(--space-md);
+}
+
+.my-section.my-section--menu .my-menu__list {
+  margin-bottom: 0;
 }
 
 .chip {
