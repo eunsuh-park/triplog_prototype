@@ -149,7 +149,6 @@
       : (me.title ? `<p class="rank-row__sub">${me.title}</p>` : '');
     const tierHtml = opts.hideTier ? '' : tierPill(me.tier);
     return `
-      <p class="rank-me__label">내 순위</p>
       <div class="rank-row rank-row--me is-pressable" role="button" tabindex="0" aria-label="내 순위 ${me.rank}위">
         <span class="rank-row__num rank-row__num--me">${me.rank}</span>
         ${renderAvatar(me.initial, me.name, 'rank-row__avatar')}
