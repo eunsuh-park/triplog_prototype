@@ -160,7 +160,7 @@
     const opts = options || {};
     const sub = me.level != null
       ? `<p class="rank-row__sub">Lv.${me.level}</p>`
-      : (me.title ? `<p class="rank-row__sub">${me.title}</p>` : '');
+      : '';
     const tierHtml = opts.hideTier ? '' : tierPill(me.tier);
     return `
       <div class="rank-row rank-row--me is-pressable" role="button" tabindex="0" aria-label="내 순위 ${me.rank}위">
