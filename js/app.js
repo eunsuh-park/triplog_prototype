@@ -11,11 +11,7 @@
   const backButtons = app.querySelectorAll('[data-back]');
   const segments = app.querySelectorAll('.segment-control button');
   const carouselPager = app.querySelector('[data-carousel-pager]');
-  const carouselImg = app.querySelector('[data-carousel-img]');
-  const carouselName = app.querySelector('[data-carousel-name]');
-  const carouselAddr = app.querySelector('[data-carousel-addr]');
-  const carouselCard = app.querySelector('[data-carousel-card]');
-  const carouselGradePill = app.querySelector('[data-carousel-grade-pill]');
+  const carouselTrack = app.querySelector('[data-carousel-track]');
   const detailStars = app.querySelector('[data-detail-stars]');
   const detailGrade = app.querySelector('[data-detail-grade]');
   const detailDistrict = app.querySelector('[data-detail-district]');
@@ -324,6 +320,10 @@
     if (push) screenStack.push(id);
 
     if (id === 'dex') animateProgressBars();
+    if (id === 'detail') {
+      updateCarousel();
+      requestAnimationFrame(() => scrollDetailCarouselTo(carouselIndex, 'auto'));
+    }
   }
 
   window.showScreen = showScreen;
@@ -362,8 +362,14 @@
 
   if (regionDetailRoot) {
     regionDetailRoot.addEventListener('click', (e) => {
-      if (e.target.closest('[data-go="detail"]')) {
+      const detailBtn = e.target.closest('[data-go="detail"]');
+      if (detailBtn) {
+        const idx = detailBtn.dataset.landmarkIndex;
+        if (idx !== undefined && idx !== '') {
+          carouselIndex = parseInt(idx, 10);
+        }
         showScreen('detail');
+        updateCarousel(carouselIndex);
         return;
       }
       const home = e.target.closest('[data-region-homepage]');
@@ -386,39 +392,90 @@
     showScreen('certifyReview');
   };
 
-  function setCarouselFlipped(flipped) {
-    if (!carouselCard) return;
-    carouselCard.classList.toggle('is-flipped', flipped);
-    const back = carouselCard.querySelector('.landmark-carousel__face--back');
-    if (back) back.setAttribute('aria-hidden', flipped ? 'false' : 'true');
+  function buildDetailCarouselTrack() {
+    if (!carouselTrack) return;
+    carouselTrack.innerHTML = landmarks
+      .map((item, index) => {
+        const grade = GRADE_META[item.grade] || GRADE_META.C;
+        const gradeCls = `grade-tag--${item.grade || 'C'}`;
+        return `
+          <div class="landmark-carousel__slide" data-carousel-slide="${index}">
+            <div class="landmark-carousel__slide-inner">
+              <img src="${item.img}" alt="${item.name}">
+              <div class="landmark-carousel__overlay">
+                <span class="grade-tag grade-tag--solid ${gradeCls}">${grade.en}</span>
+                <div class="landmark-carousel__name">${item.name}</div>
+                <div class="landmark-carousel__addr">${item.addr}</div>
+              </div>
+            </div>
+          </div>`;
+      })
+      .join('');
   }
 
-  function toggleCarouselFlip() {
-    if (!carouselCard) return;
-    setCarouselFlipped(!carouselCard.classList.contains('is-flipped'));
+  function getDetailCarouselIndex() {
+    if (!carouselTrack) return 0;
+    const slides = carouselTrack.querySelectorAll('[data-carousel-slide]');
+    if (!slides.length) return 0;
+    const center = carouselTrack.scrollLeft + carouselTrack.clientWidth / 2;
+    let best = 0;
+    let bestDist = Infinity;
+    slides.forEach((slide, i) => {
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      const dist = Math.abs(center - slideCenter);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = i;
+      }
+    });
+    return best;
+  }
+
+  function scrollDetailCarouselTo(index, behavior = 'smooth') {
+    if (!carouselTrack) return;
+    const slide = carouselTrack.querySelector(`[data-carousel-slide="${index}"]`);
+    if (!slide) return;
+    const offset = slide.offsetLeft - (carouselTrack.clientWidth - slide.offsetWidth) / 2;
+    carouselTrack.scrollTo({ left: offset, behavior });
+  }
+
+  function initDetailCarousel() {
+    if (!carouselTrack || carouselTrack.dataset.carouselInit) return;
+    carouselTrack.dataset.carouselInit = '1';
+    let scrollTimer;
+    carouselTrack.addEventListener(
+      'scroll',
+      () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          const index = getDetailCarouselIndex();
+          if (index !== carouselIndex) {
+            carouselIndex = index;
+            updateCarousel();
+          }
+        }, 80);
+      },
+      { passive: true }
+    );
   }
 
   function updateCarousel(direction) {
     const item = landmarks[carouselIndex];
-    setCarouselFlipped(false);
-    if (carouselImg) {
-      carouselImg.style.opacity = '0';
-      carouselImg.style.transform = direction === 'next' ? 'translateX(12px)' : direction === 'prev' ? 'translateX(-12px)' : 'none';
-      setTimeout(() => {
-        carouselImg.src = item.img;
-        carouselImg.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-        carouselImg.style.opacity = '1';
-        carouselImg.style.transform = 'translateX(0)';
-      }, 120);
+    if (!item) return;
+
+    if (direction && carouselTrack) {
+      scrollDetailCarouselTo(carouselIndex, 'smooth');
     }
-    if (carouselName) carouselName.textContent = item.name;
-    if (carouselAddr) carouselAddr.textContent = item.addr;
+
     if (carouselPager) carouselPager.textContent = `${carouselIndex + 1} / ${landmarks.length}`;
-    if (carouselCard) {
-      carouselCard.classList.remove('shake');
-      void carouselCard.offsetWidth;
-      carouselCard.classList.add('shake');
+
+    const activeSlide = carouselTrack?.querySelector(`[data-carousel-slide="${carouselIndex}"]`);
+    if (activeSlide && direction) {
+      activeSlide.classList.remove('shake');
+      void activeSlide.offsetWidth;
+      activeSlide.classList.add('shake');
     }
+
     updateDetailStats(item);
   }
 
@@ -432,16 +489,12 @@
       const max = 5;
       const rating = Math.max(0, Math.min(max, item.rating || 0));
       detailStars.innerHTML = Array.from({ length: max }, (_, i) =>
-        `<iconify-icon icon="${i < rating ? 'mingcute:star-fill' : 'mingcute:star-line'}" width="13"></iconify-icon>`
+        `<iconify-icon icon="${i < rating ? 'mingcute:star-fill' : 'mingcute:star-line'}" width="16"></iconify-icon>`
       ).join('');
     }
     if (detailGrade) {
       detailGrade.textContent = grade.ko;
       detailGrade.className = `grade-tag ${gradeCls}`;
-    }
-    if (carouselGradePill) {
-      carouselGradePill.textContent = grade.en;
-      carouselGradePill.className = `grade-tag grade-tag--solid ${gradeCls}`;
     }
     if (detailDistrict) detailDistrict.textContent = item.district || '';
     if (detailDate) detailDate.textContent = item.date || '';
@@ -583,41 +636,10 @@
     moreBtn.addEventListener('click', () => showToast('최근 방문 더보기'));
   }
 
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let carouselTapLocked = false;
-  const carouselWrap = app.querySelector('[data-carousel-card]');
-  if (carouselWrap) {
-    carouselWrap.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-    carouselWrap.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      const dy = e.changedTouches[0].clientY - touchStartY;
-      if (Math.abs(dx) < 40 && Math.abs(dy) < 40) {
-        carouselTapLocked = true;
-        toggleCarouselFlip();
-        window.setTimeout(() => {
-          carouselTapLocked = false;
-        }, 320);
-        return;
-      }
-      if (Math.abs(dx) < 40) return;
-      setCarouselFlipped(false);
-      if (dx < 0) {
-        carouselIndex = (carouselIndex + 1) % landmarks.length;
-        updateCarousel('next');
-      } else {
-        carouselIndex = (carouselIndex - 1 + landmarks.length) % landmarks.length;
-        updateCarousel('prev');
-      }
-    }, { passive: true });
-    carouselWrap.addEventListener('click', () => {
-      if (carouselTapLocked) return;
-      toggleCarouselFlip();
-    });
-  }
+  buildDetailCarouselTrack();
+  initDetailCarousel();
+  updateCarousel();
+  requestAnimationFrame(() => scrollDetailCarouselTo(carouselIndex, 'auto'));
 
   const koreaMapEl = app.querySelector('[data-korea-map]');
   if (koreaMapEl && window.KoreaMapModule) {
@@ -635,7 +657,6 @@
     renderCertifyList(app.querySelector('[data-certify-root]'));
   }
 
-  updateCarousel();
   initBottomNavScrollHide();
   showScreen('map', false);
 })();

@@ -65,55 +65,44 @@
           <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="20"></iconify-icon></button>
           <h1>카드 상세</h1>
         </header>
-        <div class="landmark-carousel">
-          <div class="landmark-carousel__card" data-carousel-card>
-            <div class="landmark-carousel__flip">
-              <div class="landmark-carousel__face landmark-carousel__face--front">
-                <img data-carousel-img src="" alt="">
-                <div class="landmark-carousel__overlay">
-                  <span class="grade-tag grade-tag--solid" data-carousel-grade-pill></span>
-                  <div class="landmark-carousel__name" data-carousel-name></div>
-                  <div class="landmark-carousel__addr" data-carousel-addr></div>
-                </div>
+        <div class="detail-scroll">
+          <div class="landmark-carousel">
+            <div class="landmark-carousel__track" data-carousel-track></div>
+            <p class="landmark-carousel__pager" data-carousel-pager>1 / 3</p>
+          </div>
+          <div class="detail-stats card-detail">
+            <div class="card-detail__head">
+              <div class="card-detail__rating" data-detail-stars aria-label="별점"></div>
+              <span class="grade-tag" data-detail-grade></span>
+              <span class="card-detail__collected"><iconify-icon icon="mingcute:check-circle-fill" width="16"></iconify-icon> 수집 완료</span>
+            </div>
+            <div class="card-detail__meta">
+              <span class="card-detail__meta-item"><iconify-icon icon="mingcute:location-line" width="15"></iconify-icon> <span data-detail-district></span></span>
+              <span class="card-detail__meta-item"><iconify-icon icon="mingcute:check-circle-line" width="15"></iconify-icon> <span data-detail-date></span> 획득</span>
+            </div>
+            <div class="card-detail__desc">
+              <iconify-icon icon="mingcute:sparkles-line" width="16"></iconify-icon>
+              <span data-detail-desc></span>
+            </div>
+            <div class="card-detail__boxes">
+              <div class="card-detail__box">
+                <iconify-icon class="card-detail__box-icon" icon="mingcute:trophy-line" width="20"></iconify-icon>
+                <span class="card-detail__box-label">희귀도</span>
+                <span class="card-detail__box-value" data-detail-rarity></span>
               </div>
-              <div class="landmark-carousel__face landmark-carousel__face--back" aria-hidden="true">
-                <div class="landmark-carousel__back-body card-detail">
-                  <div class="card-detail__head">
-                    <div class="card-detail__rating" data-detail-stars aria-label="별점"></div>
-                    <span class="grade-tag" data-detail-grade></span>
-                    <span class="card-detail__collected"><iconify-icon icon="mingcute:check-circle-fill" width="14"></iconify-icon> 수집 완료</span>
-                  </div>
-                  <div class="card-detail__meta">
-                    <span class="card-detail__meta-item"><iconify-icon icon="mingcute:location-line" width="13"></iconify-icon> <span data-detail-district></span></span>
-                    <span class="card-detail__meta-item"><iconify-icon icon="mingcute:check-circle-line" width="13"></iconify-icon> <span data-detail-date></span> 획득</span>
-                  </div>
-                  <div class="card-detail__desc">
-                    <iconify-icon icon="mingcute:sparkles-line" width="14"></iconify-icon>
-                    <span data-detail-desc></span>
-                  </div>
-                  <div class="card-detail__boxes">
-                    <div class="card-detail__box">
-                      <iconify-icon class="card-detail__box-icon" icon="mingcute:trophy-line" width="18"></iconify-icon>
-                      <span class="card-detail__box-label">희귀도</span>
-                      <span class="card-detail__box-value" data-detail-rarity></span>
-                    </div>
-                    <div class="card-detail__box">
-                      <iconify-icon class="card-detail__box-icon" icon="mingcute:location-line" width="18"></iconify-icon>
-                      <span class="card-detail__box-label">위치</span>
-                      <span class="card-detail__box-value" data-detail-loc></span>
-                    </div>
-                    <div class="card-detail__box">
-                      <iconify-icon class="card-detail__box-icon" icon="mingcute:star-line" width="18"></iconify-icon>
-                      <span class="card-detail__box-label">등급</span>
-                      <span class="card-detail__box-value" data-detail-grade-en></span>
-                    </div>
-                  </div>
-                  <p class="card-detail__tagline" data-detail-tagline></p>
-                </div>
+              <div class="card-detail__box">
+                <iconify-icon class="card-detail__box-icon" icon="mingcute:location-line" width="20"></iconify-icon>
+                <span class="card-detail__box-label">위치</span>
+                <span class="card-detail__box-value" data-detail-loc></span>
+              </div>
+              <div class="card-detail__box">
+                <iconify-icon class="card-detail__box-icon" icon="mingcute:star-line" width="20"></iconify-icon>
+                <span class="card-detail__box-label">등급</span>
+                <span class="card-detail__box-value" data-detail-grade-en></span>
               </div>
             </div>
+            <p class="card-detail__tagline" data-detail-tagline></p>
           </div>
-          <p class="landmark-carousel__pager" data-carousel-pager>1 / 3</p>
         </div>
       </div>
 
