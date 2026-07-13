@@ -10,8 +10,6 @@
   const bottomNav = app.querySelector('.bottom-nav');
   const backButtons = app.querySelectorAll('[data-back]');
   const segments = app.querySelectorAll('.segment-control button');
-  const carouselPrev = app.querySelector('[data-carousel-prev]');
-  const carouselNext = app.querySelector('[data-carousel-next]');
   const carouselPager = app.querySelector('[data-carousel-pager]');
   const carouselImg = app.querySelector('[data-carousel-img]');
   const carouselName = app.querySelector('[data-carousel-name]');
@@ -514,20 +512,6 @@
   const moreBtn = app.querySelector('[data-more]');
   if (moreBtn) {
     moreBtn.addEventListener('click', () => showToast('최근 방문 더보기'));
-  }
-
-  if (carouselPrev) {
-    carouselPrev.addEventListener('click', () => {
-      carouselIndex = (carouselIndex - 1 + landmarks.length) % landmarks.length;
-      updateCarousel('prev');
-    });
-  }
-
-  if (carouselNext) {
-    carouselNext.addEventListener('click', () => {
-      carouselIndex = (carouselIndex + 1) % landmarks.length;
-      updateCarousel('next');
-    });
   }
 
   let touchStartX = 0;

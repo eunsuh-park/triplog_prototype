@@ -3085,30 +3085,6 @@
   cursor: pointer;
 }
 
-.carousel-actions {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.carousel-action {
-  padding: 7px 16px;
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.carousel-action--prev {
-  background: var(--surface);
-  color: var(--text);
-}
-
-.carousel-action--next {
-  background: var(--primary);
-  color: var(--white);
-}
-
 .explore-city__backlink {
   display: inline-flex;
   align-items: center;
