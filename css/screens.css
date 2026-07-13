@@ -4494,7 +4494,7 @@
 
 .my-profile-card__scores-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-md);
   width: 100%;
@@ -4502,8 +4502,9 @@
 
 .my-profile-card__scores-value {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
   flex-shrink: 0;
 }
 
