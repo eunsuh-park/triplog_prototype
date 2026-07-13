@@ -2756,6 +2756,15 @@
   background: var(--white);
 }
 
+/* 내 활동 / 설정 — 위 공통 카드 스타일보다 뒤에 두어 border·배경 제거 */
+.my-section.my-section--menu,
+.my-section.my-section--menu .my-menu__list {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .chip {
   background: var(--surface);
   color: var(--text);
