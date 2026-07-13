@@ -21,6 +21,7 @@
       area: '769.94km²',
       population: '약 334만 명',
       districts: '15개 구',
+      visits: 5,
       summary: '대한민국 제2의 도시이자 동남권 거점 항구 도시예요. 해운대·광안리·자갈치 등 바다와 도시가 어우러진 매력적인 관광지입니다.',
       homepage: 'https://www.busan.go.kr',
       meta: '769.94km² | 약 334만 명 | 15개 구',
@@ -325,7 +326,8 @@
     const factsEls = root.querySelectorAll('[data-region-facts]');
     const summaryEls = root.querySelectorAll('[data-region-summary]');
     const homepageEls = root.querySelectorAll('[data-region-homepage]');
-    const statValues = root.querySelectorAll('[data-region-stat-value]');
+    const visitEls = root.querySelectorAll('[data-region-stat-visits]');
+    const pctEls = root.querySelectorAll('[data-region-stat-pct]');
     const grid = root.querySelector('[data-region-card-grid]');
     const carousel = root.querySelector('[data-region-carousel]');
 
@@ -334,9 +336,9 @@
     factsEls.forEach((el) => { el.innerHTML = factsHtml; });
     summaryEls.forEach((el) => { el.textContent = detail.summary; });
     homepageEls.forEach((el) => { el.href = detail.homepage || '#'; });
-    statValues.forEach((el) => {
-      el.textContent = `${pct}%`;
-    });
+    const visitCount = detail.visits ?? visited.length;
+    visitEls.forEach((el) => { el.textContent = `${visitCount}회`; });
+    pctEls.forEach((el) => { el.textContent = `${pct}%`; });
     if (grid) grid.innerHTML = renderGrid(detail, true);
     if (carousel) carousel.innerHTML = renderCarousel(detail, true);
 

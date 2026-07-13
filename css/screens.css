@@ -1217,7 +1217,7 @@
 .region-stat-card__value {
   font-size: var(--text-xl);
   font-weight: 700;
-  color: var(--text);
+  color: var(--primary);
   line-height: 1.2;
 }
 
