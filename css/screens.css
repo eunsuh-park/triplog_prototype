@@ -1006,7 +1006,7 @@
   flex-shrink: 0;
   background: linear-gradient(180deg, var(--primary-soft) 0%, var(--white) 72%);
   border-bottom: 1px solid var(--border);
-  padding: 0 16px 18px;
+  padding: 0 16px 12px;
 }
 
 .region-detail__header-top {
@@ -1018,6 +1018,12 @@
 
 .region-detail__intro {
   padding: 0 2px;
+  margin-top: 24px;
+  flex-shrink: 0;
+}
+
+.region-detail__body--carousel .region-detail__intro {
+  margin-top: 16px;
 }
 
 .region-detail__title-row {
@@ -1148,9 +1154,9 @@
   align-items: center;
   gap: 12px;
   padding: 14px 12px;
-  border: 1.5px solid var(--primary);
+  border: none;
   border-radius: var(--radius-md);
-  background: var(--white);
+  background: var(--primary-soft);
   min-width: 0;
 }
 

@@ -210,18 +210,19 @@
     const visited = detail.landmarks.filter((lm) => lm.visited);
     const carouselIndex = Math.max(0, visited.length - 1);
 
-    const title = root.querySelector('[data-region-title]');
-    const facts = root.querySelector('[data-region-facts]');
-    const summary = root.querySelector('[data-region-summary]');
-    const homepage = root.querySelector('[data-region-homepage]');
+    const titleEls = root.querySelectorAll('[data-region-title]');
+    const factsEls = root.querySelectorAll('[data-region-facts]');
+    const summaryEls = root.querySelectorAll('[data-region-summary]');
+    const homepageEls = root.querySelectorAll('[data-region-homepage]');
     const statValues = root.querySelectorAll('[data-region-stat-value]');
     const grid = root.querySelector('[data-region-card-grid]');
     const carousel = root.querySelector('[data-region-carousel]');
 
-    if (title) title.textContent = region.name;
-    if (facts) facts.innerHTML = renderFacts(detail);
-    if (summary) summary.textContent = detail.summary;
-    if (homepage) homepage.href = detail.homepage || '#';
+    titleEls.forEach((el) => { el.textContent = region.name; });
+    const factsHtml = renderFacts(detail);
+    factsEls.forEach((el) => { el.innerHTML = factsHtml; });
+    summaryEls.forEach((el) => { el.textContent = detail.summary; });
+    homepageEls.forEach((el) => { el.href = detail.homepage || '#'; });
     statValues.forEach((el) => {
       el.textContent = `${pct}%`;
     });
