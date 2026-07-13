@@ -1811,6 +1811,17 @@
 .rank-tier-group--gold .rank-tier-group__head .tier-pill { background: #FBEFCF; color: #B8860B; }
 .rank-tier-group--silver .rank-tier-group__head .tier-pill { background: #EDF0F2; color: #6B7785; }
 
+.rank-tier-group__head .tier-pill {
+  gap: 4px;
+  padding: 3px 10px;
+  font-size: 14px;
+}
+
+.rank-tier-group__head .tier-pill iconify-icon {
+  width: 16px;
+  height: 16px;
+}
+
 .rank-podium-card[hidden] {
   display: none;
 }
