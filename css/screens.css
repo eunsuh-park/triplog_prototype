@@ -1054,6 +1054,14 @@
 
 .region-detail__intro {
   padding: 0 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.region-detail__intro .region-detail__stats {
+  margin-top: 14px;
+  margin-bottom: 0;
 }
 
 .region-detail__title-row {
@@ -1169,13 +1177,7 @@
 .region-detail__stats {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
   flex-shrink: 0;
-}
-
-.region-detail__stats--carousel {
-  margin-top: auto;
-  margin-bottom: 0;
 }
 
 .region-stat-card {
