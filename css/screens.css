@@ -555,10 +555,15 @@
   height: 100%;
 }
 
-.landmark-carousel__slide-inner img {
+.landmark-carousel__slide-inner img,
+.landmark-carousel__slide-inner .img-fallback {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.landmark-carousel__slide-inner .img-fallback {
+  object-fit: unset;
 }
 
 .landmark-carousel__overlay {
@@ -1259,7 +1264,15 @@
 }
 
 .region-collect-card__placeholder {
-  background: linear-gradient(145deg, var(--surface-dim), var(--border));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-dim);
+  color: var(--text-muted);
+}
+
+.region-collect-card__placeholder iconify-icon {
+  opacity: 0.45;
 }
 
 .region-collect-card__name {
@@ -1371,7 +1384,15 @@
 .region-card-carousel__placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(145deg, var(--surface) 0%, var(--surface-dim) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-dim);
+  color: var(--text-muted);
+}
+
+.region-card-carousel__placeholder iconify-icon {
+  opacity: 0.45;
 }
 
 .region-card-carousel__chip {

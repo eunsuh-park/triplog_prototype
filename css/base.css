@@ -276,6 +276,19 @@ img {
   transform: scale(0.97);
 }
 
+.img-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-dim);
+  color: var(--text-muted);
+  min-height: 48px;
+}
+
+.img-fallback iconify-icon {
+  opacity: 0.45;
+}
+
 .screen-panel {
   animation: screenIn var(--dur-slow) var(--ease-out) both;
 }

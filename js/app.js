@@ -317,7 +317,7 @@
     }
 
     if (topbarLabel) topbarLabel.textContent = screenLabels[id] || id;
-    if (push) screenStack.push(id);
+    if (push && screenStack[screenStack.length - 1] !== id) screenStack.push(id);
 
     if (id === 'dex') animateProgressBars();
     if (id === 'detail') {
@@ -362,16 +362,6 @@
 
   if (regionDetailRoot) {
     regionDetailRoot.addEventListener('click', (e) => {
-      const detailBtn = e.target.closest('[data-go="detail"]');
-      if (detailBtn) {
-        const idx = detailBtn.dataset.landmarkIndex;
-        if (idx !== undefined && idx !== '') {
-          carouselIndex = parseInt(idx, 10);
-        }
-        showScreen('detail');
-        updateCarousel(carouselIndex);
-        return;
-      }
       const home = e.target.closest('[data-region-homepage]');
       if (home && home.getAttribute('href') === '#') {
         e.preventDefault();
@@ -592,6 +582,14 @@
 
     const target = btn.dataset.go;
     if (!target) return;
+
+    if (target === 'detail') {
+      const idx = btn.dataset.landmarkIndex;
+      if (idx !== undefined && idx !== '') {
+        carouselIndex = parseInt(idx, 10);
+        updateCarousel(carouselIndex);
+      }
+    }
 
     const regionName = btn.dataset.region;
     if (target === 'exploreProvince' && regionName) {

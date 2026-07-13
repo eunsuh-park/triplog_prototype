@@ -151,7 +151,7 @@
 
   function renderCollectCard(lm, interactive, index) {
     const cls = lm.visited ? 'region-collect-card' : 'region-collect-card region-collect-card--locked';
-    const img = lm.visited && lm.img ? `<img src="${lm.img}" alt="">` : `<div class="region-collect-card__placeholder"></div>`;
+    const img = lm.visited && lm.img ? `<img src="${lm.img}" alt="">` : (window.TriplogImageFallback?.placeholderHtml('', 24, 'region-collect-card__placeholder') || '<div class="region-collect-card__placeholder img-fallback" aria-hidden="true"></div>');
     const inner = `${img}<p class="region-collect-card__name">${lm.name}</p><p class="region-collect-card__addr">${lm.addr}</p>`;
 
     if (interactive && lm.visited) {
@@ -173,7 +173,7 @@
     const img =
       lm.visited && lm.img
         ? `<img src="${lm.img}" alt="">`
-        : `<div class="region-card-carousel__placeholder"></div>`;
+        : (window.TriplogImageFallback?.placeholderHtml('', 32, 'region-card-carousel__placeholder') || '<div class="region-card-carousel__placeholder img-fallback" aria-hidden="true"></div>');
     const chip = lm.visited ? `<span class="region-card-carousel__chip">모두</span>` : '';
     const frontInner = `
       <div class="region-card-carousel__img-wrap">
