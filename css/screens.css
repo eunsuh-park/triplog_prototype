@@ -850,8 +850,10 @@
 .grade-text--C { color: var(--text-secondary); }
 
 /* ── EXPLORE National (EXPLORE-01) ── */
-.explore-national {
-  position: relative;
+.explore-national .fab {
+  z-index: 6;
+}
+
   background: var(--surface);
   flex: 1;
   display: flex;
