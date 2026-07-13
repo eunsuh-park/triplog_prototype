@@ -104,7 +104,8 @@
   function renderMe(me) {
     const sub = me.title ? `<p class="rank-row__sub">${me.title}</p>` : '';
     return `
-      <div class="rank-row rank-row--me is-pressable">
+      <p class="rank-me__label">내 순위</p>
+      <div class="rank-row rank-row--me is-pressable" role="button" tabindex="0" aria-label="내 순위 ${me.rank}위">
         <span class="rank-row__num rank-row__num--me">${me.rank}</span>
         <span class="rank-row__avatar tier-tint--${me.tier}">${me.initial}</span>
         <div class="rank-row__info">

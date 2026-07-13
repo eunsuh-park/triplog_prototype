@@ -1157,6 +1157,12 @@
   padding-top: 8px;
 }
 
+.region-detail__body--carousel .region-card-carousel {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
 .region-card-carousel {
   display: flex;
   gap: 14px;
@@ -1405,9 +1411,12 @@
 }
 
 .screen-panel[data-screen="dex"] .screen-scroll,
-.screen-panel[data-screen="rank"] .screen-scroll,
 .screen-panel[data-screen="settings"] .screen-scroll {
   padding-bottom: 96px;
+}
+
+.screen-panel[data-screen="rank"] .rank-scroll {
+  padding-bottom: 88px;
 }
 
 .screen-panel[data-screen="dex"] .screen-scroll {
@@ -1421,6 +1430,7 @@
   flex-direction: column;
   background: var(--surface);
   overflow: hidden;
+  position: relative;
 }
 
 /* 상단 헤더 (제목 + 알림 + 전체/월간 탭) */
@@ -1695,18 +1705,31 @@
   color: var(--text);
 }
 
-/* 내 순위 고정바 */
+/* 내 순위 고정바 — 하단 탭 네비 위에 고정 */
 .rank-me {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 84px;
+  z-index: 6;
   flex-shrink: 0;
-  padding: var(--space-sm) var(--space-xl) var(--space-md);
+  padding: var(--space-sm) var(--space-xl);
   background: var(--white);
   border-top: 1px solid var(--border);
+  box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.08);
 }
 
 .rank-me .rank-row {
   margin: 0;
   border-color: var(--primary);
   background: var(--accent-mint-soft);
+}
+
+.rank-me__label {
+  margin: 0 0 6px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--primary);
 }
 
 .rank-row__num--me {
