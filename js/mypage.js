@@ -195,13 +195,15 @@
           <span class="my-pill my-pill--soft">Lv.${PROFILE.level}</span>
         </div>
         <div class="my-profile-card__scores">
-          <button class="my-pill my-pill--gold is-pressable" type="button" data-go="rankGuide" aria-label="랭크 구간 안내">
-            <iconify-icon icon="mingcute:trophy-fill" width="13"></iconify-icon> ${PROFILE.rank} Rank
-            <iconify-icon icon="mingcute:right-line" width="13"></iconify-icon>
-          </button>
           <div class="my-profile-card__scores-row">
             <span class="my-profile-card__scores-label">누적 Score</span>
-            <strong>${PROFILE.score.toLocaleString()}</strong>
+            <div class="my-profile-card__scores-value">
+              <strong>${PROFILE.score.toLocaleString()}</strong>
+              <button class="my-pill my-pill--gold is-pressable" type="button" data-go="rankGuide" aria-label="랭크 구간 안내">
+                <iconify-icon icon="mingcute:trophy-fill" width="13"></iconify-icon> ${PROFILE.rank} Rank
+                <iconify-icon icon="mingcute:right-line" width="13"></iconify-icon>
+              </button>
+            </div>
           </div>
         </div>
         <div class="my-profile-card__xp">
