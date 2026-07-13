@@ -1223,17 +1223,15 @@
   background: transparent;
 }
 
-.region-collect-card img,
 .region-collect-card__placeholder {
   width: 100%;
   aspect-ratio: 1;
   border-radius: var(--radius-md);
-  object-fit: cover;
   background: var(--surface-dim);
-}
-
-.region-collect-card__placeholder {
-  background: linear-gradient(145deg, var(--surface-dim), var(--border));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
 }
 
 .region-collect-card__name {
@@ -1255,7 +1253,6 @@
   text-overflow: ellipsis;
 }
 
-.region-collect-card--locked img,
 .region-collect-card--locked .region-collect-card__placeholder {
   opacity: 0.35;
   filter: grayscale(1);
