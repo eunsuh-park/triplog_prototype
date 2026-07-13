@@ -66,18 +66,8 @@
   };
 
   function renderFacts(detail) {
-    const items = [
-      { icon: 'mingcute:map-2-line', label: detail.area },
-      { icon: 'mingcute:group-line', label: detail.population },
-      { icon: 'mingcute:building-2-line', label: detail.districts },
-    ].filter((item) => item.label);
-
-    return items
-      .map(
-        (item) =>
-          `<span class="region-detail__fact"><iconify-icon icon="${item.icon}" width="14"></iconify-icon>${item.label}</span>`
-      )
-      .join('');
+    const items = [detail.area, detail.population, detail.districts].filter(Boolean);
+    return items.map((label) => `<span class="region-detail__fact">${label}</span>`).join('');
   }
 
   function getDetail(region) {
@@ -151,8 +141,8 @@
 
   function renderCollectCard(lm, interactive, index) {
     const cls = lm.visited ? 'region-collect-card' : 'region-collect-card region-collect-card--locked';
-    const img = lm.visited && lm.img ? `<img src="${lm.img}" alt="">` : `<div class="region-collect-card__placeholder"></div>`;
-    const inner = `${img}<p class="region-collect-card__name">${lm.name}</p><p class="region-collect-card__addr">${lm.addr}</p>`;
+    const thumb = `<div class="region-collect-card__placeholder"><iconify-icon icon="mingcute:pic-line" width="28"></iconify-icon></div>`;
+    const inner = `${thumb}<p class="region-collect-card__name">${lm.name}</p><p class="region-collect-card__addr">${lm.addr}</p>`;
 
     if (interactive && lm.visited) {
       return `<button class="${cls} region-collect-card--button is-pressable" data-go="detail" data-landmark-index="${index}" type="button">${inner}</button>`;
