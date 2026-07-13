@@ -193,14 +193,16 @@
         <p class="my-profile-card__name">${PROFILE.name}</p>
         <div class="my-profile-card__pills">
           <span class="my-pill my-pill--soft">Lv.${PROFILE.level}</span>
+        </div>
+        <div class="my-profile-card__scores">
           <button class="my-pill my-pill--gold is-pressable" type="button" data-go="rankGuide" aria-label="랭크 구간 안내">
             <iconify-icon icon="mingcute:trophy-fill" width="13"></iconify-icon> ${PROFILE.rank} Rank
             <iconify-icon icon="mingcute:right-line" width="13"></iconify-icon>
           </button>
-        </div>
-        <div class="my-profile-card__scores">
-          <span class="my-profile-card__scores-label">누적 Score</span>
-          <strong>${PROFILE.score.toLocaleString()}</strong>
+          <div class="my-profile-card__scores-row">
+            <span class="my-profile-card__scores-label">누적 Score</span>
+            <strong>${PROFILE.score.toLocaleString()}</strong>
+          </div>
         </div>
         <div class="my-profile-card__xp">
           <div class="my-profile-card__xp-row"><span>경험치</span><span class="my-profile-card__xp-val">${PROFILE.xp} / ${PROFILE.xpMax} XP</span></div>
