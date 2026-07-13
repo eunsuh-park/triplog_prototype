@@ -114,6 +114,94 @@
     return cards + extras;
   }
 
+  function renderCarouselSlide(lm, interactive) {
+    const locked = !lm.visited;
+    const img =
+      lm.visited && lm.img
+        ? `<img src="${lm.img}" alt="">`
+        : `<div class="region-card-carousel__placeholder"></div>`;
+    const chip = lm.visited ? `<span class="region-card-carousel__chip">모두</span>` : '';
+    const inner = `
+      <div class="region-card-carousel__img-wrap">
+        ${img}
+        ${chip}
+      </div>
+      <div class="region-card-carousel__info">
+        <p class="region-card-carousel__name">${lm.name}</p>
+        <p class="region-card-carousel__addr">${lm.addr}</p>
+      </div>`;
+
+    const cls = `region-card-carousel__slide${locked ? ' region-card-carousel__slide--locked' : ''}`;
+    if (interactive && lm.visited) {
+      return `<button class="${cls} region-card-carousel__slide--button is-pressable" type="button" data-go="detail">${inner}</button>`;
+    }
+    return `<article class="${cls}">${inner}</article>`;
+  }
+
+  function renderCarousel(detail, interactive) {
+    return detail.landmarks.map((lm) => renderCarouselSlide(lm, interactive)).join('');
+  }
+
+  function initRegionCarousel(root, startIndex) {
+    const track = root.querySelector('[data-region-carousel]');
+    const pager = root.querySelector('[data-region-pager]');
+    if (!track || !pager) return;
+
+    const slides = track.querySelectorAll('.region-card-carousel__slide');
+    const total = slides.length;
+    if (!total) return;
+
+    function clampIndex(index) {
+      return Math.max(0, Math.min(index, total - 1));
+    }
+
+    function scrollToIndex(index, behavior = 'auto') {
+      const slide = slides[clampIndex(index)];
+      if (!slide) return;
+      const offset = slide.offsetLeft - (track.clientWidth - slide.offsetWidth) / 2;
+      track.scrollTo({ left: offset, behavior });
+    }
+
+    function getActiveIndex() {
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      slides.forEach((slide, i) => {
+        const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+        const dist = Math.abs(center - slideCenter);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      return best;
+    }
+
+    function updatePager(index) {
+      const safeIndex = clampIndex(index);
+      pager.textContent = `${safeIndex + 1} / ${total}`;
+      root.dataset.regionCarouselIndex = String(safeIndex);
+    }
+
+    let scrollTimer;
+    if (!track.dataset.carouselInit) {
+      track.dataset.carouselInit = '1';
+      track.addEventListener(
+        'scroll',
+        () => {
+          clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(() => updatePager(getActiveIndex()), 80);
+        },
+        { passive: true }
+      );
+    }
+
+    requestAnimationFrame(() => {
+      scrollToIndex(startIndex);
+      updatePager(startIndex);
+    });
+  }
+
   window.renderRegionDetail = function renderRegionDetail(region, root) {
     if (!root || !region) return;
 
@@ -121,7 +209,6 @@
     const pct = Math.min(100, Math.round((region.collected / region.total) * 100));
     const visited = detail.landmarks.filter((lm) => lm.visited);
     const carouselIndex = Math.max(0, visited.length - 1);
-    const current = detail.landmarks[carouselIndex] || detail.landmarks[0];
 
     const title = root.querySelector('[data-region-title]');
     const facts = root.querySelector('[data-region-facts]');
@@ -129,12 +216,7 @@
     const homepage = root.querySelector('[data-region-homepage]');
     const statValues = root.querySelectorAll('[data-region-stat-value]');
     const grid = root.querySelector('[data-region-card-grid]');
-    const meta = root.querySelector('[data-region-meta]');
-    const date = root.querySelector('[data-region-date]');
-    const pager = root.querySelector('[data-region-pager]');
-    const stackImg = root.querySelector('[data-region-stack-img]');
-    const stackName = root.querySelector('[data-region-stack-name]');
-    const stackAddr = root.querySelector('[data-region-stack-addr]');
+    const carousel = root.querySelector('[data-region-carousel]');
 
     if (title) title.textContent = region.name;
     if (facts) facts.innerHTML = renderFacts(detail);
@@ -144,14 +226,11 @@
       el.textContent = `${pct}%`;
     });
     if (grid) grid.innerHTML = renderGrid(detail, true);
-    if (meta) meta.textContent = detail.meta;
-    if (date) date.textContent = detail.date;
-    if (pager) pager.textContent = `${region.collected} / ${region.total}`;
-    if (stackImg && current?.img) stackImg.src = current.img;
-    if (stackName) stackName.textContent = current?.name || '';
-    if (stackAddr) stackAddr.textContent = current?.addr || '';
+    if (carousel) carousel.innerHTML = renderCarousel(detail, true);
 
     root.dataset.regionCarouselIndex = String(carouselIndex);
     root.dataset.regionName = region.name;
+
+    initRegionCarousel(root, carouselIndex);
   };
 })();
