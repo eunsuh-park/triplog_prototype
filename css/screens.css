@@ -1776,9 +1776,9 @@
   z-index: 6;
   flex-shrink: 0;
   padding: var(--space-sm) var(--space-xl);
-  background: var(--white);
-  border-top: 1px solid var(--border);
-  box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.08);
+  background: transparent;
+  border-top: none;
+  box-shadow: none;
 }
 
 .rank-me .rank-row {
@@ -2897,7 +2897,7 @@
 }
 
 .rank-me {
-  background: var(--white);
+  background: transparent;
 }
 
 .rank-me .rank-row,

@@ -39,7 +39,7 @@
         { rank: 8, name: '기록하는하루', initial: '기', level: 5, title: '주말 여행자', tier: 'silver', points: 9100 },
         { ellipsis: true },
       ],
-      me: { rank: 23, name: '여행하는 성훈', initial: '성', title: '대전 탐험가', tier: 'gold', points: 8450 },
+      me: { rank: 23, name: '여행하는 성훈', initial: '성', level: 24, title: '대전 탐험가', tier: 'gold', points: 8450 },
     },
     monthly: {
       podium: [
@@ -54,7 +54,7 @@
         { rank: 7, name: '기록하는하루', initial: '기', level: 5, title: '주말 여행자', tier: 'silver', points: 2950 },
         { ellipsis: true },
       ],
-      me: { rank: 11, name: '여행하는 성훈', initial: '성', title: '대전 탐험가', tier: 'gold', points: 2480 },
+      me: { rank: 11, name: '여행하는 성훈', initial: '성', level: 24, title: '대전 탐험가', tier: 'gold', points: 2480 },
     },
   };
 
@@ -144,7 +144,9 @@
 
   function renderMe(me, options) {
     const opts = options || {};
-    const sub = me.title ? `<p class="rank-row__sub">${me.title}</p>` : '';
+    const sub = me.level != null
+      ? `<p class="rank-row__sub">Lv.${me.level}</p>`
+      : (me.title ? `<p class="rank-row__sub">${me.title}</p>` : '');
     const tierHtml = opts.hideTier ? '' : tierPill(me.tier);
     return `
       <p class="rank-me__label">내 순위</p>
