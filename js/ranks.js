@@ -101,7 +101,7 @@
   }
 
   function fmtPoints(value) {
-    return `${value.toLocaleString('ko-KR')}점`;
+    return value.toLocaleString('ko-KR');
   }
 
   function tierPill(tierKey) {
@@ -136,9 +136,9 @@
     if (row.ellipsis) {
       return '<div class="rank-row rank-row--ellipsis" aria-hidden="true">···</div>';
     }
-    const sub = (row.level != null)
-      ? `<p class="rank-row__sub">Lv.${row.level} ${row.title}</p>`
-      : (row.title ? `<p class="rank-row__sub">${row.title}</p>` : '');
+    const sub = row.level != null
+      ? `<p class="rank-row__sub">Lv.${row.level}</p>`
+      : '';
     const tierHtml = opts.hideTier ? '' : tierPill(row.tier);
     return `
       <div class="rank-row">
