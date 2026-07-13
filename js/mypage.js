@@ -190,8 +190,8 @@
             </button>
           </div>
         </div>
-        <p class="my-profile-card__name">${PROFILE.name}</p>
-        <div class="my-profile-card__pills">
+        <div class="my-profile-card__name-row">
+          <p class="my-profile-card__name">${PROFILE.name}</p>
           <span class="my-pill my-pill--soft">Lv.${PROFILE.level}</span>
         </div>
         <div class="my-profile-card__scores">

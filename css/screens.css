@@ -2050,9 +2050,21 @@
   gap: 6px;
 }
 
+.my-profile-card__name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .my-profile-card__name {
   font-size: var(--text-xl);
   font-weight: 800;
+  margin: 0;
+}
+
+.my-profile-card__name-row .my-pill {
+  flex-shrink: 0;
 }
 
 .my-profile-card__title {
