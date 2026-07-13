@@ -3257,10 +3257,6 @@
   border-radius: 50%;
 }
 
-.region-collect-card--button {
-  border: none;
-}
-
 .conquer-row--done {
   background: var(--primary-soft);
   border-color: transparent;

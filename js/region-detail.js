@@ -66,18 +66,8 @@
   };
 
   function renderFacts(detail) {
-    const items = [
-      { icon: 'mingcute:map-2-line', label: detail.area },
-      { icon: 'mingcute:group-line', label: detail.population },
-      { icon: 'mingcute:building-2-line', label: detail.districts },
-    ].filter((item) => item.label);
-
-    return items
-      .map(
-        (item) =>
-          `<span class="region-detail__fact"><iconify-icon icon="${item.icon}" width="14"></iconify-icon>${item.label}</span>`
-      )
-      .join('');
+    const items = [detail.area, detail.population, detail.districts].filter(Boolean);
+    return items.map((label) => `<span class="region-detail__fact">${label}</span>`).join('');
   }
 
   function getDetail(region) {
