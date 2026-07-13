@@ -117,6 +117,9 @@
   const screenStack = ['map'];
 
   const CERTIFY_SEARCH_DELAY_MS = 1400;
+  const HOME_SCREEN = 'map';
+  const SCROLL_NAV_HIDE_THRESHOLD = 10;
+  const scrollNavPositions = new WeakMap();
 
   const screenLabels = {
     map: '홈 · 전국 지도 · EXPLORE-01',
@@ -175,6 +178,53 @@
 
   window.showToast = showToast;
 
+  function setBottomNavScrollHidden(hidden) {
+    if (!bottomNav || bottomNav.classList.contains('hidden')) return;
+    bottomNav.classList.toggle('is-scroll-hidden', hidden);
+  }
+
+  function resetBottomNavScrollHide() {
+    setBottomNavScrollHidden(false);
+    const active = app.querySelector('.screen-panel.active');
+    if (!active) return;
+    active.querySelectorAll('.screen-scroll, .rank-scroll, .region-detail__body, .subpage__scroll, .certify-list').forEach((el) => {
+      scrollNavPositions.set(el, el.scrollTop);
+    });
+  }
+
+  function handleBottomNavScroll(e) {
+    const container = e.currentTarget;
+    const panel = container.closest('.screen-panel');
+    if (!panel?.classList.contains('active')) return;
+    if (panel.dataset.screen === HOME_SCREEN) return;
+    if (!bottomNav || bottomNav.classList.contains('hidden')) return;
+
+    const current = container.scrollTop;
+    const previous = scrollNavPositions.get(container) ?? current;
+    scrollNavPositions.set(container, current);
+
+    if (current <= 0) {
+      setBottomNavScrollHidden(false);
+      return;
+    }
+
+    const delta = current - previous;
+    if (delta > SCROLL_NAV_HIDE_THRESHOLD) {
+      setBottomNavScrollHidden(true);
+    } else if (delta < -SCROLL_NAV_HIDE_THRESHOLD) {
+      setBottomNavScrollHidden(false);
+    }
+  }
+
+  function initBottomNavScrollHide() {
+    const scrollSelector = '.screen-scroll, .rank-scroll, .region-detail__body, .subpage__scroll, .certify-list';
+    app.querySelectorAll(scrollSelector).forEach((el) => {
+      if (el.dataset.scrollNavBound) return;
+      el.dataset.scrollNavBound = '1';
+      el.addEventListener('scroll', handleBottomNavScroll, { passive: true });
+    });
+  }
+
   function animateProgressBars() {
     progressFills.forEach((bar) => {
       const target = bar.dataset.animateProgress;
@@ -218,7 +268,13 @@
     const isSubScreen = SUB_SCREENS.includes(id);
     const isTabScreen = TAB_SCREENS.includes(id);
 
-    if (bottomNav) bottomNav.classList.toggle('hidden', isSubScreen);
+    if (bottomNav) {
+      bottomNav.classList.toggle('hidden', isSubScreen);
+      if (id === HOME_SCREEN || isSubScreen) {
+        bottomNav.classList.remove('is-scroll-hidden');
+      }
+    }
+    resetBottomNavScrollHide();
 
     navItems.forEach((n) => {
       n.classList.toggle('active', isTabScreen && n.dataset.nav === id);
@@ -550,5 +606,6 @@
   }
 
   updateCarousel();
+  initBottomNavScrollHide();
   showScreen('map', false);
 })();
