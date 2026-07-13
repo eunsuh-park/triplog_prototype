@@ -2148,11 +2148,12 @@
   color: var(--text-secondary);
 }
 
-/* 내 활동 / 설정 섹션은 카드 안에 리스트만 (패딩 제거) */
+/* 내 활동 / 설정 섹션 — 카드 스타일 없이 플랫 리스트 */
 .my-section--menu {
   padding: 0;
   background: transparent;
   border: none;
+  border-radius: 0;
 }
 
 .my-section--menu .my-section__title--plain {
@@ -2161,6 +2162,10 @@
 
 .my-section--menu .my-menu__list {
   margin-bottom: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
 }
 
 /* ── 가로 스크롤 (뱃지 / 카드) ── */
