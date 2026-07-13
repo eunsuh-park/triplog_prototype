@@ -1048,7 +1048,7 @@
   flex-shrink: 0;
   background: linear-gradient(180deg, var(--primary-soft) 0%, var(--white) 72%);
   border-bottom: 1px solid var(--border);
-  padding: 0 16px 12px;
+  padding: 0 16px 18px;
 }
 
 .region-detail__header-top {
@@ -1060,12 +1060,6 @@
 
 .region-detail__intro {
   padding: 0 2px;
-  margin-top: 24px;
-  flex-shrink: 0;
-}
-
-.region-detail__body--carousel .region-detail__intro {
-  margin-top: 16px;
 }
 
 .region-detail__title-row {
