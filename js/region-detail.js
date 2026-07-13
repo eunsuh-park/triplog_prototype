@@ -141,8 +141,8 @@
 
   function renderCollectCard(lm, interactive, index) {
     const cls = lm.visited ? 'region-collect-card' : 'region-collect-card region-collect-card--locked';
-    const img = lm.visited && lm.img ? `<img src="${lm.img}" alt="">` : `<div class="region-collect-card__placeholder"></div>`;
-    const inner = `${img}<p class="region-collect-card__name">${lm.name}</p><p class="region-collect-card__addr">${lm.addr}</p>`;
+    const thumb = `<div class="region-collect-card__placeholder"><iconify-icon icon="mingcute:pic-line" width="28"></iconify-icon></div>`;
+    const inner = `${thumb}<p class="region-collect-card__name">${lm.name}</p><p class="region-collect-card__addr">${lm.addr}</p>`;
 
     if (interactive && lm.visited) {
       return `<button class="${cls} region-collect-card--button is-pressable" data-go="detail" data-landmark-index="${index}" type="button">${inner}</button>`;
