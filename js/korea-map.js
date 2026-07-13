@@ -4,6 +4,8 @@
 (function () {
   const MAP_BASE = 'assets/maps/';
   const NATIONAL_URL = MAP_BASE + 'korea.svg';
+  const MIN_SCALE = 1;
+  const MAX_SCALE = 4;
 
   /** korea.svg 도형 순서(위→아래) → 시·도 */
   const NATIONAL_SHAPE_REGIONS = [
@@ -42,7 +44,13 @@
   let container = null;
   let callbacks = {};
   let currentRegion = null;
+  let mapViewport = null;
+  let mapCanvas = null;
   let mapStage = null;
+  let scale = 1;
+  let translateX = 0;
+  let translateY = 0;
+  let suppressMapClick = false;
 
   async function loadSvg(url) {
     const res = await fetch(url);
@@ -64,11 +72,138 @@
     return file ? MAP_BASE + file : null;
   }
 
+  function applyTransform() {
+    if (!mapCanvas) return;
+    mapCanvas.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+  }
+
+  function resetMapTransform() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    applyTransform();
+  }
+
+  function getTouchDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.hypot(dx, dy);
+  }
+
+  function initMapGestures(viewport) {
+    if (viewport.dataset.gesturesInit) return;
+    viewport.dataset.gesturesInit = '1';
+
+    let pinchStartDist = 0;
+    let pinchStartScale = 1;
+    let panStartX = 0;
+    let panStartY = 0;
+    let panOriginX = 0;
+    let panOriginY = 0;
+    let isPanning = false;
+    let gestureMoved = false;
+
+    const markMoved = (dx, dy) => {
+      if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
+        gestureMoved = true;
+        suppressMapClick = true;
+      }
+    };
+
+    viewport.addEventListener(
+      'touchstart',
+      (e) => {
+        gestureMoved = false;
+        suppressMapClick = false;
+        if (e.touches.length === 2) {
+          isPanning = false;
+          pinchStartDist = getTouchDistance(e.touches);
+          pinchStartScale = scale;
+        } else if (e.touches.length === 1) {
+          isPanning = true;
+          panStartX = e.touches[0].clientX;
+          panStartY = e.touches[0].clientY;
+          panOriginX = translateX;
+          panOriginY = translateY;
+        }
+      },
+      { passive: true }
+    );
+
+    viewport.addEventListener(
+      'touchmove',
+      (e) => {
+        if (e.touches.length === 2) {
+          e.preventDefault();
+          const dist = getTouchDistance(e.touches);
+          if (pinchStartDist > 0) {
+            scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, pinchStartScale * (dist / pinchStartDist)));
+            gestureMoved = true;
+            suppressMapClick = true;
+            applyTransform();
+          }
+        } else if (e.touches.length === 1 && isPanning) {
+          const dx = e.touches[0].clientX - panStartX;
+          const dy = e.touches[0].clientY - panStartY;
+          markMoved(dx, dy);
+          if (gestureMoved) {
+            e.preventDefault();
+            translateX = panOriginX + dx;
+            translateY = panOriginY + dy;
+            applyTransform();
+          }
+        }
+      },
+      { passive: false }
+    );
+
+    viewport.addEventListener(
+      'touchend',
+      () => {
+        isPanning = false;
+        if (scale <= 1) {
+          resetMapTransform();
+        }
+        if (gestureMoved) {
+          window.setTimeout(() => {
+            suppressMapClick = false;
+          }, 80);
+        }
+      },
+      { passive: true }
+    );
+
+    viewport.addEventListener(
+      'wheel',
+      (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? 0.92 : 1.08;
+        scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale * delta));
+        if (scale <= 1) resetMapTransform();
+        else applyTransform();
+      },
+      { passive: false }
+    );
+  }
+
+  function ensureViewport() {
+    if (mapViewport) return mapViewport;
+    mapViewport = document.createElement('div');
+    mapViewport.className = 'korea-map__viewport';
+    mapCanvas = document.createElement('div');
+    mapCanvas.className = 'korea-map__canvas';
+    mapViewport.appendChild(mapCanvas);
+    container.appendChild(mapViewport);
+    initMapGestures(mapViewport);
+    return mapViewport;
+  }
+
   function ensureStage() {
+    ensureViewport();
     if (mapStage) return mapStage;
     mapStage = document.createElement('div');
     mapStage.className = 'korea-map__stage';
-    container.appendChild(mapStage);
+    mapCanvas.appendChild(mapStage);
     return mapStage;
   }
 
@@ -77,7 +212,7 @@
     if (!toolbar) {
       toolbar = document.createElement('div');
       toolbar.className = 'korea-map__toolbar';
-      container.insertBefore(toolbar, container.firstChild);
+      container.insertBefore(toolbar, mapViewport);
     }
 
     toolbar.innerHTML = `
@@ -118,7 +253,10 @@
       el.classList.add(visited ? 'is-visited' : 'is-default');
       el.setAttribute('fill', visited ? 'var(--map-land-active)' : 'var(--map-land)');
 
-      const activate = () => showProvince(regionName);
+      const activate = () => {
+        if (suppressMapClick) return;
+        showProvince(regionName);
+      };
       el.addEventListener('click', activate);
       el.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -153,6 +291,7 @@
     currentRegion = null;
     container.classList.remove('korea-map--province');
     hideToolbar();
+    resetMapTransform();
 
     const stage = ensureStage();
     stage.innerHTML = '';
@@ -177,6 +316,7 @@
     currentRegion = regionName;
     container.classList.add('korea-map--province');
     renderToolbar(regionName);
+    resetMapTransform();
 
     const stage = ensureStage();
     stage.innerHTML = '<div class="korea-map__loading">지도 불러오는 중…</div>';
@@ -188,6 +328,7 @@
       stage.appendChild(svg);
 
       svg.addEventListener('click', () => {
+        if (suppressMapClick) return;
         if (callbacks.onRegionExplore) callbacks.onRegionExplore(regionName);
       });
     } catch (err) {
@@ -199,6 +340,10 @@
   function init(el, options = {}) {
     container = el;
     callbacks = options;
+    mapViewport = null;
+    mapCanvas = null;
+    mapStage = null;
+    ensureViewport();
     return showNational();
   }
 
