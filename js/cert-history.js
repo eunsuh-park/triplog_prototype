@@ -29,25 +29,37 @@
     },
   ];
 
-  function renderItem(item, clickable) {
+  function renderItem(item, clickable, showDate) {
     const goAttr = clickable ? ' data-go="recordDetail" role="button" tabindex="0"' : '';
     const pressCls = clickable ? ' cert-timeline__item--link is-pressable' : '';
+    const dateHtml = showDate
+      ? `<time class="cert-timeline__date" datetime="${item.date.replace(/\./g, '-')}">${item.date}</time>`
+      : '';
     return `
-      <article class="cert-timeline__item${pressCls}"${goAttr}>
-        <div class="cert-timeline__head">
-          <h3 class="cert-timeline__name">${item.name}</h3>
-          <span class="cert-timeline__badge">${item.district}</span>
-        </div>
-        <time class="cert-timeline__date" datetime="${item.date.replace(/\./g, '-')}">${item.date}</time>
-        <p class="cert-timeline__review">${item.review}</p>
-      </article>
+      <div class="cert-timeline__entry">
+        ${dateHtml}
+        <article class="cert-timeline__item${pressCls}"${goAttr}>
+          <div class="cert-timeline__head">
+            <h3 class="cert-timeline__name">${item.name}</h3>
+            <span class="cert-timeline__badge">${item.district}</span>
+          </div>
+          <p class="cert-timeline__review">${item.review}</p>
+        </article>
+      </div>
     `;
   }
 
   function renderTimelineItems(records, options) {
     const opts = options || {};
     const list = opts.limit ? (records || RECORDS).slice(0, opts.limit) : (records || RECORDS);
-    return list.map((item) => renderItem(item, opts.clickable)).join('');
+    let lastDate = null;
+    return list
+      .map((item) => {
+        const showDate = item.date !== lastDate;
+        lastDate = item.date;
+        return renderItem(item, opts.clickable, showDate);
+      })
+      .join('');
   }
 
   function renderCertHistory(root) {

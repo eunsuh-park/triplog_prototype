@@ -4420,9 +4420,18 @@
   background: var(--border);
 }
 
-.cert-timeline__item {
+.cert-timeline__entry {
   position: relative;
   padding-bottom: var(--space-2xl);
+}
+
+.cert-timeline__entry:last-child {
+  padding-bottom: 0;
+}
+
+.cert-timeline__item {
+  position: relative;
+  padding-bottom: 0;
 }
 
 .cert-timeline__item:last-child {
@@ -4469,7 +4478,8 @@
   display: block;
   font-size: var(--text-xs);
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin: 0 0 8px;
+  font-weight: 600;
 }
 
 .cert-timeline__review {
@@ -5364,7 +5374,8 @@
 .cert-timeline--my .cert-timeline__date {
   font-size: var(--text-xs);
   color: var(--text-muted);
-  margin-bottom: 8px;
+  margin: 0 0 8px;
+  font-weight: 600;
 }
 
 .cert-timeline--my .cert-timeline__review {
