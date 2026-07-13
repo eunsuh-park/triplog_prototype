@@ -165,13 +165,9 @@
     `;
   }
 
-  function collectPlayers(data) {
-    return [...data.podium, ...data.rows.filter((row) => !row.ellipsis)];
-  }
-
   function renderAllTierGroups(data) {
     const grouped = {};
-    collectPlayers(data).forEach((player) => {
+    data.rows.filter((row) => !row.ellipsis).forEach((player) => {
       if (!grouped[player.tier]) grouped[player.tier] = [];
       grouped[player.tier].push(player);
     });
@@ -200,8 +196,8 @@
 
     document.querySelectorAll('[data-rank-podium]').forEach((el) => {
       const card = el.closest('.rank-podium-card');
-      if (card) card.hidden = isAllTime;
-      el.innerHTML = isAllTime ? '' : data.podium.map(renderPodiumItem).join('');
+      if (card) card.hidden = false;
+      el.innerHTML = data.podium.map(renderPodiumItem).join('');
     });
 
     document.querySelectorAll('[data-rank-list]').forEach((el) => {
