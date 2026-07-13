@@ -1053,7 +1053,6 @@
 .region-detail__header-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 4px 0 10px;
 }
 
@@ -1316,6 +1315,10 @@
 
 .region-detail__body--carousel {
   padding-top: 8px;
+}
+
+.region-detail__body--carousel .region-detail__cards-head {
+  margin-bottom: 12px;
 }
 
 .region-detail__body--carousel .region-card-carousel {
