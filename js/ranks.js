@@ -47,6 +47,34 @@
     },
   };
 
+  const AVATAR_PALETTE = [
+    { bg: '#FF6B6B', fg: '#FFFFFF' },
+    { bg: '#4ECDC4', fg: '#083A36' },
+    { bg: '#5B8DEF', fg: '#FFFFFF' },
+    { bg: '#A66CFF', fg: '#FFFFFF' },
+    { bg: '#F7B731', fg: '#4A3200' },
+    { bg: '#26DE81', fg: '#064D2E' },
+    { bg: '#FD79A8', fg: '#FFFFFF' },
+    { bg: '#00CEC9', fg: '#004A48' },
+    { bg: '#E17055', fg: '#FFFFFF' },
+    { bg: '#6C5CE7', fg: '#FFFFFF' },
+    { bg: '#FDCB6E', fg: '#5C4200' },
+    { bg: '#74B9FF', fg: '#0A2E57' },
+  ];
+
+  function pickAvatarColor(seed) {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i += 1) {
+      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return AVATAR_PALETTE[Math.abs(hash) % AVATAR_PALETTE.length];
+  }
+
+  function renderAvatar(initial, name, className) {
+    const { bg, fg } = pickAvatarColor(name);
+    return `<span class="${className}" style="background:${bg};color:${fg}">${initial}</span>`;
+  }
+
   function fmtPoints(value) {
     return `${value.toLocaleString('ko-KR')}점`;
   }
@@ -69,7 +97,7 @@
     return `
       <div class="podium-item podium-item--${item.rank}">
         ${crown}
-        <span class="podium-item__avatar tier-tint--${item.tier}">${item.initial}</span>
+        ${renderAvatar(item.initial, item.name, 'podium-item__avatar')}
         ${tierPill(item.tier)}
         <span class="podium-item__name">${item.name}</span>
         <span class="podium-item__points">${fmtPoints(item.points)}</span>
@@ -88,7 +116,7 @@
     return `
       <div class="rank-row">
         <span class="rank-row__num">${row.rank}</span>
-        <span class="rank-row__avatar tier-tint--${row.tier}">${row.initial}</span>
+        ${renderAvatar(row.initial, row.name, 'rank-row__avatar')}
         <div class="rank-row__info">
           <p class="rank-row__name">${row.name}</p>
           ${sub}
@@ -107,7 +135,7 @@
       <p class="rank-me__label">내 순위</p>
       <div class="rank-row rank-row--me is-pressable" role="button" tabindex="0" aria-label="내 순위 ${me.rank}위">
         <span class="rank-row__num rank-row__num--me">${me.rank}</span>
-        <span class="rank-row__avatar tier-tint--${me.tier}">${me.initial}</span>
+        ${renderAvatar(me.initial, me.name, 'rank-row__avatar')}
         <div class="rank-row__info">
           <p class="rank-row__name">${me.name}</p>
           ${sub}

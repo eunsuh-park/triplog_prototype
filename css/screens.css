@@ -2824,11 +2824,6 @@
   color: var(--text);
 }
 
-.podium-item__avatar,
-.rank-row__avatar {
-  background: var(--primary);
-}
-
 .podium-item__bar {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
