@@ -432,7 +432,7 @@
       const max = 5;
       const rating = Math.max(0, Math.min(max, item.rating || 0));
       detailStars.innerHTML = Array.from({ length: max }, (_, i) =>
-        `<iconify-icon icon="${i < rating ? 'mingcute:star-fill' : 'mingcute:star-line'}" width="16"></iconify-icon>`
+        `<iconify-icon icon="${i < rating ? 'mingcute:star-fill' : 'mingcute:star-line'}" width="13"></iconify-icon>`
       ).join('');
     }
     if (detailGrade) {
