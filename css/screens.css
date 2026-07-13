@@ -376,12 +376,6 @@
   border: 1px solid var(--border);
 }
 
-.region-row__star {
-  color: var(--accent-gold);
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
 .region-row__info {
   flex: 1;
   min-width: 0;
@@ -2995,7 +2989,6 @@
   color: var(--primary);
 }
 
-.region-row__star,
 .region-row__collect,
 .region-row__collect-inline,
 .rank-row__num--me,
