@@ -5279,7 +5279,7 @@
 .my-travel-card {
   background: var(--white);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--border);
+  border: none;
   padding: var(--space-xl) var(--space-lg) var(--space-2xl);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
