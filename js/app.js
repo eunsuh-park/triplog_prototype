@@ -386,8 +386,21 @@
     showScreen('certifyReview');
   };
 
+  function setCarouselFlipped(flipped) {
+    if (!carouselCard) return;
+    carouselCard.classList.toggle('is-flipped', flipped);
+    const back = carouselCard.querySelector('.landmark-carousel__face--back');
+    if (back) back.setAttribute('aria-hidden', flipped ? 'false' : 'true');
+  }
+
+  function toggleCarouselFlip() {
+    if (!carouselCard) return;
+    setCarouselFlipped(!carouselCard.classList.contains('is-flipped'));
+  }
+
   function updateCarousel(direction) {
     const item = landmarks[carouselIndex];
+    setCarouselFlipped(false);
     if (carouselImg) {
       carouselImg.style.opacity = '0';
       carouselImg.style.transform = direction === 'next' ? 'translateX(12px)' : direction === 'prev' ? 'translateX(-12px)' : 'none';
@@ -571,14 +584,27 @@
   }
 
   let touchStartX = 0;
+  let touchStartY = 0;
+  let carouselTapLocked = false;
   const carouselWrap = app.querySelector('[data-carousel-card]');
   if (carouselWrap) {
     carouselWrap.addEventListener('touchstart', (e) => {
       touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
     }, { passive: true });
     carouselWrap.addEventListener('touchend', (e) => {
       const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) < 40 && Math.abs(dy) < 40) {
+        carouselTapLocked = true;
+        toggleCarouselFlip();
+        window.setTimeout(() => {
+          carouselTapLocked = false;
+        }, 320);
+        return;
+      }
       if (Math.abs(dx) < 40) return;
+      setCarouselFlipped(false);
       if (dx < 0) {
         carouselIndex = (carouselIndex + 1) % landmarks.length;
         updateCarousel('next');
@@ -587,6 +613,10 @@
         updateCarousel('prev');
       }
     }, { passive: true });
+    carouselWrap.addEventListener('click', () => {
+      if (carouselTapLocked) return;
+      toggleCarouselFlip();
+    });
   }
 
   const koreaMapEl = app.querySelector('[data-korea-map]');
