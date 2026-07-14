@@ -156,10 +156,13 @@
     const textLayer = svg.querySelector('#text');
     if (textLayer) textLayer.style.display = 'none';
     svg.querySelectorAll('path, polygon').forEach((el) => {
-      if (el.classList.contains('cls-1') || el.getAttribute('fill') === 'none') return;
+      if (el.getAttribute('fill') === 'none') return;
       el.removeAttribute('class');
       el.removeAttribute('style');
       el.classList.add('mini-map-land', 'is-active');
+      el.style.fill = 'var(--map-land-active)';
+      el.style.stroke = 'rgba(255, 255, 255, 0.9)';
+      el.style.strokeWidth = '1.1px';
     });
   }
 
