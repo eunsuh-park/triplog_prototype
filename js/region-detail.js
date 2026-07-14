@@ -16,6 +16,52 @@
     C: { ko: '일반', en: 'Common', tagline: '일반 관광지' },
   };
 
+  /** korea.svg 도형 순서 → 시·도 (홈 지도와 동일) */
+  const NATIONAL_SHAPE_REGIONS = [
+    '전라남도',
+    '전라북도',
+    '서울특별시',
+    '강원특별자치도',
+    '경기도',
+    '경상남도',
+    '경상북도',
+    '충청북도',
+    '제주특별자치도',
+  ];
+
+  const PROVINCE_SVG = {
+    서울특별시: '서울특별시.svg',
+    부산광역시: '부산광역시.svg',
+    인천광역시: '인천광역시.svg',
+    대구광역시: '대구광역시.svg',
+    광주광역시: '광주광역시.svg',
+    대전광역시: '대전광역시.svg',
+    울산광역시: '울산광역시.svg',
+    세종특별자치시: '세종특별자치시.svg',
+    강원특별자치도: '강원도.svg',
+    강원도: '강원도.svg',
+    충청북도: '충청북도.svg',
+    충청남도: '충청남도.svg',
+    전라북도: '전라북도.svg',
+    전라남도: '전라남도.svg',
+    경상북도: '경상북도.svg',
+    경상남도: '경상남도.svg',
+    제주특별자치도: '제주특별자치도.svg',
+    경기도: 'gyeonggi.svg',
+  };
+
+  /** 전국 지도에 별도 폴리곤이 없는 광역시 — 좌표 마커 (viewBox 1366×768) */
+  const METRO_MARKERS = {
+    부산광역시: { cx: 768, cy: 565 },
+    대구광역시: { cx: 728, cy: 478 },
+    울산광역시: { cx: 808, cy: 528 },
+    인천광역시: { cx: 548, cy: 318 },
+    광주광역시: { cx: 528, cy: 528 },
+    대전광역시: { cx: 602, cy: 438 },
+    세종특별자치시: { cx: 588, cy: 408 },
+    충청남도: { cx: 560, cy: 430 },
+  };
+
   const REGION_DETAIL = {
     부산광역시: {
       area: '769.94km²',
@@ -65,6 +111,8 @@
     },
   };
 
+  let miniMapCache = {};
+
   function renderFacts(detail) {
     const items = [detail.area, detail.population, detail.districts].filter(Boolean);
     return items.map((label) => `<span class="region-detail__fact">${label}</span>`).join('');
@@ -90,6 +138,92 @@
       date: '2026년 3월 24일',
       landmarks,
     };
+  }
+
+  async function loadMapSvg(url) {
+    if (miniMapCache[url]) return miniMapCache[url].cloneNode(true);
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`SVG load failed: ${url}`);
+    const raw = await res.text();
+    const doc = new DOMParser().parseFromString(raw, 'image/svg+xml');
+    const svg = doc.querySelector('svg');
+    if (!svg) throw new Error(`No SVG in ${url}`);
+    miniMapCache[url] = svg;
+    return svg.cloneNode(true);
+  }
+
+  function styleProvinceMiniMap(svg) {
+    const textLayer = svg.querySelector('#text');
+    if (textLayer) textLayer.style.display = 'none';
+    svg.querySelectorAll('path, polygon').forEach((el) => {
+      if (el.classList.contains('cls-1') || el.getAttribute('fill') === 'none') return;
+      el.removeAttribute('class');
+      el.removeAttribute('style');
+      el.classList.add('mini-map-land', 'is-active');
+    });
+  }
+
+  function highlightNationalMiniMap(svg, regionName) {
+    const shapes = svg.querySelectorAll('path, polygon');
+    shapes.forEach((el, index) => {
+      el.removeAttribute('class');
+      el.removeAttribute('style');
+      el.classList.add('mini-map-land');
+      const shapeName = NATIONAL_SHAPE_REGIONS[index];
+      if (shapeName === regionName || (regionName === '강원도' && shapeName === '강원특별자치도')) {
+        el.classList.add('is-active');
+      }
+    });
+
+    svg.querySelectorAll('.mini-map-marker, .mini-map-marker-soft').forEach((el) => el.remove());
+
+    const marker = METRO_MARKERS[regionName];
+    const shapeIndex = NATIONAL_SHAPE_REGIONS.indexOf(regionName);
+    if (marker && shapeIndex < 0) {
+      const soft = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      soft.setAttribute('class', 'mini-map-marker-soft');
+      soft.setAttribute('cx', String(marker.cx));
+      soft.setAttribute('cy', String(marker.cy));
+      soft.setAttribute('r', '42');
+      svg.appendChild(soft);
+
+      const softDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      softDot.setAttribute('class', 'mini-map-marker');
+      softDot.setAttribute('cx', String(marker.cx));
+      softDot.setAttribute('cy', String(marker.cy));
+      softDot.setAttribute('r', '18');
+      svg.appendChild(softDot);
+    }
+  }
+
+  async function renderMiniMap(root, regionName) {
+    const host = root.querySelector('[data-region-mini-map]');
+    if (!host) return;
+    host.setAttribute('aria-label', `${regionName} 위치 지도`);
+    host.innerHTML = '<div class="region-detail__mini-map__empty">지도 불러오는 중…</div>';
+
+    try {
+      const provinceFile = PROVINCE_SVG[regionName];
+      const url = provinceFile
+        ? `assets/maps/${provinceFile}`
+        : 'assets/maps/korea.svg';
+      const svg = await loadMapSvg(url);
+      svg.removeAttribute('id');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.querySelectorAll('style').forEach((el) => el.remove());
+      if (provinceFile) {
+        host.classList.add('region-detail__mini-map--province');
+        styleProvinceMiniMap(svg);
+      } else {
+        host.classList.remove('region-detail__mini-map--province');
+        highlightNationalMiniMap(svg, regionName);
+      }
+      host.innerHTML = '';
+      host.appendChild(svg);
+    } catch (err) {
+      console.error(err);
+      host.innerHTML = '<div class="region-detail__mini-map__empty">지도를 불러올 수 없습니다</div>';
+    }
   }
 
   function renderCardBack(lm) {
@@ -333,6 +467,7 @@
     root.dataset.regionCarouselIndex = String(carouselIndex);
     root.dataset.regionName = region.name;
 
+    renderMiniMap(root, region.name);
     initRegionCarousel(root, carouselIndex);
     initRegionCardFlip(root);
   };
