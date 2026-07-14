@@ -332,6 +332,7 @@
     const region = window.TRIPLOG_REGIONS?.find((r) => r.name === regionName);
     if (!region) return;
 
+    setRegionTab('cards');
     setRegionView('grid');
 
     if (window.renderRegionDetail && regionDetailRoot) {
@@ -345,14 +346,49 @@
     }
   }
 
-  function setRegionView(view) {
+  let regionTab = 'cards';
+  let regionView = 'grid';
+
+  function syncRegionPanels() {
+    app.querySelectorAll('[data-region-tab]').forEach((btn) => {
+      const on = btn.dataset.regionTab === regionTab;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
     app.querySelectorAll('[data-region-view]').forEach((btn) => {
-      btn.classList.toggle('active', btn.dataset.regionView === view);
+      btn.classList.toggle('active', btn.dataset.regionView === regionView);
     });
-    app.querySelectorAll('[data-region-view-panel]').forEach((panel) => {
-      panel.classList.toggle('active', panel.dataset.regionViewPanel === view);
+    app.querySelectorAll('[data-region-tab-panel]').forEach((panel) => {
+      const tab = panel.dataset.regionTabPanel;
+      if (tab === 'info') {
+        panel.classList.toggle('active', regionTab === 'info');
+        return;
+      }
+      const view = panel.dataset.regionViewPanel;
+      panel.classList.toggle('active', regionTab === 'cards' && view === regionView);
     });
+    const toggle = app.querySelector('.region-view-toggle');
+    if (toggle) {
+      toggle.hidden = regionTab !== 'cards';
+    }
   }
+
+  function setRegionTab(tab) {
+    regionTab = tab;
+    syncRegionPanels();
+  }
+
+  function setRegionView(view) {
+    regionView = view;
+    if (regionTab !== 'cards') regionTab = 'cards';
+    syncRegionPanels();
+  }
+
+  app.querySelectorAll('[data-region-tab]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      setRegionTab(btn.dataset.regionTab);
+    });
+  });
 
   app.querySelectorAll('[data-region-view]').forEach((btn) => {
     btn.addEventListener('click', () => {
