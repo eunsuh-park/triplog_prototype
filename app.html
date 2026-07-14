@@ -122,7 +122,16 @@
               <div class="region-detail__mini-map" data-region-mini-map role="img" aria-label="지역 위치 지도"></div>
             </div>
             <div class="region-detail__title-row">
-              <h1 class="region-detail__title" data-region-title>부산광역시</h1>
+              <div class="region-detail__title-group">
+                <h1 class="region-detail__title" data-region-title>부산광역시</h1>
+                <div class="region-detail__admin-picker" data-region-admin-picker hidden>
+                  <button class="region-detail__admin-picker-btn is-pressable" type="button" data-region-admin-toggle aria-haspopup="listbox" aria-expanded="false">
+                    <span data-region-admin-label>전체</span>
+                    <iconify-icon icon="mingcute:down-line" width="16"></iconify-icon>
+                  </button>
+                  <div class="region-detail__admin-menu" data-region-admin-menu role="listbox" hidden></div>
+                </div>
+              </div>
               <a class="region-detail__home-btn is-pressable" data-region-homepage href="#" target="_blank" rel="noopener noreferrer" aria-label="공식 홈페이지">
                 <iconify-icon icon="mingcute:earth-line" width="20"></iconify-icon>
               </a>
@@ -934,6 +943,7 @@
 
 <script src="js/regions.js"></script>
 <script src="js/ranks.js"></script>
+<script src="js/province-admin.js"></script>
 <script src="js/region-detail.js"></script>
 <script src="js/korea-map.js"></script>
 <script src="js/cert-history.js"></script>

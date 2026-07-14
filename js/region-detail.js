@@ -152,17 +152,139 @@
     return svg.cloneNode(true);
   }
 
-  function styleProvinceMiniMap(svg) {
+  function normalizeGroupAdminId(gid) {
+    const name = String(gid || '').replace(/^_/, '');
+    return /(시|군|구)$/.test(name) && !name.startsWith('LWPOLYLINE') ? name : '';
+  }
+
+  function bindProvinceShapeAdmins(svg, regionName) {
+    const shapeMap = window.TRIPLOG_PROVINCE?.getShapeAdminMap(regionName) || {};
+    svg.querySelectorAll('g[id]').forEach((group) => {
+      const adminName = normalizeGroupAdminId(group.id);
+      if (!adminName) return;
+      group.querySelectorAll('path, polygon').forEach((el) => {
+        if (el.getAttribute('fill') === 'none') return;
+        el.dataset.adminName = adminName;
+      });
+    });
+
+    const shapes = [...svg.querySelectorAll('path, polygon')].filter((el) => el.getAttribute('fill') !== 'none');
+    shapes.forEach((el, index) => {
+      if (el.dataset.adminName) return;
+      const adminName = shapeMap[String(index)];
+      if (adminName) el.dataset.adminName = adminName;
+    });
+  }
+
+  function paintProvinceMiniMapShape(el, highlighted) {
+    el.classList.add('mini-map-land');
+    el.classList.toggle('is-active', highlighted);
+    el.style.fill = highlighted ? 'var(--map-land-active)' : 'var(--map-land)';
+    el.style.stroke = highlighted ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)';
+    el.style.strokeWidth = highlighted ? '1.6px' : '1.1px';
+  }
+
+  function applyMiniMapAdminFilter(root, selectedAdmin) {
+    const host = root.querySelector('[data-region-mini-map]');
+    const svg = host?.querySelector('svg');
+    if (!svg) return;
+    const filterAll = !selectedAdmin || selectedAdmin === '전체';
+    svg.querySelectorAll('path, polygon').forEach((el) => {
+      if (el.getAttribute('fill') === 'none') return;
+      const adminName = el.dataset.adminName;
+      const highlighted = filterAll || adminName === selectedAdmin;
+      paintProvinceMiniMapShape(el, highlighted);
+    });
+  }
+
+  function styleProvinceMiniMap(svg, regionName) {
     const textLayer = svg.querySelector('#text');
     if (textLayer) textLayer.style.display = 'none';
+    bindProvinceShapeAdmins(svg, regionName);
     svg.querySelectorAll('path, polygon').forEach((el) => {
       if (el.getAttribute('fill') === 'none') return;
       el.removeAttribute('class');
-      el.removeAttribute('style');
-      el.classList.add('mini-map-land', 'is-active');
-      el.style.fill = 'var(--map-land-active)';
-      el.style.stroke = 'rgba(255, 255, 255, 0.9)';
-      el.style.strokeWidth = '1.1px';
+      paintProvinceMiniMapShape(el, true);
+    });
+  }
+
+  function closeAdminPicker(root) {
+    const picker = root.querySelector('[data-region-admin-picker]');
+    const toggle = root.querySelector('[data-region-admin-toggle]');
+    const menu = root.querySelector('[data-region-admin-menu]');
+    if (!picker || !toggle || !menu) return;
+    picker.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.hidden = true;
+  }
+
+  function renderAdminPicker(root, regionName) {
+    const picker = root.querySelector('[data-region-admin-picker]');
+    const label = root.querySelector('[data-region-admin-label]');
+    const menu = root.querySelector('[data-region-admin-menu]');
+    if (!picker || !label || !menu) return;
+
+    const provinceApi = window.TRIPLOG_PROVINCE;
+    const isProvince = provinceApi?.isProvinceRegion(regionName);
+    picker.hidden = !isProvince;
+    closeAdminPicker(root);
+
+    if (!isProvince) {
+      root.dataset.regionAdminFilter = '';
+      return;
+    }
+
+    const selected = root.dataset.regionAdminFilter || '전체';
+    label.textContent = selected;
+    const admins = provinceApi.sortKorean(provinceApi.getProvinceAdmins(regionName));
+    const options = ['전체', ...admins];
+    menu.innerHTML = options
+      .map((name) => {
+        const active = name === selected ? ' active' : '';
+        return `<button class="region-detail__admin-option${active} is-pressable" type="button" role="option" data-region-admin-option="${name}" aria-selected="${name === selected}">${name}</button>`;
+      })
+      .join('');
+    applyMiniMapAdminFilter(root, selected);
+  }
+
+  function setAdminFilter(root, adminName) {
+    root.dataset.regionAdminFilter = adminName;
+    const label = root.querySelector('[data-region-admin-label]');
+    if (label) label.textContent = adminName;
+    root.querySelectorAll('[data-region-admin-option]').forEach((btn) => {
+      const on = btn.dataset.regionAdminOption === adminName;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    applyMiniMapAdminFilter(root, adminName);
+    closeAdminPicker(root);
+  }
+
+  function initAdminPicker(root) {
+    if (root.dataset.adminPickerInit) return;
+    root.dataset.adminPickerInit = '1';
+
+    root.addEventListener('click', (e) => {
+      const toggle = e.target.closest('[data-region-admin-toggle]');
+      if (toggle) {
+        const picker = root.querySelector('[data-region-admin-picker]');
+        const menu = root.querySelector('[data-region-admin-menu]');
+        if (!picker || picker.hidden || !menu) return;
+        const open = picker.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menu.hidden = !open;
+        return;
+      }
+
+      const option = e.target.closest('[data-region-admin-option]');
+      if (option) {
+        setAdminFilter(root, option.dataset.regionAdminOption);
+        return;
+      }
+
+      if (!e.target.closest('[data-region-admin-picker]')) {
+        closeAdminPicker(root);
+      }
     });
   }
 
@@ -216,7 +338,7 @@
       svg.querySelectorAll('style').forEach((el) => el.remove());
       if (provinceFile) {
         host.classList.add('region-detail__mini-map--province');
-        styleProvinceMiniMap(svg);
+        styleProvinceMiniMap(svg, regionName);
       } else {
         host.classList.remove('region-detail__mini-map--province');
         highlightNationalMiniMap(svg, regionName);
@@ -469,8 +591,12 @@
 
     root.dataset.regionCarouselIndex = String(carouselIndex);
     root.dataset.regionName = region.name;
+    root.dataset.regionAdminFilter = '전체';
 
-    renderMiniMap(root, region.name);
+    renderMiniMap(root, region.name).then(() => {
+      renderAdminPicker(root, region.name);
+    });
+    initAdminPicker(root);
     initRegionCarousel(root, carouselIndex);
     initRegionCardFlip(root);
   };
