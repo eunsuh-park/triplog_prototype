@@ -285,6 +285,8 @@
 
       const option = e.target.closest('[data-region-admin-option]');
       if (option) {
+        e.preventDefault();
+        e.stopPropagation();
         setAdminFilter(root, option.dataset.regionAdminOption);
         return;
       }
