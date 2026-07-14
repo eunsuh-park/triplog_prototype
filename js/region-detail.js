@@ -179,9 +179,10 @@
   function paintProvinceMiniMapShape(el, highlighted) {
     el.classList.add('mini-map-land');
     el.classList.toggle('is-active', highlighted);
-    el.style.fill = highlighted ? 'var(--map-land-active)' : 'var(--map-land)';
-    el.style.stroke = highlighted ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)';
-    el.style.strokeWidth = highlighted ? '1.6px' : '1.1px';
+    el.style.fill = highlighted ? 'var(--map-land-active)' : 'var(--surface-dim)';
+    el.style.stroke = highlighted ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)';
+    el.style.strokeWidth = highlighted ? '1.6px' : '1px';
+    el.style.opacity = highlighted ? '1' : '0.85';
   }
 
   function applyMiniMapAdminFilter(root, selectedAdmin) {
