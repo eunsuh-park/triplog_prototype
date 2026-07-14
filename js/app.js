@@ -359,18 +359,11 @@
       btn.classList.toggle('active', btn.dataset.regionView === regionView);
     });
     app.querySelectorAll('[data-region-tab-panel]').forEach((panel) => {
-      const tab = panel.dataset.regionTabPanel;
-      if (tab === 'info') {
-        panel.classList.toggle('active', regionTab === 'info');
-        return;
-      }
-      const view = panel.dataset.regionViewPanel;
-      panel.classList.toggle('active', regionTab === 'cards' && view === regionView);
+      panel.classList.toggle('active', panel.dataset.regionTabPanel === regionTab);
     });
-    const toggle = app.querySelector('.region-view-toggle');
-    if (toggle) {
-      toggle.hidden = regionTab !== 'cards';
-    }
+    app.querySelectorAll('[data-region-view-panel]').forEach((panel) => {
+      panel.classList.toggle('active', panel.dataset.regionViewPanel === regionView);
+    });
   }
 
   function setRegionTab(tab) {

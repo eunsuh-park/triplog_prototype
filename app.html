@@ -119,10 +119,6 @@
           <header class="region-detail__header">
             <div class="region-detail__header-top">
               <button class="btn-back" data-back aria-label="뒤로"><iconify-icon icon="mingcute:left-line" width="22"></iconify-icon></button>
-              <div class="region-view-toggle" role="tablist" aria-label="보기 전환">
-                <button class="region-view-toggle__btn active" type="button" data-region-view="grid" aria-label="그리드 보기"><iconify-icon icon="mingcute:grid-line" width="18"></iconify-icon></button>
-                <button class="region-view-toggle__btn" type="button" data-region-view="carousel" aria-label="카드 보기"><iconify-icon icon="mingcute:carousel-horizontal-line" width="18"></iconify-icon></button>
-              </div>
             </div>
             <div class="region-detail__title-row">
               <h1 class="region-detail__title" data-region-title>부산광역시</h1>
@@ -152,13 +148,20 @@
             </div>
           </div>
 
-          <div class="region-detail__body region-detail__body--grid active" data-region-tab-panel="cards" data-region-view-panel="grid">
-            <div class="region-card-grid" data-region-card-grid></div>
-          </div>
-
-          <div class="region-detail__body region-detail__body--carousel" data-region-tab-panel="cards" data-region-view-panel="carousel">
-            <div class="region-card-carousel" data-region-carousel></div>
-            <p class="region-card-carousel__pager" data-region-pager>1 / 4</p>
+          <div class="region-detail__cards active" data-region-tab-panel="cards">
+            <div class="region-detail__cards-toolbar">
+              <div class="region-view-toggle" role="tablist" aria-label="보기 전환">
+                <button class="region-view-toggle__btn active" type="button" data-region-view="grid" aria-label="그리드 보기"><iconify-icon icon="mingcute:grid-line" width="18"></iconify-icon></button>
+                <button class="region-view-toggle__btn" type="button" data-region-view="carousel" aria-label="카드 보기"><iconify-icon icon="mingcute:carousel-horizontal-line" width="18"></iconify-icon></button>
+              </div>
+            </div>
+            <div class="region-detail__body region-detail__body--grid active" data-region-view-panel="grid">
+              <div class="region-card-grid" data-region-card-grid></div>
+            </div>
+            <div class="region-detail__body region-detail__body--carousel" data-region-view-panel="carousel">
+              <div class="region-card-carousel" data-region-carousel></div>
+              <p class="region-card-carousel__pager" data-region-pager>1 / 4</p>
+            </div>
           </div>
         </div>
       </div>

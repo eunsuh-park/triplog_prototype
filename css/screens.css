@@ -1103,7 +1103,7 @@
 .region-detail__header-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 4px 0 10px;
 }
 
@@ -1230,6 +1230,35 @@
 
 .region-detail__body.active {
   display: flex;
+}
+
+.region-detail__cards {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.region-detail__cards.active {
+  display: flex;
+}
+
+.region-detail__cards-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 12px 16px 0;
+}
+
+.region-detail__cards .region-detail__body {
+  background: transparent;
+}
+
+.region-detail__cards .region-detail__body--grid {
+  padding-top: 12px;
 }
 
 .region-detail__body--info {
