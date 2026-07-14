@@ -1295,7 +1295,7 @@
   border: 1px solid var(--border);
   background: var(--white);
   color: var(--primary);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
@@ -1303,10 +1303,34 @@
   transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-spring);
 }
 
+.region-detail__home-btn--info {
+  width: auto;
+  height: auto;
+  margin-top: var(--space-xl);
+  padding: 10px 16px;
+  gap: 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: var(--white);
+}
+
+.region-detail__home-btn__label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1;
+}
+
 .region-detail__home-btn:active {
   transform: scale(0.94);
   background: var(--primary-soft);
   border-color: var(--primary);
+}
+
+.region-detail__home-btn--info:active {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  color: var(--white);
 }
 
 .region-detail__tabs {
@@ -3473,8 +3497,7 @@
 }
 
 .cert-flow__btn--primary,
-.gallery-confirm,
-.region-detail__home-btn {
+.gallery-confirm {
   background: var(--primary);
   color: var(--white);
 }
