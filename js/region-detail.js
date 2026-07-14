@@ -152,6 +152,14 @@
     return svg.cloneNode(true);
   }
 
+  function getMappableShapes(svg) {
+    return [...svg.querySelectorAll('path, polygon')].filter((el) => {
+      if (el.getAttribute('fill') === 'none') return false;
+      if (el.closest('g#text')) return false;
+      return true;
+    });
+  }
+
   function normalizeGroupAdminId(gid) {
     const name = String(gid || '').replace(/^_/, '');
     return /(시|군|구)$/.test(name) && !name.startsWith('LWPOLYLINE') ? name : '';
@@ -168,7 +176,7 @@
       });
     });
 
-    const shapes = [...svg.querySelectorAll('path, polygon')].filter((el) => el.getAttribute('fill') !== 'none');
+    const shapes = getMappableShapes(svg);
     shapes.forEach((el, index) => {
       if (el.dataset.adminName) return;
       const adminName = shapeMap[String(index)];
@@ -190,8 +198,7 @@
     const svg = host?.querySelector('svg');
     if (!svg) return;
     const filterAll = !selectedAdmin || selectedAdmin === '전체';
-    svg.querySelectorAll('path, polygon').forEach((el) => {
-      if (el.getAttribute('fill') === 'none') return;
+    getMappableShapes(svg).forEach((el) => {
       const adminName = el.dataset.adminName;
       const highlighted = filterAll || adminName === selectedAdmin;
       paintProvinceMiniMapShape(el, highlighted);
@@ -202,8 +209,7 @@
     const textLayer = svg.querySelector('#text');
     if (textLayer) textLayer.style.display = 'none';
     bindProvinceShapeAdmins(svg, regionName);
-    svg.querySelectorAll('path, polygon').forEach((el) => {
-      if (el.getAttribute('fill') === 'none') return;
+    getMappableShapes(svg).forEach((el) => {
       el.removeAttribute('class');
       paintProvinceMiniMapShape(el, true);
     });
