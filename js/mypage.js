@@ -68,7 +68,7 @@
 
   function travelTimelinePreview() {
     if (typeof window.renderTimelineItems === 'function' && window.TRIPLOG_RECORDS) {
-      return renderTimelineItems(TRIPLOG_RECORDS, { limit: 3, clickable: true });
+      return renderTimelineItems(TRIPLOG_RECORDS, { limit: 1, clickable: true });
     }
     return '';
   }
