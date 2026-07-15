@@ -1412,7 +1412,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: #111;
+  color: var(--text-secondary);
   transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
 }
 
