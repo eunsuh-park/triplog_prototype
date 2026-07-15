@@ -16,6 +16,52 @@
     C: { ko: '일반', en: 'Common', tagline: '일반 관광지' },
   };
 
+  /** korea.svg 도형 순서 → 시·도 (홈 지도와 동일) */
+  const NATIONAL_SHAPE_REGIONS = [
+    '전라남도',
+    '전라북도',
+    '서울특별시',
+    '강원특별자치도',
+    '경기도',
+    '경상남도',
+    '경상북도',
+    '충청북도',
+    '제주특별자치도',
+  ];
+
+  const PROVINCE_SVG = {
+    서울특별시: '서울특별시.svg',
+    부산광역시: '부산광역시.svg',
+    인천광역시: '인천광역시.svg',
+    대구광역시: '대구광역시.svg',
+    광주광역시: '광주광역시.svg',
+    대전광역시: '대전광역시.svg',
+    울산광역시: '울산광역시.svg',
+    세종특별자치시: '세종특별자치시.svg',
+    강원특별자치도: '강원도.svg',
+    강원도: '강원도.svg',
+    충청북도: '충청북도.svg',
+    충청남도: '충청남도.svg',
+    전라북도: '전라북도.svg',
+    전라남도: '전라남도.svg',
+    경상북도: '경상북도.svg',
+    경상남도: '경상남도.svg',
+    제주특별자치도: '제주특별자치도.svg',
+    경기도: 'gyeonggi.svg',
+  };
+
+  /** 전국 지도에 별도 폴리곤이 없는 광역시 — 좌표 마커 (viewBox 1366×768) */
+  const METRO_MARKERS = {
+    부산광역시: { cx: 768, cy: 565 },
+    대구광역시: { cx: 728, cy: 478 },
+    울산광역시: { cx: 808, cy: 528 },
+    인천광역시: { cx: 548, cy: 318 },
+    광주광역시: { cx: 528, cy: 528 },
+    대전광역시: { cx: 602, cy: 438 },
+    세종특별자치시: { cx: 588, cy: 408 },
+    충청남도: { cx: 560, cy: 430 },
+  };
+
   const REGION_DETAIL = {
     부산광역시: {
       area: '769.94km²',
@@ -65,6 +111,8 @@
     },
   };
 
+  let miniMapCache = {};
+
   function renderFacts(detail) {
     const items = [detail.area, detail.population, detail.districts].filter(Boolean);
     return items.map((label) => `<span class="region-detail__fact">${label}</span>`).join('');
@@ -90,6 +138,226 @@
       date: '2026년 3월 24일',
       landmarks,
     };
+  }
+
+  async function loadMapSvg(url) {
+    if (miniMapCache[url]) return miniMapCache[url].cloneNode(true);
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`SVG load failed: ${url}`);
+    const raw = await res.text();
+    const doc = new DOMParser().parseFromString(raw, 'image/svg+xml');
+    const svg = doc.querySelector('svg');
+    if (!svg) throw new Error(`No SVG in ${url}`);
+    miniMapCache[url] = svg;
+    return svg.cloneNode(true);
+  }
+
+  function getMappableShapes(svg) {
+    return [...svg.querySelectorAll('path, polygon')].filter((el) => {
+      if (el.getAttribute('fill') === 'none') return false;
+      if (el.closest('g#text')) return false;
+      return true;
+    });
+  }
+
+  function normalizeGroupAdminId(gid) {
+    const name = String(gid || '').replace(/^_/, '');
+    return /(시|군|구)$/.test(name) && !name.startsWith('LWPOLYLINE') ? name : '';
+  }
+
+  function bindProvinceShapeAdmins(svg, regionName) {
+    const shapeMap = window.TRIPLOG_PROVINCE?.getShapeAdminMap(regionName) || {};
+    svg.querySelectorAll('g[id]').forEach((group) => {
+      const adminName = normalizeGroupAdminId(group.id);
+      if (!adminName) return;
+      group.querySelectorAll('path, polygon').forEach((el) => {
+        if (el.getAttribute('fill') === 'none') return;
+        el.dataset.adminName = adminName;
+      });
+    });
+
+    const shapes = getMappableShapes(svg);
+    shapes.forEach((el, index) => {
+      if (el.dataset.adminName) return;
+      const adminName = shapeMap[String(index)];
+      if (adminName) el.dataset.adminName = adminName;
+    });
+  }
+
+  function paintProvinceMiniMapShape(el, highlighted) {
+    el.classList.add('mini-map-land');
+    el.classList.toggle('is-active', highlighted);
+    el.style.fill = highlighted ? 'var(--map-land-active)' : 'var(--surface-dim)';
+    el.style.stroke = highlighted ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)';
+    el.style.strokeWidth = highlighted ? '1.6px' : '1px';
+    el.style.opacity = highlighted ? '1' : '0.85';
+  }
+
+  function applyMiniMapAdminFilter(root, selectedAdmin) {
+    const host = root.querySelector('[data-region-mini-map]');
+    const svg = host?.querySelector('svg');
+    if (!svg) return;
+    const filterAll = !selectedAdmin || selectedAdmin === '전체';
+    getMappableShapes(svg).forEach((el) => {
+      const adminName = el.dataset.adminName;
+      const highlighted = filterAll || adminName === selectedAdmin;
+      paintProvinceMiniMapShape(el, highlighted);
+    });
+  }
+
+  function styleProvinceMiniMap(svg, regionName) {
+    const textLayer = svg.querySelector('#text');
+    if (textLayer) textLayer.style.display = 'none';
+    bindProvinceShapeAdmins(svg, regionName);
+    getMappableShapes(svg).forEach((el) => {
+      el.removeAttribute('class');
+      paintProvinceMiniMapShape(el, true);
+    });
+  }
+
+  function closeAdminPicker(root) {
+    const picker = root.querySelector('[data-region-admin-picker]');
+    const toggle = root.querySelector('[data-region-admin-toggle]');
+    const menu = root.querySelector('[data-region-admin-menu]');
+    if (!picker || !toggle || !menu) return;
+    picker.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.hidden = true;
+  }
+
+  function renderAdminPicker(root, regionName) {
+    const picker = root.querySelector('[data-region-admin-picker]');
+    const label = root.querySelector('[data-region-admin-label]');
+    const menu = root.querySelector('[data-region-admin-menu]');
+    if (!picker || !label || !menu) return;
+
+    const provinceApi = window.TRIPLOG_PROVINCE;
+    const isProvince = provinceApi?.isProvinceRegion(regionName);
+    picker.hidden = !isProvince;
+    closeAdminPicker(root);
+
+    if (!isProvince) {
+      root.dataset.regionAdminFilter = '';
+      return;
+    }
+
+    const selected = root.dataset.regionAdminFilter || '전체';
+    label.textContent = selected;
+    const admins = provinceApi.sortKorean(provinceApi.getProvinceAdmins(regionName));
+    const options = ['전체', ...admins];
+    menu.innerHTML = options
+      .map((name) => {
+        const active = name === selected ? ' active' : '';
+        return `<button class="region-detail__admin-option${active} is-pressable" type="button" role="option" data-region-admin-option="${name}" aria-selected="${name === selected}">${name}</button>`;
+      })
+      .join('');
+    applyMiniMapAdminFilter(root, selected);
+  }
+
+  function setAdminFilter(root, adminName) {
+    root.dataset.regionAdminFilter = adminName;
+    const label = root.querySelector('[data-region-admin-label]');
+    if (label) label.textContent = adminName;
+    root.querySelectorAll('[data-region-admin-option]').forEach((btn) => {
+      const on = btn.dataset.regionAdminOption === adminName;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    applyMiniMapAdminFilter(root, adminName);
+    closeAdminPicker(root);
+  }
+
+  function initAdminPicker(root) {
+    if (root.dataset.adminPickerInit) return;
+    root.dataset.adminPickerInit = '1';
+
+    root.addEventListener('click', (e) => {
+      const toggle = e.target.closest('[data-region-admin-toggle]');
+      if (toggle) {
+        const picker = root.querySelector('[data-region-admin-picker]');
+        const menu = root.querySelector('[data-region-admin-menu]');
+        if (!picker || picker.hidden || !menu) return;
+        const open = picker.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menu.hidden = !open;
+        return;
+      }
+
+      const option = e.target.closest('[data-region-admin-option]');
+      if (option) {
+        e.preventDefault();
+        e.stopPropagation();
+        setAdminFilter(root, option.dataset.regionAdminOption);
+        return;
+      }
+
+      if (!e.target.closest('[data-region-admin-picker]')) {
+        closeAdminPicker(root);
+      }
+    });
+  }
+
+  function highlightNationalMiniMap(svg, regionName) {
+    const shapes = svg.querySelectorAll('path, polygon');
+    shapes.forEach((el, index) => {
+      el.removeAttribute('class');
+      el.removeAttribute('style');
+      el.classList.add('mini-map-land');
+      const shapeName = NATIONAL_SHAPE_REGIONS[index];
+      if (shapeName === regionName || (regionName === '강원도' && shapeName === '강원특별자치도')) {
+        el.classList.add('is-active');
+      }
+    });
+
+    svg.querySelectorAll('.mini-map-marker, .mini-map-marker-soft').forEach((el) => el.remove());
+
+    const marker = METRO_MARKERS[regionName];
+    const shapeIndex = NATIONAL_SHAPE_REGIONS.indexOf(regionName);
+    if (marker && shapeIndex < 0) {
+      const soft = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      soft.setAttribute('class', 'mini-map-marker-soft');
+      soft.setAttribute('cx', String(marker.cx));
+      soft.setAttribute('cy', String(marker.cy));
+      soft.setAttribute('r', '42');
+      svg.appendChild(soft);
+
+      const softDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      softDot.setAttribute('class', 'mini-map-marker');
+      softDot.setAttribute('cx', String(marker.cx));
+      softDot.setAttribute('cy', String(marker.cy));
+      softDot.setAttribute('r', '18');
+      svg.appendChild(softDot);
+    }
+  }
+
+  async function renderMiniMap(root, regionName) {
+    const host = root.querySelector('[data-region-mini-map]');
+    if (!host) return;
+    host.setAttribute('aria-label', `${regionName} 위치 지도`);
+    host.innerHTML = '<div class="region-detail__mini-map__empty">지도 불러오는 중…</div>';
+
+    try {
+      const provinceFile = PROVINCE_SVG[regionName];
+      const url = provinceFile
+        ? `assets/maps/${provinceFile}`
+        : 'assets/maps/korea.svg';
+      const svg = await loadMapSvg(url);
+      svg.removeAttribute('id');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.querySelectorAll('style').forEach((el) => el.remove());
+      if (provinceFile) {
+        host.classList.add('region-detail__mini-map--province');
+        styleProvinceMiniMap(svg, regionName);
+      } else {
+        host.classList.remove('region-detail__mini-map--province');
+        highlightNationalMiniMap(svg, regionName);
+      }
+      host.innerHTML = '';
+      host.appendChild(svg);
+    } catch (err) {
+      console.error(err);
+      host.innerHTML = '<div class="region-detail__mini-map__empty">지도를 불러올 수 없습니다</div>';
+    }
   }
 
   function renderCardBack(lm) {
@@ -332,7 +600,12 @@
 
     root.dataset.regionCarouselIndex = String(carouselIndex);
     root.dataset.regionName = region.name;
+    root.dataset.regionAdminFilter = '전체';
 
+    renderMiniMap(root, region.name).then(() => {
+      renderAdminPicker(root, region.name);
+    });
+    initAdminPicker(root);
     initRegionCarousel(root, carouselIndex);
     initRegionCardFlip(root);
   };
