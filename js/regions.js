@@ -4,8 +4,8 @@
  * 필터 분류 (chip data-region):
  * - all: 전체 17개
  * - metro (수도권): 서울특별시, 인천광역시, 경기도
- * - metro-city (광역시): 부산·인천·대구·광주·대전·울산 (인천은 수도권과 겹침)
- * - other (도): 9개 도·특별자치도·세종 (수도권·광역시 제외)
+ * - metro-city (광역시): 부산·인천·대구·광주·대전·울산·세종 (인천은 수도권과 겹침)
+ * - other (도): 8개 도·특별자치도 (수도권·광역시 제외)
  */
 (function () {
   const THUMB_POOL = [
@@ -25,7 +25,7 @@
     { name: '광주광역시', shortName: '광주', collected: 3, total: 18, groups: ['metro-city'] },
     { name: '대구광역시', shortName: '대구', collected: 2, total: 24, groups: ['metro-city'] },
     { name: '울산광역시', shortName: '울산', collected: 1, total: 16, groups: ['metro-city'] },
-    { name: '세종특별자치시', shortName: '세종', collected: 2, total: 10, groups: ['other'] },
+    { name: '세종특별자치시', shortName: '세종', collected: 2, total: 10, groups: ['metro-city'] },
     { name: '충청북도', shortName: '충청북', collected: 9, total: 80, groups: ['other'] },
     { name: '충청남도', shortName: '충청남', collected: 11, total: 90, groups: ['other'] },
     { name: '전라북도', shortName: '전라북', collected: 6, total: 70, groups: ['other'] },
