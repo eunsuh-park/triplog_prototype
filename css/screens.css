@@ -1448,10 +1448,31 @@
 
 .region-detail__cards-toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
   padding: 12px 16px 0;
+}
+
+.region-detail__filter-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: background var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-spring);
+}
+
+.region-detail__filter-btn:active {
+  transform: scale(0.94);
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .region-detail__cards .region-detail__body {

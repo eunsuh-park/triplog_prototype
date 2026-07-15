@@ -405,6 +405,11 @@
       if (home && home.getAttribute('href') === '#') {
         e.preventDefault();
         showToast('공식 홈페이지 (준비 중)');
+        return;
+      }
+      const filterBtn = e.target.closest('[data-region-filter]');
+      if (filterBtn) {
+        showToast('필터 (준비 중)');
       }
     });
   }
