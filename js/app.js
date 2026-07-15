@@ -25,6 +25,11 @@
   const progressFills = app.querySelectorAll('[data-animate-progress]');
 
   const regionDetailRoot = app.querySelector('[data-region-detail]');
+  const provinceSheet = app.querySelector('[data-province-sheet]');
+  const provinceSheetDetail = app.querySelector('[data-province-sheet-detail]');
+  const provinceSheetHandle = app.querySelector('[data-province-sheet-handle]');
+  let provinceSheetOpen = false;
+  let provinceSheetRegion = null;
 
   const TAB_SCREENS = ['map', 'dex', 'rank', 'settings'];
   const SUB_SCREENS = [
@@ -264,13 +269,30 @@
     const isSubScreen = SUB_SCREENS.includes(id);
     const isTabScreen = TAB_SCREENS.includes(id);
 
+    const provinceActiveOnMap = id === 'map' && !!(provinceSheetOpen || window.KoreaMapModule?.getCurrentRegion?.());
+
     if (bottomNav) {
-      bottomNav.classList.toggle('hidden', isSubScreen);
-      if (id === HOME_SCREEN || isSubScreen) {
+      const hideNav = isSubScreen || provinceActiveOnMap;
+      bottomNav.classList.toggle('hidden', hideNav);
+      if (id === HOME_SCREEN || isSubScreen || hideNav) {
         bottomNav.classList.remove('is-scroll-hidden');
       }
     }
     resetBottomNavScrollHide();
+
+    if (id === 'map') {
+      const region = window.KoreaMapModule?.getCurrentRegion?.();
+      if (region) {
+        openProvinceSheet(region);
+      } else {
+        closeProvinceSheet({ animate: false });
+      }
+    } else if (provinceSheet && provinceSheetOpen) {
+      provinceSheet.classList.remove('is-open', 'is-dragging');
+      provinceSheet.style.transform = '';
+      provinceSheet.hidden = true;
+      provinceSheetOpen = false;
+    }
 
     navItems.forEach((n) => {
       n.classList.toggle('active', isTabScreen && n.dataset.nav === id);
@@ -328,10 +350,113 @@
 
   window.showScreen = showScreen;
 
+  function closeProvinceSheet({ animate = true } = {}) {
+    if (!provinceSheet) return;
+    provinceSheetOpen = false;
+    provinceSheetRegion = null;
+    provinceSheet.classList.remove('is-open', 'is-dragging');
+    provinceSheet.style.transform = '';
+    if (!animate) {
+      provinceSheet.hidden = true;
+    } else if (!provinceSheet.hidden) {
+      const finish = () => {
+        provinceSheet.hidden = true;
+        provinceSheet.removeEventListener('transitionend', finish);
+      };
+      provinceSheet.addEventListener('transitionend', finish);
+      setTimeout(finish, 320);
+    }
+    if (bottomNav) {
+      const current = screenStack[screenStack.length - 1] || 'map';
+      const hideNav = SUB_SCREENS.includes(current);
+      bottomNav.classList.toggle('hidden', hideNav);
+    }
+  }
+
+  function openProvinceSheet(regionName) {
+    const region = window.TRIPLOG_REGIONS?.find((r) => r.name === regionName);
+    if (!region || !provinceSheet || !provinceSheetDetail) return;
+
+    provinceSheetRegion = regionName;
+    setRegionTab('cards');
+    setRegionView('grid');
+    if (window.renderRegionDetail) {
+      window.renderRegionDetail(region, provinceSheetDetail);
+    }
+
+    provinceSheet.hidden = false;
+    provinceSheet.style.transform = '';
+    requestAnimationFrame(() => {
+      provinceSheet.classList.add('is-open');
+    });
+    provinceSheetOpen = true;
+    if (bottomNav) {
+      bottomNav.classList.add('hidden');
+      bottomNav.classList.remove('is-scroll-hidden');
+    }
+  }
+
+  function expandProvinceSheetToDetail() {
+    const name = provinceSheetRegion || window.KoreaMapModule?.getCurrentRegion?.();
+    if (!name) return;
+    closeProvinceSheet({ animate: false });
+    openRegionDetail(name);
+  }
+
+  function initProvinceSheetDrag() {
+    if (!provinceSheet || !provinceSheetHandle) return;
+
+    let startY = 0;
+    let lastDy = 0;
+    let dragging = false;
+
+    const onPointerDown = (e) => {
+      if (!provinceSheetOpen) return;
+      dragging = true;
+      startY = e.clientY;
+      lastDy = 0;
+      provinceSheet.classList.add('is-dragging');
+      provinceSheetHandle.setPointerCapture?.(e.pointerId);
+    };
+
+    const onPointerMove = (e) => {
+      if (!dragging) return;
+      lastDy = e.clientY - startY;
+      if (lastDy < 0) {
+        provinceSheet.style.transform = `translateY(${lastDy}px)`;
+      } else {
+        provinceSheet.style.transform = `translateY(${Math.min(lastDy, provinceSheet.offsetHeight)}px)`;
+      }
+    };
+
+    const onPointerUp = () => {
+      if (!dragging) return;
+      dragging = false;
+      provinceSheet.classList.remove('is-dragging');
+      if (lastDy <= -56) {
+        provinceSheet.style.transform = '';
+        expandProvinceSheetToDetail();
+        return;
+      }
+      if (lastDy >= 100) {
+        provinceSheet.style.transform = '';
+        if (window.KoreaMapModule) KoreaMapModule.showNational();
+        return;
+      }
+      provinceSheet.style.transform = '';
+    };
+
+    provinceSheetHandle.addEventListener('pointerdown', onPointerDown);
+    provinceSheetHandle.addEventListener('pointermove', onPointerMove);
+    provinceSheetHandle.addEventListener('pointerup', onPointerUp);
+    provinceSheetHandle.addEventListener('pointercancel', onPointerUp);
+  }
+
   function openRegionDetail(regionName) {
     const region = window.TRIPLOG_REGIONS?.find((r) => r.name === regionName);
     if (!region) return;
 
+    closeProvinceSheet({ animate: false });
     setRegionTab('cards');
     setRegionView('grid');
 
@@ -389,8 +514,10 @@
     });
   });
 
-  if (regionDetailRoot) {
-    regionDetailRoot.addEventListener('click', (e) => {
+  function bindRegionContentClicks(root) {
+    if (!root || root.dataset.regionClicksBound) return;
+    root.dataset.regionClicksBound = '1';
+    root.addEventListener('click', (e) => {
       const detailBtn = e.target.closest('[data-go="detail"]');
       if (detailBtn) {
         const idx = detailBtn.dataset.landmarkIndex;
@@ -405,9 +532,17 @@
       if (home && home.getAttribute('href') === '#') {
         e.preventDefault();
         showToast('공식 홈페이지 (준비 중)');
+        return;
+      }
+      const filterBtn = e.target.closest('[data-region-filter]');
+      if (filterBtn) {
+        showToast('필터 (준비 중)');
       }
     });
   }
+
+  bindRegionContentClicks(regionDetailRoot);
+  bindRegionContentClicks(provinceSheetDetail);
 
   function goBack() {
     if (screenStack.length > 1) {
@@ -659,11 +794,19 @@
   updateCarousel();
   requestAnimationFrame(() => scrollDetailCarouselTo(carouselIndex, 'auto'));
 
+  initProvinceSheetDrag();
+
   const koreaMapEl = app.querySelector('[data-korea-map]');
   if (koreaMapEl && window.KoreaMapModule) {
     KoreaMapModule.init(koreaMapEl, {
       onRegionExplore(regionName) {
         openRegionDetail(regionName);
+      },
+      onProvinceEnter(regionName) {
+        openProvinceSheet(regionName);
+      },
+      onProvinceLeave() {
+        closeProvinceSheet({ animate: true });
       },
     });
   }
