@@ -1735,6 +1735,99 @@
   height: 100%;
 }
 
+.province-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 12;
+  height: 30%;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -8px 28px rgba(20, 40, 80, 0.12);
+  transform: translateY(110%);
+  transition: transform var(--dur-normal) var(--ease-out);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.province-sheet[hidden] {
+  display: none;
+}
+
+.province-sheet.is-open {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.province-sheet.is-dragging {
+  transition: none;
+}
+
+.province-sheet__grab {
+  flex-shrink: 0;
+  padding: 10px 16px 6px;
+  touch-action: none;
+  cursor: grab;
+}
+
+.province-sheet__handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border);
+  border-radius: var(--radius-full);
+  margin: 0 auto;
+}
+
+.province-sheet__content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 0 8px;
+}
+
+.province-sheet__content .region-detail__title-row {
+  padding: 0 16px 8px;
+  flex-shrink: 0;
+}
+
+.province-sheet__title {
+  font-size: var(--text-lg);
+  margin: 0;
+}
+
+.province-sheet__tabs {
+  flex-shrink: 0;
+}
+
+.province-sheet__content .region-detail__body,
+.province-sheet__content .region-detail__cards {
+  min-height: 0;
+}
+
+.province-sheet__content .region-detail__cards {
+  overflow: hidden;
+}
+
+.province-sheet__content .region-detail__cards .region-detail__body {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.explore-national:has(.province-sheet.is-open) .fab {
+  bottom: calc(30% + 16px);
+}
+
+.korea-map--province .korea-map__stage {
+  padding-bottom: calc(30% + 24px);
+}
+
 .city-sheet {
   background: var(--white);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;

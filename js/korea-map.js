@@ -288,10 +288,12 @@
 
   async function showNational() {
     if (!container) return;
+    const prev = currentRegion;
     currentRegion = null;
     container.classList.remove('korea-map--province');
     hideToolbar();
     resetMapTransform();
+    if (prev && callbacks.onProvinceLeave) callbacks.onProvinceLeave();
 
     const stage = ensureStage();
     stage.innerHTML = '';
@@ -317,6 +319,7 @@
     container.classList.add('korea-map--province');
     renderToolbar(regionName);
     resetMapTransform();
+    if (callbacks.onProvinceEnter) callbacks.onProvinceEnter(regionName);
 
     const stage = ensureStage();
     stage.innerHTML = '<div class="korea-map__loading">지도 불러오는 중…</div>';
@@ -326,15 +329,14 @@
       styleProvinceSvg(svg);
       stage.innerHTML = '';
       stage.appendChild(svg);
-
-      svg.addEventListener('click', () => {
-        if (suppressMapClick) return;
-        if (callbacks.onRegionExplore) callbacks.onRegionExplore(regionName);
-      });
     } catch (err) {
       stage.innerHTML = '<p class="korea-map__error">지도를 불러올 수 없습니다.</p>';
       console.error(err);
     }
+  }
+
+  function getCurrentRegion() {
+    return currentRegion;
   }
 
   function init(el, options = {}) {
@@ -352,5 +354,6 @@
     showNational,
     showProvince,
     getProvinceUrl,
+    getCurrentRegion,
   };
 })();

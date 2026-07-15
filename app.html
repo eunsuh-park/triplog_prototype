@@ -27,6 +27,69 @@
           </div>
           <div class="korea-map" data-korea-map aria-label="전국 지도"></div>
           <button class="fab" aria-label="내 위치"><iconify-icon icon="mingcute:compass-line" width="22"></iconify-icon></button>
+
+          <div class="province-sheet" data-province-sheet hidden>
+            <div class="province-sheet__grab" data-province-sheet-handle>
+              <div class="province-sheet__handle"></div>
+            </div>
+            <div class="province-sheet__content" data-province-sheet-detail>
+              <div class="region-detail__title-row">
+                <div class="region-detail__title-group">
+                  <h2 class="region-detail__title province-sheet__title" data-region-title>지역</h2>
+                  <div class="region-detail__admin-picker" data-region-admin-picker hidden>
+                    <button class="region-detail__admin-picker-btn is-pressable" type="button" data-region-admin-toggle aria-haspopup="listbox" aria-expanded="false">
+                      <span data-region-admin-label>전체</span>
+                      <iconify-icon icon="mingcute:down-line" width="16"></iconify-icon>
+                    </button>
+                    <div class="region-detail__admin-menu" data-region-admin-menu role="listbox" hidden></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="region-detail__tabs province-sheet__tabs" role="tablist" aria-label="지역 상세">
+                <button class="region-detail__tab" type="button" role="tab" data-region-tab="info" aria-selected="false">정보</button>
+                <button class="region-detail__tab active" type="button" role="tab" data-region-tab="cards" aria-selected="true">카드</button>
+              </div>
+
+              <div class="region-detail__body region-detail__body--info" data-region-tab-panel="info">
+                <div class="region-detail__facts" data-region-facts></div>
+                <p class="region-detail__summary" data-region-summary></p>
+                <div class="region-detail__stats">
+                  <div class="region-stat-card">
+                    <span class="region-stat-card__label">총 방문횟수</span>
+                    <span class="region-stat-card__value" data-region-stat-value>50%</span>
+                  </div>
+                  <div class="region-stat-card">
+                    <span class="region-stat-card__label">지역 달성률</span>
+                    <span class="region-stat-card__value" data-region-stat-value>50%</span>
+                  </div>
+                </div>
+                <a class="region-detail__home-btn region-detail__home-btn--info is-pressable" data-region-homepage href="#" target="_blank" rel="noopener noreferrer" aria-label="공식 홈페이지">
+                  <iconify-icon icon="mingcute:earth-line" width="18"></iconify-icon>
+                  <span class="region-detail__home-btn__label">홈페이지</span>
+                </a>
+              </div>
+
+              <div class="region-detail__cards active" data-region-tab-panel="cards">
+                <div class="region-detail__cards-toolbar">
+                  <button class="region-detail__filter-btn is-pressable" type="button" data-region-filter aria-label="필터">
+                    <iconify-icon icon="mingcute:filter-line" width="18"></iconify-icon>
+                  </button>
+                  <div class="region-view-toggle" role="tablist" aria-label="보기 전환">
+                    <button class="region-view-toggle__btn active" type="button" data-region-view="grid" aria-label="그리드 보기"><iconify-icon icon="mingcute:grid-line" width="18"></iconify-icon></button>
+                    <button class="region-view-toggle__btn" type="button" data-region-view="carousel" aria-label="카드 보기"><iconify-icon icon="mingcute:rectangle-vertical-fill" width="18"></iconify-icon></button>
+                  </div>
+                </div>
+                <div class="region-detail__body region-detail__body--grid active" data-region-view-panel="grid">
+                  <div class="region-card-grid" data-region-card-grid></div>
+                </div>
+                <div class="region-detail__body region-detail__body--carousel" data-region-view-panel="carousel">
+                  <div class="region-card-carousel" data-region-carousel></div>
+                  <p class="region-card-carousel__pager" data-region-pager>1 / 4</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
