@@ -1950,9 +1950,9 @@
 }
 
 .rank-row__points {
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   font-weight: 800;
-  color: var(--text);
+  color: var(--accent-blue);
 }
 
 /* 내 순위 고정바 — 하단 탭 네비 위에 고정 */
