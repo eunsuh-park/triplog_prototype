@@ -173,6 +173,20 @@
     `;
   }
 
+  const STATS_V2 = [
+    { value: 7, unit: '개', label: '방문 지역', go: 'myRegions' },
+    { value: 24, unit: '회', label: '랜드마크 인증', go: 'certHistory' },
+    { value: 12, unit: '개', label: '획득한 뱃지', go: 'myBadges' },
+    { value: 7, unit: '개', label: '수집 카드', go: 'myCards' },
+  ];
+
+  const PROFILE_V2 = {
+    ...PROFILE,
+    monthlyRank: 23,
+    displayScore: 8450,
+  };
+
+  /** DESIGN.md(v1) — 블루 그라데이션 히어로 */
   function renderMain(root) {
     if (!root) return;
     const xpPct = pct(PROFILE.xp, PROFILE.xpMax);
@@ -276,6 +290,147 @@
           </button>
         </div>
       </section>
+    `;
+  }
+
+  /** DESIGN_v2.md — 틸 히어로 + 다크 메뉴 존 (시안 기반 소폭 수정) */
+  function renderMainV2(root) {
+    if (!root) return;
+    const xpPct = pct(PROFILE.xp, PROFILE.xpMax);
+    const timeline = travelTimelinePreview();
+
+    root.innerHTML = `
+      <div class="my-v2">
+        <div class="my-v2__main">
+          <div class="my-v2-hero">
+            <button class="my-v2-hero__edit is-pressable" type="button" data-go="profileEdit" aria-label="프로필 편집">
+              <iconify-icon icon="mingcute:edit-2-line" width="18"></iconify-icon>
+            </button>
+            <div class="my-v2-hero__avatar" aria-hidden="true">
+              <iconify-icon icon="mingcute:user-3-fill" width="36"></iconify-icon>
+            </div>
+            <p class="my-v2-hero__name">${PROFILE_V2.name}</p>
+            <p class="my-v2-hero__level">Lv.${PROFILE_V2.level}</p>
+            <div class="my-v2-hero__meta">
+              <button class="my-v2-hero__rank is-pressable" type="button" data-go="rankGuide" aria-label="랭크 구간 안내">
+                <iconify-icon icon="mingcute:trophy-fill" width="14"></iconify-icon>
+                ${PROFILE_V2.rank} Rank
+              </button>
+              <div class="my-v2-hero__score">
+                <span>월간 ${PROFILE_V2.monthlyRank}위</span>
+                <strong>${PROFILE_V2.displayScore.toLocaleString()}점</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="my-v2-xp">
+            <div class="my-v2-xp__row">
+              <span class="my-v2-xp__label">
+                경험치
+                <button class="my-v2-xp__help is-pressable" type="button" data-go="rankGuide" aria-label="경험치 안내">
+                  <iconify-icon icon="mingcute:question-line" width="14"></iconify-icon>
+                </button>
+              </span>
+              <span class="my-v2-xp__val">${PROFILE.xp} / ${PROFILE.xpMax} XP</span>
+            </div>
+            <div class="progress-bar progress-bar--thick my-v2-xp__bar">
+              <div class="progress-bar__fill" style="width:${xpPct}%"></div>
+            </div>
+          </div>
+
+          <div class="my-v2-stats">
+            ${STATS_V2.map((s) => `
+              <button class="my-v2-stat is-pressable" type="button" data-go="${s.go}">
+                <span class="my-v2-stat__icon">
+                  <iconify-icon icon="mingcute:check-circle-fill" width="18"></iconify-icon>
+                </span>
+                <span class="my-v2-stat__label">${s.label}</span>
+                <span class="my-v2-stat__value">${s.value}<em>${s.unit}</em></span>
+              </button>
+            `).join('')}
+          </div>
+
+          <section class="my-v2-section">
+            <div class="my-v2-section__head">
+              <h3 class="my-v2-section__title">최근 획득 카드</h3>
+              <button class="my-v2-section__more is-pressable" type="button" data-go="myCards">더보기 <iconify-icon icon="mingcute:right-line" width="14"></iconify-icon></button>
+            </div>
+            <div class="my-card-scroll my-v2-card-scroll">
+              ${CARDS.slice(0, 3).map((c) => collectCard(c, false)).join('')}
+            </div>
+          </section>
+
+          <section class="my-v2-section">
+            <div class="my-v2-section__head">
+              <h3 class="my-v2-section__title">나의 여행 기록</h3>
+              <button class="my-v2-section__more is-pressable" type="button" data-go="myRecords">더보기 <iconify-icon icon="mingcute:right-line" width="14"></iconify-icon></button>
+            </div>
+            <div class="my-v2-travel">
+              <div class="cert-timeline cert-timeline--my">
+                ${timeline || `
+                  <div class="cert-timeline__entry">
+                    <time class="cert-timeline__date">2026.07.12</time>
+                    <article class="cert-timeline__item">
+                      <div class="cert-timeline__head">
+                        <h3 class="cert-timeline__name">국립중앙과학관</h3>
+                        <span class="cert-timeline__badge">대전 유성구</span>
+                      </div>
+                      <p class="cert-timeline__review">아이들이 시시해할까 걱정했는데 생각보다 체험할 게 많아서 오랜만에...</p>
+                    </article>
+                  </div>
+                `}
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="my-v2__footer">
+          <section class="my-v2-menu">
+            <h3 class="my-v2-menu__title">내 활동</h3>
+            <div class="my-v2-menu__list">
+              <button class="my-v2-menu__item is-pressable" type="button" data-go="activityHistory">
+                <span class="my-v2-menu__icon"><iconify-icon icon="mingcute:time-line" width="20"></iconify-icon></span>
+                <span class="my-v2-menu__text">
+                  <span class="my-v2-menu__label">활동 히스토리</span>
+                  <span class="my-v2-menu__sub">랜드마크 인증</span>
+                </span>
+                <iconify-icon class="chevron" icon="mingcute:right-line" width="18"></iconify-icon>
+              </button>
+            </div>
+          </section>
+
+          <section class="my-v2-menu">
+            <h3 class="my-v2-menu__title">설정</h3>
+            <div class="my-v2-menu__list">
+              <button class="my-v2-menu__item is-pressable" type="button" data-go="settingsNotify">
+                <span class="my-v2-menu__icon"><iconify-icon icon="mingcute:notification-line" width="20"></iconify-icon></span>
+                <span class="my-v2-menu__text"><span class="my-v2-menu__label">알림 설정</span></span>
+                <iconify-icon class="chevron" icon="mingcute:right-line" width="18"></iconify-icon>
+              </button>
+              <button class="my-v2-menu__item is-pressable" type="button" data-go="settingsHelp">
+                <span class="my-v2-menu__icon"><iconify-icon icon="mingcute:question-line" width="20"></iconify-icon></span>
+                <span class="my-v2-menu__text"><span class="my-v2-menu__label">도움말 / 문의</span></span>
+                <iconify-icon class="chevron" icon="mingcute:right-line" width="18"></iconify-icon>
+              </button>
+              <button class="my-v2-menu__item is-pressable" type="button" data-go="settingsApp">
+                <span class="my-v2-menu__icon"><iconify-icon icon="mingcute:shield-line" width="20"></iconify-icon></span>
+                <span class="my-v2-menu__text"><span class="my-v2-menu__label">약관 · 개인정보</span></span>
+                <iconify-icon class="chevron" icon="mingcute:right-line" width="18"></iconify-icon>
+              </button>
+              <button class="my-v2-menu__item is-pressable" type="button" data-go="settingsApp">
+                <span class="my-v2-menu__icon"><iconify-icon icon="mingcute:information-line" width="20"></iconify-icon></span>
+                <span class="my-v2-menu__text"><span class="my-v2-menu__label">버전 정보</span></span>
+                <span class="my-v2-menu__meta">v1.0.0</span>
+              </button>
+              <button class="my-v2-menu__item my-v2-menu__item--logout is-pressable" type="button" data-action="logout">
+                <span class="my-v2-menu__icon"><iconify-icon icon="mingcute:exit-line" width="20"></iconify-icon></span>
+                <span class="my-v2-menu__text"><span class="my-v2-menu__label">로그아웃</span></span>
+                <iconify-icon class="chevron" icon="mingcute:right-line" width="18"></iconify-icon>
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
     `;
   }
 
@@ -483,20 +638,27 @@
     });
   }
 
-  window.TRIPLOG_MYPAGE = { PROFILE, CARDS, BADGES, CONQUER, GRADES };
+  window.TRIPLOG_MYPAGE = { PROFILE, PROFILE_V2, CARDS, BADGES, CONQUER, GRADES };
   window.renderRankGuide = renderRankGuide;
+  window.renderMypageV1 = renderMain;
+  window.renderMypageV2 = renderMainV2;
 
   function init() {
     const app = document.getElementById('interactiveApp');
-    if (!app) return;
-    renderMain(app.querySelector('[data-mypage-root]'));
-    renderRegions(app.querySelector('[data-my-regions]'));
-    renderCards(app.querySelector('[data-my-cards]'), app.querySelector('[data-my-cards-count]'));
-    renderBadges(app.querySelector('[data-my-badges]'), app.querySelector('[data-my-badges-count]'));
-    renderNotify(app.querySelector('[data-settings-notify]'));
-    renderHelp(app.querySelector('[data-settings-help]'));
-    renderAppSettings(app.querySelector('[data-settings-app]'));
-    bindInteractions(app);
+    if (app) {
+      renderMain(app.querySelector('[data-mypage-root]'));
+      renderRegions(app.querySelector('[data-my-regions]'));
+      renderCards(app.querySelector('[data-my-cards]'), app.querySelector('[data-my-cards-count]'));
+      renderBadges(app.querySelector('[data-my-badges]'), app.querySelector('[data-my-badges-count]'));
+      renderNotify(app.querySelector('[data-settings-notify]'));
+      renderHelp(app.querySelector('[data-settings-help]'));
+      renderAppSettings(app.querySelector('[data-settings-app]'));
+      bindInteractions(app);
+    }
+
+    // 쇼케이스: DESIGN.md(v1) / DESIGN_v2.md(v2) 나란히 렌더
+    document.querySelectorAll('[data-mypage-v1]').forEach((el) => renderMain(el));
+    document.querySelectorAll('[data-mypage-v2]').forEach((el) => renderMainV2(el));
   }
 
   init();
