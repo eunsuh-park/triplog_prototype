@@ -13,9 +13,10 @@
 <div class="showcase">
   <header class="showcase-header">
     <h1>Triplog UI 프로토타입</h1>
-    <p>서비스 정책 기반 · DESIGN.md (Triple) 디자인 시스템 · 총 30+ 화면</p>
+    <p>서비스 정책 기반 · DESIGN.md / DESIGN_v2.md · 총 30+ 화면</p>
     <div class="mode-links">
       <a href="app.html" class="active">인터랙티브 앱 열기</a>
+      <a href="#mypage-compare">마이페이지 v1·v2 비교</a>
     </div>
     <p style="margin-top:12px;font-size:12px;color:var(--text-secondary);max-width:520px;margin-left:auto;margin-right:auto;line-height:1.6">
       AUTH · EXPLORE · CERT · RANK · MY · RECORD · MISSION · FEED · DEX<br>
@@ -139,10 +140,21 @@
         </div>
         <p class="screen-label">RANK-01 · 랭킹</p>
       </div>
+    </div>
+  </section>
+
+  <!-- 마이페이지 v1 / v2 비교 -->
+  <section class="showcase-section" id="mypage-compare">
+    <h2>마이페이지 비교 · MY-01</h2>
+    <p class="showcase-note">
+      왼쪽은 <code>DESIGN.md</code> 블루 기반 현재 버전, 오른쪽은 시안 기반 <code>DESIGN_v2.md</code> 틸·다크 메뉴 개편안입니다.
+    </p>
+    <div class="showcase-row showcase-row--wrap">
       <div class="screen-wrap">
         <div class="phone">
           <div class="screen-body my-screen">
-            <div class="screen-scroll my-scroll" data-mypage-showcase></div>
+            <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+            <div class="screen-scroll my-scroll" data-mypage-v1></div>
           </div>
           <nav class="bottom-nav">
             <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon>홈</span></button>
@@ -152,7 +164,23 @@
             <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
           </nav>
         </div>
-        <p class="screen-label">MY-01 · 마이페이지</p>
+        <p class="screen-label">MY-01 · v1 (DESIGN.md)</p>
+      </div>
+      <div class="screen-wrap">
+        <div class="phone">
+          <div class="screen-body my-screen my-screen--v2">
+            <div class="status-bar"><span>9:41</span><span class="status-icons"><iconify-icon icon="mingcute:wifi-line" width="14"></iconify-icon><iconify-icon icon="mingcute:battery-line" width="14"></iconify-icon></span></div>
+            <div class="screen-scroll my-scroll my-scroll--v2" data-mypage-v2></div>
+          </div>
+          <nav class="bottom-nav">
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:home-3-line"></iconify-icon>홈</span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:book-5-line"></iconify-icon>도감</span></button>
+            <button class="nav-item nav-item--certify"><span class="nav-certify-btn"><iconify-icon icon="mingcute:location-fill" width="22"></iconify-icon></span></button>
+            <button class="nav-item"><span class="nav-bubble"><iconify-icon icon="mingcute:trophy-line"></iconify-icon>랭킹</span></button>
+            <button class="nav-item active"><span class="nav-bubble"><iconify-icon icon="mingcute:user-3-line"></iconify-icon>마이</span></button>
+          </nav>
+        </div>
+        <p class="screen-label">MY-01 · v2 (DESIGN_v2.md)</p>
       </div>
     </div>
   </section>
@@ -257,29 +285,13 @@
 
 <script src="js/regions.js"></script>
 <script src="js/ranks.js"></script>
+<script src="js/cert-history.js"></script>
 <script src="js/mypage.js"></script>
 <script src="js/activity-history.js"></script>
 <script src="js/extra-screens.js"></script>
 <script>
 (function () {
   if (window.renderRegionList) renderRegionList(document.querySelector('[data-region-list]'));
-  const showcaseMy = document.querySelector('[data-mypage-showcase]');
-  if (showcaseMy && window.TRIPLOG_MYPAGE) {
-    const p = window.TRIPLOG_MYPAGE.PROFILE;
-    showcaseMy.innerHTML = `
-      <div class="my-profile-card" style="margin:12px">
-        <p class="my-profile-card__name">${p.name}</p>
-        <p class="my-profile-card__title">${p.title}</p>
-        <div class="my-profile-card__pills">
-          <span class="my-pill my-pill--soft">Lv.${p.level}</span>
-          <span class="my-pill my-pill--gold">${p.rank} Rank</span>
-        </div>
-      </div>
-      <div class="my-stats" style="padding:0 12px">
-        <div class="my-stat-card"><span class="my-stat-card__body"><span class="my-stat-card__value">7<em>곳</em></span><span class="my-stat-card__label">방문 지역</span></span></div>
-        <div class="my-stat-card"><span class="my-stat-card__body"><span class="my-stat-card__value">24<em>개</em></span><span class="my-stat-card__label">인증</span></span></div>
-      </div>`;
-  }
   const actRoot = document.querySelector('[data-activity-history-root]');
   if (actRoot && window.renderActivityHistory) renderActivityHistory(actRoot);
   if (window.renderExtraScreens) renderExtraScreens();
